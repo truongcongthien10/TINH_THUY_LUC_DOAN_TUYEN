@@ -18,7 +18,8 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg-color); color: var(--text-dark); padding: 15px; }
-        .container { max-width: 1080px; margin: 0 auto; background: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--border-color); }
+        /* Tăng chiều rộng tổng thể để các cột rộng rãi hơn */
+        .container { max-width: 1200px; margin: 0 auto; background: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--border-color); }
         .header-bar { background: var(--excel-green); color: #fff; text-align: center; padding: 14px 10px; font-size: 1.15rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
         .content { padding: 15px 20px; }
 
@@ -36,9 +37,9 @@
         .diagram-wrapper { position: relative; width: 100%; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; margin-top: 10px; }
         canvas { width: 100%; height: 420px; background: #ffffff; display: block; }
 
-        /* CHIA THÀNH 4 CỘT ĐỘC LẬP TƯƠNG ỨNG 4 NÚT */
-        .inputs-overlay { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 12px; padding-top: 10px; border-top: 1px dashed #cbd5e1; }
-        .seg-input-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px; }
+        /* NỚI RỘNG KHANG GIỮA CÁC CỘT VÀ TĂNG RỘNG Ô CHỌN */
+        .inputs-overlay { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; padding-top: 10px; border-top: 1px dashed #cbd5e1; }
+        .seg-input-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 8px; }
         .seg-input-header { font-size: 0.82rem; font-weight: bold; color: #005a36; margin-bottom: 6px; text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 3px; }
         .node-input-header { font-size: 0.8rem; font-weight: bold; color: #b91c1c; margin: 8px 0 6px 0; text-align: center; border-top: 1px dashed #cbd5e1; border-bottom: 1px solid #e2e8f0; padding: 3px 0; }
 
@@ -49,10 +50,11 @@
         input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; }
 
-        .seg-input-card input, .seg-input-card select { width: 72px; padding: 3px 4px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.78rem; text-align: center; outline: none; background: #fff; }
+        /* TĂNG CHIỀU RỘNG Ô CHỌN LÊN 90PX VÀ GIẢM PADDING ĐỂ HIỂN THỊ ĐỦ CHỮ "GANG DẺO" */
+        .seg-input-card input, .seg-input-card select { width: 90px; padding: 3px 2px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.78rem; text-align: center; outline: none; background: #fff; }
         .seg-input-card input:focus, .seg-input-card select:focus { border-color: #d97706; background: #fff9c4; }
 
-        .sub-info { font-size: 0.7rem; color: #166534; font-weight: 600; text-align: right; margin-top: -2px; margin-bottom: 4px; }
+        .sub-info { font-size: 0.72rem; color: #166534; font-weight: 600; text-align: right; margin-top: -1px; margin-bottom: 4px; }
 
         .btn-calc { width: 100%; background: #0284c7; color: #fff; border: none; padding: 12px; font-size: 1rem; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 12px; text-transform: uppercase; }
         .btn-calc:hover { background: #0369a1; }
@@ -91,7 +93,7 @@
 
         <div id="warn_box" class="warning-box"></div>
 
-        <!-- II. SƠ ĐỒ TRẮC DỌC & NHẬP LIỆU BỐN CỘT TÁCH BIỆT -->
+        <!-- II. SƠ ĐỒ TRẮC DỌC & NHẬP LIỆU BỐN CỘT -->
         <div class="section-title">II. Sơ đồ Trắc dọc & Nhập dữ liệu phân đoạn (4 Cột)</div>
         
         <div class="diagram-wrapper">
@@ -182,7 +184,7 @@
                     <div class="input-row"><label>Q<sub>rút 3</sub> (m³/ngđ):</label><input type="number" id="q_out3" value="0" onchange="calculateProfile()"></div>
                 </div>
 
-                <!-- CỘT 4: NÚT 4 (ĐIỂM CUỐI) TÁCH BIỆT RIÊNG THÀNH 4 CỘT -->
+                <!-- CỘT 4: NÚT 4 (ĐIỂM CUỐI) -->
                 <div class="seg-input-card" style="background: #f0fdf4; border-color: #bbf7d0;">
                     <div class="seg-input-header" style="color: #15803d; border-bottom-color: #bbf7d0;">ĐIỂM CUỐI TUYẾN</div>
                     <p style="font-size: 0.72rem; color: #475569; text-align: center; margin-bottom: 8px;">Dữ liệu điểm xả/nút cuối toàn tuyến</p>
@@ -423,7 +425,7 @@
         ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 2.5; ctx.setLineDash([6, 4]); ctx.stroke();
         ctx.setLineDash([]);
 
-        // THÔNG SỐ CÁC ĐOẠN ỐNG (HỞ CÁCH ĐƯỜNG NÉT ĐỨT NÊN ĐƯỢC CĂN XUỐNG THOÁNG MẮT)
+        // THÔNG SỐ CÁC ĐOẠN ỐNG
         for (let i = 0; i < 3; i++) {
             let xMid = (getX(nodes[i].dist) + getX(nodes[i+1].dist)) / 2;
             let yHMid = (getY(nodes[i].H) + getY(nodes[i+1].H)) / 2;
@@ -432,7 +434,6 @@
             ctx.font = "bold 11px sans-serif";
             ctx.textAlign = "center";
 
-            // Cách đường nét đứt một khoảng +22px để không bị chạm
             ctx.fillStyle = "#005a9e"; ctx.fillText(`Q = ${segInfo.q.toFixed(1)} m³/h`, xMid, yHMid + 22);
             ctx.fillStyle = "#15803d"; ctx.fillText(`v = ${segInfo.v.toFixed(2)} m/s`, xMid, yHMid + 36);
             ctx.fillStyle = "#b91c1c"; ctx.fillText(`hf = ${segInfo.hf.toFixed(2)} m`, xMid, yHMid + 50);
@@ -459,42 +460,35 @@
         ctx.fillStyle = "#b91c1c"; ctx.textAlign = "center";
         ctx.fillText(totalText, (x0 + x3)/2, topY + 4);
 
-        // VẼ KÝ HIỆU VÒNG TRÒN BAO QUANH SỐ ĐIỂM NÚT (①, ②, ③, ④) KÈM NHÃN "ĐIỂM ĐẦU / ĐIỂM CUỐI"
+        // HIỂN THỊ NÚT
         nodes.forEach((n) => {
             let x = getX(n.dist);
             let yZ = getY(n.z);
             let yH = getY(n.H);
 
-            // Đường dóng từ H xuống Z
             ctx.beginPath(); ctx.moveTo(x, yZ); ctx.lineTo(x, yH);
             ctx.strokeStyle = n.p < 0 ? "#dc2626" : "#cbd5e1"; ctx.lineWidth = 1.5; ctx.stroke();
 
-            // Chấm tròn đỏ tại Nút
             ctx.beginPath(); ctx.arc(x, yZ, 5, 0, Math.PI * 2); ctx.fillStyle = "#dc2626"; ctx.fill();
             ctx.beginPath(); ctx.arc(x, yH, 4, 0, Math.PI * 2); ctx.fillStyle = "#0284c7"; ctx.fill();
 
-            // Vòng tròn bao quanh số nút ①, ②, ③, ④
             let circleY = H - padB + 18;
             ctx.beginPath(); ctx.arc(x, circleY, 9, 0, Math.PI * 2);
             ctx.fillStyle = "#ffffff"; ctx.fill();
             ctx.strokeStyle = "#005a36"; ctx.lineWidth = 1.5; ctx.stroke();
 
-            // Số khoanh tròn bên trong
             ctx.fillStyle = "#005a36"; ctx.font = "bold 11px sans-serif"; ctx.textAlign = "center";
             ctx.fillText(n.id, x, circleY + 4);
 
-            // Chữ "Điểm đầu" hoặc "Điểm cuối" ở dưới số
             if (n.label) {
                 ctx.font = "10px sans-serif"; ctx.fillStyle = "#005a36";
                 ctx.fillText(n.label, x, circleY + 17);
             }
 
-            // Đường dóng xám mảnh kéo xuống chỉ số
             let lineStartY = n.label ? circleY + 22 : circleY + 12;
             ctx.beginPath(); ctx.moveTo(x, lineStartY); ctx.lineTo(x, H - padB + 48);
             ctx.strokeStyle = "#94a3b8"; ctx.lineWidth = 1; ctx.setLineDash([2, 2]); ctx.stroke(); ctx.setLineDash([]);
 
-            // Chữ nhỏ thể hiện Z và Q_rút
             ctx.font = "10px sans-serif"; ctx.fillStyle = "#475569";
             ctx.fillText(`Z = ${n.z}m`, x, H - padB + 58);
 
@@ -503,7 +497,6 @@
                 ctx.fillText(`Q = ${n.qOutNgd}m³/ngđ`, x, H - padB + 70);
             }
 
-            // Áp lực P phía trên Nút
             ctx.fillStyle = n.p < 0 ? "#dc2626" : "#0284c7"; ctx.font = "bold 11px sans-serif";
             ctx.fillText(`P=${n.p.toFixed(1)}m`, x, yH - 8);
         });
