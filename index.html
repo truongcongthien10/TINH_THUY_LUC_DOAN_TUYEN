@@ -3,95 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tính Toán Thủy Lực Tuyến Ống Phân Đoạn - HueWACO</title>
+    <title>Tính Toán Thủy Lực & Vẽ Sơ Đồ Trắc Dọc - HueWACO</title>
     <style>
         :root {
-            --excel-green: #107c41;
+            --excel-green: #005a36;
+            --excel-green-light: #e6f0eb;
             --section-title: #0f5257;
-            --section-bg: #e2efda;
-            --bg-color: #f0f4f1;
+            --bg-color: #f4f6f8;
             --card-bg: #ffffff;
-            --border-color: #c8d6c9;
-            --accent-blue: #005a9e;
-            --result-bg: #eef7ee;
+            --border-color: #d1d5db;
+            --accent-blue: #0284c7;
+            --text-dark: #1f2937;
+            --text-red: #d83b01;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg-color); color: #242424; padding: 12px; }
-        .container { max-width: 950px; margin: 0 auto; background: var(--card-bg); border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--border-color); }
-        .header-bar { background: var(--excel-green); color: #fff; text-align: center; padding: 14px 10px; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; }
-        .content { padding: 15px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg-color); color: var(--text-dark); padding: 15px; }
+        .container { max-width: 980px; margin: 0 auto; background: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--border-color); }
+        .header-bar { background: var(--excel-green); color: #fff; text-align: center; padding: 14px 10px; font-size: 1.15rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
+        .content { padding: 15px 20px; }
 
-        .section-title { font-weight: 700; color: var(--section-title); background: var(--section-bg); border-bottom: 2px solid var(--excel-green); padding: 6px 10px; margin: 12px 0 8px 0; font-size: 0.92rem; text-transform: uppercase; border-radius: 4px 4px 0 0; display: flex; justify-content: space-between; align-items: center; }
+        .section-title { font-weight: 700; color: #005a36; background: var(--excel-green-light); border-left: 4px solid var(--excel-green); padding: 8px 12px; margin: 16px 0 10px 0; font-size: 0.95rem; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
 
-        table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 0.85rem; }
-        th, td { border: 1px solid var(--border-color); padding: 6px; text-align: center; }
-        th { background: #f0f7f2; color: var(--section-title); font-weight: 700; }
+        /* BẢNG CHÂN PHƯƠNG, GỌN GÀNG DỄ NHẬP */
+        table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 0.88rem; background: #fff; }
+        th, td { border: 1px solid var(--border-color); padding: 8px 10px; text-align: center; vertical-align: middle; }
+        th { background: #f8fafc; color: #334155; font-weight: 700; font-size: 0.83rem; text-transform: uppercase; }
+        tr:nth-child(even) { background-color: #fdfdfd; }
         
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; }
 
-        input, select { width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem; text-align: center; outline: none; }
-        input:focus, select:focus { border-color: var(--excel-green); background: #fffde6; }
+        input, select { width: 100%; padding: 6px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.88rem; text-align: center; outline: none; transition: all 0.15s ease; background: #fff; }
+        input:focus, select:focus { border-color: #d97706; background: #fff9c4 !important; }
 
-        .pyc-group { display: flex; gap: 4px; align-items: center; }
-        .pyc-group select { width: 110px; font-size: 0.78rem; padding: 5px 2px; }
+        .pyc-group { display: flex; gap: 6px; align-items: center; }
+        .pyc-group select { width: 110px; font-size: 0.82rem; }
 
-        .btn-calc { width: 100%; background: linear-gradient(135deg, #107c41 0%, #0b592e 100%); color: #fff; border: 1px solid #084222; padding: 12px; font-size: 1.05rem; font-weight: bold; border-radius: 6px; cursor: pointer; margin: 12px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.15); }
-        .btn-calc:hover { background: linear-gradient(135deg, #13914c 0%, #0d6937 100%); }
+        .btn-calc { width: 100%; background: #0284c7; color: #fff; border: none; padding: 12px; font-size: 1rem; font-weight: bold; border-radius: 6px; cursor: pointer; margin: 15px 0 10px 0; transition: background 0.2s; text-transform: uppercase; }
+        .btn-calc:hover { background: #0369a1; }
 
         .canvas-container { width: 100%; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; margin-top: 10px; text-align: center; }
-        canvas { width: 100%; height: 380px; background: #fafafa; border: 1px solid #e0e0e0; border-radius: 4px; }
+        canvas { width: 100%; height: 380px; background: #ffffff; }
 
-        /* MỤC III ĐƯỢC ĐƠN GIẢN HÓA CỰC KỲ DỄ HIỂU */
-        .result-simple-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; }
-        .result-card { background: var(--result-bg); border: 1px solid #c3e6c5; padding: 12px 8px; border-radius: 6px; }
-        .result-card-title { font-size: 0.8rem; color: #2e4d32; font-weight: 600; margin-bottom: 4px; text-transform: uppercase; }
-        .result-card-value { font-size: 1.25rem; font-weight: bold; color: var(--accent-blue); }
+        .result-simple-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; text-align: center; margin-top: 8px; }
+        .result-card { background: #f0f9ff; border: 1px solid #bae6fd; padding: 12px 10px; border-radius: 6px; }
+        .result-card-title { font-size: 0.82rem; color: #0369a1; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; }
+        .result-card-value { font-size: 1.3rem; font-weight: bold; color: #0284c7; }
 
-        .warning-box { margin-top: 10px; padding: 10px; border-radius: 4px; font-size: 0.83rem; line-height: 1.4; display: none; }
-        .warn-red { background: #fde8e8; border-left: 4px solid #d83b01; color: #9b1c1c; }
-        .warn-green { background: #d4edda; border-left: 4px solid #107c41; color: #155724; }
+        .warning-box { margin-top: 10px; padding: 10px 14px; border-radius: 4px; font-size: 0.85rem; line-height: 1.4; display: none; }
+        .warn-red { background: #fef2f2; border-left: 4px solid #dc2626; color: #991b1b; }
+        .warn-green { background: #f0fdf4; border-left: 4px solid #16a34a; color: #166534; }
 
-        .footer { padding: 10px 15px; font-size: 0.75rem; color: #555; background: #fafafa; border-top: 1px solid var(--border-color); margin-top: 15px; display: flex; justify-content: space-between; }
+        .footer { padding: 12px 20px; font-size: 0.8rem; color: #64748b; background: #fff; border-top: 1px solid var(--border-color); margin-top: 15px; display: flex; justify-content: space-between; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header-bar">TÍNH TOÁN THỦY LỰC TUYẾN ỐNG PHÂN ĐOẠN - HUEWACO</div>
+    <div class="header-bar">Tính Toán Thủy Lực & Vẽ Sơ Đồ Trắc Dọc</div>
     
     <div class="content">
         <!-- I. THÔNG SỐ NÚT -->
         <div class="section-title">
-            <span>I. THÔNG SỐ CAO ĐỘ VÀ LƯU LƯỢNG RÚT TẠI CÁC NÚT</span>
-            <span style="font-weight: normal; font-size: 0.8rem; text-transform: none;">
-                Hệ số không điều hòa giờ K<sub>giờ</sub>: 
-                <input type="number" id="k_gio" value="1.4" step="0.05" style="width:60px; display:inline-block; height:26px; padding:2px;" onchange="calculateProfile()">
+            <span>I. Thông số Cao độ & Lưu lượng rút tại Nút</span>
+            <span style="font-weight: normal; font-size: 0.82rem; text-transform: none; color: #334155;">
+                Hệ số K<sub>giờ</sub>: 
+                <input type="number" id="k_gio" value="1.4" step="0.05" style="width:55px; display:inline-block; height:26px; padding:2px;" onchange="calculateProfile()">
             </span>
         </div>
         <table>
             <thead>
                 <tr>
-                    <th>Điểm Nút</th>
-                    <th>Tên Nút</th>
-                    <th style="width: 15%;">Cao độ Z (m)</th>
-                    <th style="width: 25%;">Lưu lượng lấy ra Q<sub>rút</sub> (m³/ngđ)</th>
-                    <th style="width: 35%;">Áp lực yêu cầu P<sub>yc</sub> (m)</th>
+                    <th style="width: 12%;">Điểm Nút</th>
+                    <th>Tên Đoạn Tuyến</th>
+                    <th style="width: 18%;">Cao độ Z (m)</th>
+                    <th style="width: 25%;">Lưu lượng rút Q<sub>rút</sub> (m³/ngđ)</th>
+                    <th style="width: 32%;">Áp lực yêu cầu P<sub>yc</sub> (m)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><b>Nút 1</b></td>
-                    <td>Đoạn 1</td>
+                    <td style="color:#64748b;">Đoạn 1 (Điểm đầu)</td>
                     <td><input type="number" id="z1" value="5.0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
-                    <td><input type="number" id="q_out1" value="0" readonly style="background:#eee;"></td>
-                    <td><input type="number" id="p1_avail" value="42.0" step="any" onfocus="this.select()" title="Áp lực dư nguồn/bơm" onchange="calculateProfile()"></td>
+                    <td><input type="number" id="q_out1" value="0" readonly style="background:#f1f5f9; color:#94a3b8;"></td>
+                    <td><input type="number" id="p1_avail" value="42.0" step="any" title="Áp lực dư nguồn/bơm" onfocus="this.select()" onchange="calculateProfile()"></td>
                 </tr>
                 <tr>
                     <td><b>Nút 2</b></td>
-                    <td>Đoạn 2</td>
+                    <td style="color:#64748b;">Đoạn 2</td>
                     <td><input type="number" id="z2" value="22.0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
                     <td><input type="number" id="q_out2" value="0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
                     <td>
@@ -100,13 +102,13 @@
                                 <option value="manual">Tự nhập</option>
                                 <option value="none" selected>Không yêu cầu</option>
                             </select>
-                            <input type="number" id="p2_req" value="5.0" step="any" disabled style="background:#f0f0f0;" onfocus="this.select()" onchange="calculateProfile()">
+                            <input type="number" id="p2_req" value="5.0" step="any" disabled style="background:#f1f5f9;" onfocus="this.select()" onchange="calculateProfile()">
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td><b>Nút 3</b></td>
-                    <td>Đoạn 3</td>
+                    <td style="color:#64748b;">Đoạn 3</td>
                     <td><input type="number" id="z3" value="3.0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
                     <td><input type="number" id="q_out3" value="2143" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
                     <td>
@@ -115,15 +117,15 @@
                                 <option value="manual">Tự nhập</option>
                                 <option value="none" selected>Không yêu cầu</option>
                             </select>
-                            <input type="number" id="p3_req" value="5.0" step="any" disabled style="background:#f0f0f0;" onfocus="this.select()" onchange="calculateProfile()">
+                            <input type="number" id="p3_req" value="5.0" step="any" disabled style="background:#f1f5f9;" onfocus="this.select()" onchange="calculateProfile()">
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td><b>Nút 4</b></td>
-                    <td>Đoạn 4</td>
+                    <td style="color:#64748b;">Đoạn 4 (Điểm cuối)</td>
                     <td><input type="number" id="z4" value="3.0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
-                    <td><input type="number" id="q_out4" value="7143" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
+                    <td><input type="number" id="q_out4" value="5100" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
                     <td>
                         <div class="pyc-group">
                             <select id="pyc_type4" onchange="togglePyc(4)">
@@ -138,14 +140,14 @@
         </table>
 
         <!-- II. THÔNG SỐ ĐƯỜNG ỐNG -->
-        <div class="section-title">II. THÔNG SỐ KỸ THUẬT CÁC ĐOẠN ỐNG</div>
+        <div class="section-title">II. Thông số Kỹ thuật các Đoạn ống</div>
         <table>
             <thead>
                 <tr>
-                    <th style="width: 20%;">Đoạn Ống</th>
-                    <th style="width: 25%;">Chiều dài L (m)</th>
-                    <th style="width: 30%;">Vật liệu ống</th>
-                    <th style="width: 25%;">Đường kính ngoài (DN)</th>
+                    <th style="width: 18%;">Phân Đoạn</th>
+                    <th style="width: 24%;">Chiều dài L (m)</th>
+                    <th style="width: 32%;">Vật liệu ống</th>
+                    <th style="width: 26%;">Kích cỡ danh nghĩa (DN)</th>
                 </tr>
             </thead>
             <tbody>
@@ -191,10 +193,10 @@
             </tbody>
         </table>
 
-        <button class="btn-calc" onclick="calculateProfile()">Tính Toán Thủy Lực & Vẽ Sơ Đồ Trắc Dọc</button>
+        <button class="btn-calc" onclick="calculateProfile()">Cập nhật Tính toán & Sơ đồ Trắc dọc</button>
 
-        <!-- III. KẾT QUẢ ĐƠN GIẢN HÓA DỄ HIỂU -->
-        <div class="section-title">III. KẾT QUẢ THỦY LỰC TỔNG THỂ TOÀN TUYẾN</div>
+        <!-- III. KẾT QUẢ TỔNG THỂ -->
+        <div class="section-title">III. Kết quả Thủy lực Tổng thể Toàn tuyến</div>
         <div class="result-simple-grid">
             <div class="result-card">
                 <div class="result-card-title">Chiều dài tuyến</div>
@@ -212,15 +214,15 @@
 
         <div id="warn_box" class="warning-box"></div>
 
-        <!-- IV. SƠ ĐỒ CANVAS THỂ HIỆN ĐẦY ĐỦ THÔNG SỐ TỪNG ĐOẠN TỰ ĐỘNG -->
-        <div class="section-title">IV. SƠ ĐỒ TRẮC DỌC THỦY LỰC TRỰC QUAN (PROFILE)</div>
+        <!-- IV. SƠ ĐỒ TRẮC DỌC -->
+        <div class="section-title">IV. Sơ đồ Trắc dọc Thủy lực Trực quan (Profile)</div>
         <div class="canvas-container">
             <canvas id="profileCanvas"></canvas>
         </div>
     </div>
 
     <div class="footer">
-        <div><b>HUEWACO</b> - Phòng Kỹ Thuật</div>
+        <div>Copyright © <b>PHÒNG KỸ THUẬT - HueWACO</b></div>
         <div>Hệ thống tính toán thủy lực tuyến ống © 2026</div>
     </div>
 </div>
@@ -274,7 +276,7 @@
         const input = document.getElementById(`p${nodeIdx}_req`);
         if (type === 'none') {
             input.disabled = true;
-            input.style.background = '#f0f0f0';
+            input.style.background = '#f1f5f9';
         } else {
             input.disabled = false;
             input.style.background = '#ffffff';
@@ -293,9 +295,7 @@
             const opt = document.createElement('option');
             opt.value = pipe.din;
             opt.textContent = `DN${pipe.dn}`;
-            if (pipe.dn === 500) {
-                opt.selected = true;
-            }
+            if (pipe.dn === 500) opt.selected = true;
             dnSelect.appendChild(opt);
         });
 
@@ -352,23 +352,19 @@
         const di23 = parseFloat(document.getElementById('dn23').value) || 1;
         const di34 = parseFloat(document.getElementById('dn34').value) || 1;
 
-        // Lưu lượng từng đoạn (m3/h)
         const q34 = qOut4;
         const q23 = q34 + qOut3;
         const q12 = q23 + qOut2;
 
-        // Vận tốc dòng chảy (m/s)
         const v12 = calcVelocity(q12, di12);
         const v23 = calcVelocity(q23, di23);
         const v34 = calcVelocity(q34, di34);
 
-        // Tổn thất áp lực từng đoạn (m)
         const hf12 = calcHf(l12, q12, c12, di12);
         const hf23 = calcHf(l23, q23, c23, di23);
         const hf34 = calcHf(l34, q34, c34, di34);
         const hfTotal = hf12 + hf23 + hf34;
 
-        // Cột áp H & Áp lực P
         const H1 = z1 + p1Avail;
         const H2 = H1 - hf12;
         const H3 = H2 - hf23;
@@ -379,13 +375,11 @@
         const p3 = H3 - z3;
         const p4 = H4 - z4;
 
-        // Hiển thị Mục III Đơn Giản Hóa
         const totalLengthKm = (l12 + l23 + l34) / 1000;
         document.getElementById('res_total_length').innerText = totalLengthKm.toFixed(1) + " km";
         document.getElementById('res_total_q').innerText = q12.toFixed(1) + " m³/h";
         document.getElementById('res_hf_total').innerText = hfTotal.toFixed(2) + " m";
 
-        // Cảnh báo
         const warnBox = document.getElementById('warn_box');
         let minP = Math.min(p2, p3, p4);
         let warnMsg = [];
@@ -405,7 +399,7 @@
 
         if (minP < 0) {
             warnBox.className = "warning-box warn-red";
-            warnBox.innerHTML = `⚠️ <b>CẢNH BÁO NGUY HIỂM:</b> Xảy ra chân không/áp lực âm (P<sub>min</sub> = ${minP.toFixed(2)}m). Nguy cơ tụ khí, đứt dòng! Cần tăng áp lực bơm điểm đầu hoặc nâng cỡ ống.`;
+            warnBox.innerHTML = `⚠️ <b>CẢNH BÁO NGUY HIỂM:</b> Xảy ra chân không/áp lực âm (P<sub>min</sub> = ${minP.toFixed(2)}m). Cần tăng áp lực bơm điểm đầu hoặc nâng cỡ ống.`;
             warnBox.style.display = "block";
         } else if (warnMsg.length > 0) {
             warnBox.className = "warning-box warn-red";
@@ -417,7 +411,6 @@
             warnBox.style.display = "block";
         }
 
-        // Vẽ Trắc Dọc kèm thông số từng đoạn + Đường Tổng thể
         drawProfileCanvas({
             nodes: [
                 { name: "Nút 1", dist: 0, z: z1, H: H1, p: p1 },
@@ -441,11 +434,11 @@
         const ctx = canvas.getContext('2d');
 
         canvas.width = canvas.parentElement.clientWidth - 20;
-        canvas.height = 380; // Tăng chiều cao để vẽ thêm thanh tổng hợp
+        canvas.height = 380;
 
         const W = canvas.width;
         const H = canvas.height;
-        const padL = 50, padR = 30, padT = 75, padB = 45; // Dành khoảng trống 75px phía trên cho Bar Tổng
+        const padL = 55, padR = 30, padT = 75, padB = 45;
 
         ctx.clearRect(0, 0, W, H);
 
@@ -461,38 +454,38 @@
         function getX(dist) { return padL + (dist / maxDist) * (W - padL - padR); }
         function getY(val) { return H - padB - ((val - minVal) / (maxVal - minVal)) * (H - padT - padB); }
 
-        // 1. Lưới ngang
-        ctx.strokeStyle = "#e0e0e0"; ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
+        // Lưới ngang
+        ctx.strokeStyle = "#f1f5f9"; ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
         for (let v = Math.floor(minVal); v <= maxVal; v += 10) {
             let y = getY(v);
             ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
-            ctx.fillStyle = "#777"; ctx.font = "10px sans-serif";
-            ctx.fillText(v + "m", 15, y + 3);
+            ctx.fillStyle = "#94a3b8"; ctx.font = "10px sans-serif";
+            ctx.fillText(v + "m", 20, y + 3);
         }
         ctx.setLineDash([]);
 
-        // 2. Địa hình Z
+        // Địa hình Z
         ctx.beginPath();
         ctx.moveTo(getX(nodes[0].dist), getY(nodes[0].z));
         for (let i = 1; i < nodes.length; i++) ctx.lineTo(getX(nodes[i].dist), getY(nodes[i].z));
         ctx.lineTo(getX(nodes[3].dist), H - padB);
         ctx.lineTo(getX(nodes[0].dist), H - padB);
         ctx.closePath();
-        ctx.fillStyle = "rgba(139, 195, 74, 0.25)"; ctx.fill();
+        ctx.fillStyle = "rgba(139, 195, 74, 0.22)"; ctx.fill();
 
         ctx.beginPath();
         ctx.moveTo(getX(nodes[0].dist), getY(nodes[0].z));
         for (let i = 1; i < nodes.length; i++) ctx.lineTo(getX(nodes[i].dist), getY(nodes[i].z));
-        ctx.strokeStyle = "#558b2f"; ctx.lineWidth = 3; ctx.stroke();
+        ctx.strokeStyle = "#4d7c0f"; ctx.lineWidth = 3; ctx.stroke();
 
-        // 3. Đường áp lực H
+        // Đường áp lực H
         ctx.beginPath();
         ctx.moveTo(getX(nodes[0].dist), getY(nodes[0].H));
         for (let i = 1; i < nodes.length; i++) ctx.lineTo(getX(nodes[i].dist), getY(nodes[i].H));
-        ctx.strokeStyle = "#0070c0"; ctx.lineWidth = 2.5; ctx.setLineDash([6, 4]); ctx.stroke();
+        ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 2.5; ctx.setLineDash([6, 4]); ctx.stroke();
         ctx.setLineDash([]);
 
-        // 4. HIỂN THỊ THÔNG SỐ TỪNG ĐOẠN TỰ ĐỘNG LÊN ĐỒ THỊ
+        // 1. THÔNG SỐ TỪNG ĐOẠN (ĐÃ BỎ KHUNG, CHỮ MÀU ĐỎ NỔI BẬT KHÔNG RỐI)
         for (let i = 0; i < 3; i++) {
             let xStart = getX(nodes[i].dist);
             let xEnd = getX(nodes[i+1].dist);
@@ -503,77 +496,67 @@
             let yHMid = (yHStart + yHEnd) / 2;
 
             let segInfo = segs[i];
-            let labelText = `Q=${segInfo.q.toFixed(1)}m³/h | v=${segInfo.v.toFixed(2)}m/s | hf=${segInfo.hf.toFixed(2)}m`;
+            let labelText = `Q = ${segInfo.q.toFixed(1)}m³/h | v = ${segInfo.v.toFixed(2)}m/s | hf = ${segInfo.hf.toFixed(2)}m`;
 
-            // Khung nhãn thông số từng đoạn
-            ctx.font = "bold 10px sans-serif";
-            let textWidth = ctx.measureText(labelText).width;
-
-            ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-            ctx.fillRect(xMid - textWidth/2 - 4, yHMid + 6, textWidth + 8, 16);
-            ctx.strokeStyle = "#0070c0"; ctx.lineWidth = 1;
-            ctx.strokeRect(xMid - textWidth/2 - 4, yHMid + 6, textWidth + 8, 16);
-
-            ctx.fillStyle = "#005a9e"; ctx.textAlign = "center";
-            ctx.fillText(labelText, xMid, yHMid + 18);
+            ctx.font = "bold 11px sans-serif";
+            ctx.fillStyle = "#d83b01"; // Màu đỏ dễ nhìn
+            ctx.textAlign = "center";
+            ctx.fillText(labelText, xMid, yHMid + 16);
         }
 
-        // 5. VẼ ĐƯỜNG TỔNG THỂ DỌC TUYẾN TRÊN CÙNG (TOP BAR)
+        // 2. ĐƯỜNG MŨI TÊN TỔNG TOÀN TUYẾN (BỎ KHUNG, ĐỔI MÀU ĐỎ ĐẰNG SAU)
         let topY = 22;
         let x0 = getX(0);
         let x3 = getX(nodes[3].dist);
 
-        // Mũi tên hai đầu
-        ctx.strokeStyle = "#0f5257"; ctx.lineWidth = 2;
+        ctx.strokeStyle = "#005a36"; ctx.lineWidth = 1.8;
         ctx.beginPath(); ctx.moveTo(x0, topY); ctx.lineTo(x3, topY); ctx.stroke();
         
-        // Mũi tên trái
-        ctx.beginPath(); ctx.moveTo(x0 + 6, topY - 4); ctx.lineTo(x0, topY); ctx.lineTo(x0 + 6, topY + 4); ctx.fillStyle = "#0f5257"; ctx.fill();
-        // Mũi tên phải
-        ctx.beginPath(); ctx.moveTo(x3 - 6, topY - 4); ctx.lineTo(x3, topY); ctx.lineTo(x3 - 6, topY + 4); ctx.fillStyle = "#0f5257"; ctx.fill();
+        // Mũi tên trái / phải
+        ctx.beginPath(); ctx.moveTo(x0 + 6, topY - 4); ctx.lineTo(x0, topY); ctx.lineTo(x0 + 6, topY + 4); ctx.fillStyle = "#005a36"; ctx.fill();
+        ctx.beginPath(); ctx.moveTo(x3 - 6, topY - 4); ctx.lineTo(x3, topY); ctx.lineTo(x3 - 6, topY + 4); ctx.fillStyle = "#005a36"; ctx.fill();
 
-        // Nhãn tổng quát
-        let totalLabel = `TỔNG TOÀN TUYẾN: L = ${data.totalLengthKm.toFixed(1)} km | Q = ${data.totalQ.toFixed(1)} m³/h | Hf = ${data.totalHf.toFixed(2)} m`;
-        ctx.font = "bold 11px sans-serif";
-        let totalWidth = ctx.measureText(totalLabel).width;
+        // Chữ nhãn Tổng không bo khung
+        let totalText = `TỔNG TOÀN TUYẾN: L = ${data.totalLengthKm.toFixed(1)} km | Q = ${data.totalQ.toFixed(1)} m³/h | Hf = ${data.totalHf.toFixed(2)} m`;
+        ctx.font = "bold 11.5px sans-serif";
+        let totalWidth = ctx.measureText(totalText).width;
 
+        // Xóa nền đằng sau chữ để chữ nằm đè lên đường kẻ đẹp mắt
         ctx.fillStyle = "#ffffff";
-        ctx.fillRect((x0 + x3)/2 - totalWidth/2 - 6, topY - 10, totalWidth + 12, 20);
-        ctx.strokeStyle = "#107c41"; ctx.lineWidth = 1.5;
-        ctx.strokeRect((x0 + x3)/2 - totalWidth/2 - 6, topY - 10, totalWidth + 12, 20);
+        ctx.fillRect((x0 + x3)/2 - totalWidth/2 - 4, topY - 8, totalWidth + 8, 16);
 
-        ctx.fillStyle = "#107c41"; ctx.textAlign = "center";
-        ctx.fillText(totalLabel, (x0 + x3)/2, topY + 4);
+        ctx.fillStyle = "#d83b01"; ctx.textAlign = "center";
+        ctx.fillText(totalText, (x0 + x3)/2, topY + 4);
 
-        // 6. Điểm Nút & Áp lực
+        // Nút & Áp lực
         nodes.forEach((n) => {
             let x = getX(n.dist);
             let yZ = getY(n.z);
             let yH = getY(n.H);
 
             ctx.beginPath(); ctx.moveTo(x, yZ); ctx.lineTo(x, yH);
-            ctx.strokeStyle = n.p < 0 ? "#d83b01" : "#a6c8e0"; ctx.lineWidth = 1.5; ctx.stroke();
+            ctx.strokeStyle = n.p < 0 ? "#dc2626" : "#cbd5e1"; ctx.lineWidth = 1.5; ctx.stroke();
 
-            ctx.beginPath(); ctx.arc(x, yZ, 5, 0, Math.PI * 2); ctx.fillStyle = "#2e7d32"; ctx.fill();
-            ctx.beginPath(); ctx.arc(x, yH, 4, 0, Math.PI * 2); ctx.fillStyle = "#005a9e"; ctx.fill();
+            ctx.beginPath(); ctx.arc(x, yZ, 5, 0, Math.PI * 2); ctx.fillStyle = "#15803d"; ctx.fill();
+            ctx.beginPath(); ctx.arc(x, yH, 4, 0, Math.PI * 2); ctx.fillStyle = "#0284c7"; ctx.fill();
 
-            ctx.fillStyle = "#111"; ctx.font = "bold 11px sans-serif"; ctx.textAlign = "center";
+            ctx.fillStyle = "#0f172a"; ctx.font = "bold 11px sans-serif"; ctx.textAlign = "center";
             ctx.fillText(n.name, x, H - padB + 16);
-            ctx.font = "10px sans-serif"; ctx.fillStyle = "#555";
+            ctx.font = "10px sans-serif"; ctx.fillStyle = "#64748b";
             ctx.fillText(`Z=${n.z}m`, x, H - padB + 30);
 
-            ctx.fillStyle = n.p < 0 ? "#d83b01" : "#0070c0"; ctx.font = "bold 11px sans-serif";
+            ctx.fillStyle = n.p < 0 ? "#dc2626" : "#0284c7"; ctx.font = "bold 11px sans-serif";
             ctx.fillText(`P=${n.p.toFixed(1)}m`, x, yH - 8);
         });
 
         // Chú thích
-        ctx.fillStyle = "#558b2f"; ctx.fillRect(padL + 10, 48, 14, 8);
-        ctx.fillStyle = "#333"; ctx.font = "11px sans-serif"; ctx.textAlign = "left";
+        ctx.fillStyle = "#4d7c0f"; ctx.fillRect(padL + 10, 48, 14, 8);
+        ctx.fillStyle = "#334155"; ctx.font = "11px sans-serif"; ctx.textAlign = "left";
         ctx.fillText("Cao độ Z (m)", padL + 30, 55);
 
-        ctx.strokeStyle = "#0070c0"; ctx.lineWidth = 2; ctx.setLineDash([4, 3]);
+        ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 2; ctx.setLineDash([4, 3]);
         ctx.beginPath(); ctx.moveTo(padL + 130, 52); ctx.lineTo(padL + 150, 52); ctx.stroke(); ctx.setLineDash([]);
-        ctx.fillStyle = "#333"; ctx.fillText("Đường áp lực H (m)", padL + 158, 55);
+        ctx.fillStyle = "#334155"; ctx.fillText("Đường áp lực H (m)", padL + 158, 55);
     }
 
     window.onload = function() {
