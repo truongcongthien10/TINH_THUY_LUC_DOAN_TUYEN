@@ -18,7 +18,7 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg-color); color: var(--text-dark); padding: 15px; }
-        .container { max-width: 1040px; margin: 0 auto; background: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--border-color); }
+        .container { max-width: 1080px; margin: 0 auto; background: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--border-color); }
         .header-bar { background: var(--excel-green); color: #fff; text-align: center; padding: 14px 10px; font-size: 1.15rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
         .content { padding: 15px 20px; }
 
@@ -34,24 +34,25 @@
         .warn-green { background: #f0fdf4; border-left: 4px solid #16a34a; color: #166534; }
 
         .diagram-wrapper { position: relative; width: 100%; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; margin-top: 10px; }
-        canvas { width: 100%; height: 410px; background: #ffffff; display: block; }
+        canvas { width: 100%; height: 420px; background: #ffffff; display: block; }
 
-        .inputs-overlay { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; padding-top: 10px; border-top: 1px dashed #cbd5e1; }
-        .seg-input-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; }
-        .seg-input-header { font-size: 0.85rem; font-weight: bold; color: #005a36; margin-bottom: 8px; text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; }
-        .node-input-header { font-size: 0.82rem; font-weight: bold; color: #b91c1c; margin: 10px 0 6px 0; text-align: center; border-top: 1px dashed #cbd5e1; border-bottom: 1px solid #e2e8f0; padding: 4px 0; }
+        /* CHIA THÀNH 4 CỘT ĐỘC LẬP TƯƠNG ỨNG 4 NÚT */
+        .inputs-overlay { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 12px; padding-top: 10px; border-top: 1px dashed #cbd5e1; }
+        .seg-input-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px; }
+        .seg-input-header { font-size: 0.82rem; font-weight: bold; color: #005a36; margin-bottom: 6px; text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 3px; }
+        .node-input-header { font-size: 0.8rem; font-weight: bold; color: #b91c1c; margin: 8px 0 6px 0; text-align: center; border-top: 1px dashed #cbd5e1; border-bottom: 1px solid #e2e8f0; padding: 3px 0; }
 
-        .input-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; font-size: 0.8rem; }
-        .input-row label { color: #334155; font-weight: 600; }
+        .input-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; font-size: 0.76rem; }
+        .input-row label { color: #334155; font-weight: 600; white-space: nowrap; }
         
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; }
 
-        .seg-input-card input, .seg-input-card select { width: 95px; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.82rem; text-align: center; outline: none; background: #fff; }
+        .seg-input-card input, .seg-input-card select { width: 72px; padding: 3px 4px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.78rem; text-align: center; outline: none; background: #fff; }
         .seg-input-card input:focus, .seg-input-card select:focus { border-color: #d97706; background: #fff9c4; }
 
-        .sub-info { font-size: 0.72rem; color: #166534; font-weight: 600; text-align: right; margin-top: -2px; margin-bottom: 4px; }
+        .sub-info { font-size: 0.7rem; color: #166534; font-weight: 600; text-align: right; margin-top: -2px; margin-bottom: 4px; }
 
         .btn-calc { width: 100%; background: #0284c7; color: #fff; border: none; padding: 12px; font-size: 1rem; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 12px; text-transform: uppercase; }
         .btn-calc:hover { background: #0369a1; }
@@ -69,7 +70,7 @@
         <div class="section-title">
             <span>I. Kết quả Thủy lực Tổng thể</span>
             <span style="font-weight: normal; font-size: 0.82rem; color: #334155; text-transform: none;">
-                Hệ số K<sub>giờ</sub>: <input type="number" id="k_gio" value="1.4" step="0.05" style="width:55px; height:24px; padding:2px; text-align:center;" onchange="calculateProfile()">
+                Hệ số K<sub>giờ</sub>: <input type="number" id="k_gio" value="1.4" step="0.05" style="width:50px; height:24px; padding:2px; text-align:center;" onchange="calculateProfile()">
             </span>
         </div>
 
@@ -90,14 +91,14 @@
 
         <div id="warn_box" class="warning-box"></div>
 
-        <!-- II. SƠ ĐỒ TRẮC DỌC & NHẬP LIỆU -->
-        <div class="section-title">II. Sơ đồ Trắc dọc & Nhập dữ liệu phân đoạn</div>
+        <!-- II. SƠ ĐỒ TRẮC DỌC & NHẬP LIỆU BỐN CỘT TÁCH BIỆT -->
+        <div class="section-title">II. Sơ đồ Trắc dọc & Nhập dữ liệu phân đoạn (4 Cột)</div>
         
         <div class="diagram-wrapper">
             <canvas id="profileCanvas"></canvas>
 
             <div class="inputs-overlay">
-                <!-- THÔNG SỐ ĐOẠN 1-2 & NÚT 1 -->
+                <!-- CỘT 1: ĐOẠN 1-2 & NÚT 1 -->
                 <div class="seg-input-card">
                     <div class="seg-input-header">ĐOẠN 1 - 2</div>
                     <div class="input-row"><label>Chiều dài L (m):</label><input type="number" id="l12" value="10000" onchange="calculateProfile()"></div>
@@ -120,12 +121,12 @@
                     <div class="input-row"><label>Cỡ ống (DN):</label><select id="dn12" onchange="calculateProfile()"></select></div>
                     <div class="sub-info" id="sub12">D<sub>in</sub>: - mm</div>
 
-                    <div class="node-input-header">NHẬP DỮ LIỆU NÚT 1</div>
-                    <div class="input-row"><label>Z<sub>Nút 1</sub> điểm đầu (m):</label><input type="number" id="z1" value="5.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Áp lực nguồn P<sub>1</sub> (m):</label><input type="number" id="p1_avail" value="42.0" onchange="calculateProfile()"></div>
+                    <div class="node-input-header">DỮ LIỆU NÚT 1</div>
+                    <div class="input-row"><label>Z<sub>1</sub> điểm đầu (m):</label><input type="number" id="z1" value="5.0" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Áp lực P<sub>1</sub> (m):</label><input type="number" id="p1_avail" value="42.0" onchange="calculateProfile()"></div>
                 </div>
 
-                <!-- THÔNG SỐ ĐOẠN 2-3 & NÚT 2 -->
+                <!-- CỘT 2: ĐOẠN 2-3 & NÚT 2 -->
                 <div class="seg-input-card">
                     <div class="seg-input-header">ĐOẠN 2 - 3</div>
                     <div class="input-row"><label>Chiều dài L (m):</label><input type="number" id="l23" value="5000" onchange="calculateProfile()"></div>
@@ -148,12 +149,12 @@
                     <div class="input-row"><label>Cỡ ống (DN):</label><select id="dn23" onchange="calculateProfile()"></select></div>
                     <div class="sub-info" id="sub23">D<sub>in</sub>: - mm</div>
 
-                    <div class="node-input-header">NHẬP DỮ LIỆU NÚT 2</div>
-                    <div class="input-row"><label>Z<sub>Nút 2</sub> (m):</label><input type="number" id="z2" value="22.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>rút Nút 2</sub> (m³/ngđ):</label><input type="number" id="q_out2" value="0" onchange="calculateProfile()"></div>
+                    <div class="node-input-header">DỮ LIỆU NÚT 2</div>
+                    <div class="input-row"><label>Z<sub>2</sub> (m):</label><input type="number" id="z2" value="22.0" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Q<sub>rút 2</sub> (m³/ngđ):</label><input type="number" id="q_out2" value="0" onchange="calculateProfile()"></div>
                 </div>
 
-                <!-- THÔNG SỐ ĐOẠN 3-4 & NÚT 3, NÚT 4 -->
+                <!-- CỘT 3: ĐOẠN 3-4 & NÚT 3 -->
                 <div class="seg-input-card">
                     <div class="seg-input-header">ĐOẠN 3 - 4</div>
                     <div class="input-row"><label>Chiều dài L (m):</label><input type="number" id="l34" value="10000" onchange="calculateProfile()"></div>
@@ -176,11 +177,19 @@
                     <div class="input-row"><label>Cỡ ống (DN):</label><select id="dn34" onchange="calculateProfile()"></select></div>
                     <div class="sub-info" id="sub34">D<sub>in</sub>: - mm</div>
 
-                    <div class="node-input-header">NHẬP DỮ LIỆU NÚT 3 & 4</div>
-                    <div class="input-row"><label>Z<sub>Nút 3</sub> (m):</label><input type="number" id="z3" value="3.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>rút Nút 3</sub> (m³/ngđ):</label><input type="number" id="q_out3" value="0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Z<sub>Nút 4</sub> điểm cuối (m):</label><input type="number" id="z4" value="3.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>rút Nút 4</sub> (m³/ngđ):</label><input type="number" id="q_out4" value="10000" onchange="calculateProfile()"></div>
+                    <div class="node-input-header">DỮ LIỆU NÚT 3</div>
+                    <div class="input-row"><label>Z<sub>3</sub> (m):</label><input type="number" id="z3" value="3.0" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Q<sub>rút 3</sub> (m³/ngđ):</label><input type="number" id="q_out3" value="0" onchange="calculateProfile()"></div>
+                </div>
+
+                <!-- CỘT 4: NÚT 4 (ĐIỂM CUỐI) TÁCH BIỆT RIÊNG THÀNH 4 CỘT -->
+                <div class="seg-input-card" style="background: #f0fdf4; border-color: #bbf7d0;">
+                    <div class="seg-input-header" style="color: #15803d; border-bottom-color: #bbf7d0;">ĐIỂM CUỐI TUYẾN</div>
+                    <p style="font-size: 0.72rem; color: #475569; text-align: center; margin-bottom: 8px;">Dữ liệu điểm xả/nút cuối toàn tuyến</p>
+
+                    <div class="node-input-header" style="margin-top: 2px;">DỮ LIỆU NÚT 4</div>
+                    <div class="input-row"><label>Z<sub>4</sub> điểm cuối (m):</label><input type="number" id="z4" value="3.0" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Q<sub>rút 4</sub> (m³/ngđ):</label><input type="number" id="q_out4" value="10000" onchange="calculateProfile()"></div>
                 </div>
             </div>
 
@@ -342,10 +351,10 @@
 
         drawProfileCanvas({
             nodes: [
-                { name: "Nút 1", dist: 0, z: z1, H: H1, p: p1, qOutNgd: 0 },
-                { name: "Nút 2", dist: l12, z: z2, H: H2, p: p2, qOutNgd: qOut2Ngd },
-                { name: "Nút 3", dist: l12 + l23, z: z3, H: H3, p: p3, qOutNgd: qOut3Ngd },
-                { name: "Nút 4", dist: l12 + l23 + l34, z: z4, H: H4, p: p4, qOutNgd: qOut4Ngd }
+                { id: "1", label: "Điểm đầu", dist: 0, z: z1, H: H1, p: p1, qOutNgd: 0 },
+                { id: "2", label: "", dist: l12, z: z2, H: H2, p: p2, qOutNgd: qOut2Ngd },
+                { id: "3", label: "", dist: l12 + l23, z: z3, H: H3, p: p3, qOutNgd: qOut3Ngd },
+                { id: "4", label: "Điểm cuối", dist: l12 + l23 + l34, z: z4, H: H4, p: p4, qOutNgd: qOut4Ngd }
             ],
             segments: [
                 { q: q12, v: v12, hf: hf12 },
@@ -363,11 +372,11 @@
         const ctx = canvas.getContext('2d');
 
         canvas.width = canvas.parentElement.clientWidth;
-        canvas.height = 410;
+        canvas.height = 420;
 
         const W = canvas.width;
         const H = canvas.height;
-        const padL = 55, padR = 30, padT = 75, padB = 70;
+        const padL = 55, padR = 30, padT = 75, padB = 75;
 
         ctx.clearRect(0, 0, W, H);
 
@@ -414,7 +423,7 @@
         ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 2.5; ctx.setLineDash([6, 4]); ctx.stroke();
         ctx.setLineDash([]);
 
-        // THÔNG SỐ CÁC ĐOẠN ỐNG
+        // THÔNG SỐ CÁC ĐOẠN ỐNG (HỞ CÁCH ĐƯỜNG NÉT ĐỨT NÊN ĐƯỢC CĂN XUỐNG THOÁNG MẮT)
         for (let i = 0; i < 3; i++) {
             let xMid = (getX(nodes[i].dist) + getX(nodes[i+1].dist)) / 2;
             let yHMid = (getY(nodes[i].H) + getY(nodes[i+1].H)) / 2;
@@ -423,12 +432,13 @@
             ctx.font = "bold 11px sans-serif";
             ctx.textAlign = "center";
 
-            ctx.fillStyle = "#005a9e"; ctx.fillText(`Q = ${segInfo.q.toFixed(1)} m³/h`, xMid, yHMid + 14);
-            ctx.fillStyle = "#15803d"; ctx.fillText(`v = ${segInfo.v.toFixed(2)} m/s`, xMid, yHMid + 28);
-            ctx.fillStyle = "#b91c1c"; ctx.fillText(`hf = ${segInfo.hf.toFixed(2)} m`, xMid, yHMid + 42);
+            // Cách đường nét đứt một khoảng +22px để không bị chạm
+            ctx.fillStyle = "#005a9e"; ctx.fillText(`Q = ${segInfo.q.toFixed(1)} m³/h`, xMid, yHMid + 22);
+            ctx.fillStyle = "#15803d"; ctx.fillText(`v = ${segInfo.v.toFixed(2)} m/s`, xMid, yHMid + 36);
+            ctx.fillStyle = "#b91c1c"; ctx.fillText(`hf = ${segInfo.hf.toFixed(2)} m`, xMid, yHMid + 50);
         }
 
-        // ĐƯỜNG TỔNG TOÀN TUYẾN (NẾT XÁM CHUẨN EXCEL)
+        // ĐƯỜNG TỔNG TOÀN TUYẾN
         let topY = 22;
         let x0 = getX(0);
         let x3 = getX(nodes[3].dist);
@@ -449,35 +459,48 @@
         ctx.fillStyle = "#b91c1c"; ctx.textAlign = "center";
         ctx.fillText(totalText, (x0 + x3)/2, topY + 4);
 
-        // HIỂN THỊ NÚT VÀ ĐƯỜNG NỐI XÁM MẢNH ĐƯỢC BỔ SUNG ĐẦY ĐỦ
+        // VẼ KÝ HIỆU VÒNG TRÒN BAO QUANH SỐ ĐIỂM NÚT (①, ②, ③, ④) KÈM NHÃN "ĐIỂM ĐẦU / ĐIỂM CUỐI"
         nodes.forEach((n) => {
             let x = getX(n.dist);
             let yZ = getY(n.z);
             let yH = getY(n.H);
 
-            // Đường nối dóng từ H xuống Z
+            // Đường dóng từ H xuống Z
             ctx.beginPath(); ctx.moveTo(x, yZ); ctx.lineTo(x, yH);
             ctx.strokeStyle = n.p < 0 ? "#dc2626" : "#cbd5e1"; ctx.lineWidth = 1.5; ctx.stroke();
 
-            // Chấm tròn đỏ tại Nút trên mặt đất
+            // Chấm tròn đỏ tại Nút
             ctx.beginPath(); ctx.arc(x, yZ, 5, 0, Math.PI * 2); ctx.fillStyle = "#dc2626"; ctx.fill();
             ctx.beginPath(); ctx.arc(x, yH, 4, 0, Math.PI * 2); ctx.fillStyle = "#0284c7"; ctx.fill();
 
-            // Tên Nút
-            ctx.fillStyle = "#0f172a"; ctx.font = "bold 11px sans-serif"; ctx.textAlign = "center";
-            ctx.fillText(n.name, x, H - padB + 16);
+            // Vòng tròn bao quanh số nút ①, ②, ③, ④
+            let circleY = H - padB + 18;
+            ctx.beginPath(); ctx.arc(x, circleY, 9, 0, Math.PI * 2);
+            ctx.fillStyle = "#ffffff"; ctx.fill();
+            ctx.strokeStyle = "#005a36"; ctx.lineWidth = 1.5; ctx.stroke();
 
-            // Đường dẫn xám mảnh kéo xuống thông số bên dưới
-            ctx.beginPath(); ctx.moveTo(x, yZ + 6); ctx.lineTo(x, H - padB + 22);
+            // Số khoanh tròn bên trong
+            ctx.fillStyle = "#005a36"; ctx.font = "bold 11px sans-serif"; ctx.textAlign = "center";
+            ctx.fillText(n.id, x, circleY + 4);
+
+            // Chữ "Điểm đầu" hoặc "Điểm cuối" ở dưới số
+            if (n.label) {
+                ctx.font = "10px sans-serif"; ctx.fillStyle = "#005a36";
+                ctx.fillText(n.label, x, circleY + 17);
+            }
+
+            // Đường dóng xám mảnh kéo xuống chỉ số
+            let lineStartY = n.label ? circleY + 22 : circleY + 12;
+            ctx.beginPath(); ctx.moveTo(x, lineStartY); ctx.lineTo(x, H - padB + 48);
             ctx.strokeStyle = "#94a3b8"; ctx.lineWidth = 1; ctx.setLineDash([2, 2]); ctx.stroke(); ctx.setLineDash([]);
 
-            // Chữ nhỏ thể hiện Z và Q_rút dưới nút
+            // Chữ nhỏ thể hiện Z và Q_rút
             ctx.font = "10px sans-serif"; ctx.fillStyle = "#475569";
-            ctx.fillText(`Z = ${n.z}m`, x, H - padB + 34);
+            ctx.fillText(`Z = ${n.z}m`, x, H - padB + 58);
 
             if (n.qOutNgd > 0) {
                 ctx.fillStyle = "#b91c1c";
-                ctx.fillText(`Q = ${n.qOutNgd}m³/ngđ`, x, H - padB + 48);
+                ctx.fillText(`Q = ${n.qOutNgd}m³/ngđ`, x, H - padB + 70);
             }
 
             // Áp lực P phía trên Nút
