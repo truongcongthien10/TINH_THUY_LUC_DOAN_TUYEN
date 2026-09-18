@@ -18,7 +18,7 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg-color); color: var(--text-dark); padding: 15px; }
-        .container { max-width: 1020px; margin: 0 auto; background: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--border-color); }
+        .container { max-width: 1040px; margin: 0 auto; background: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--border-color); }
         .header-bar { background: var(--excel-green); color: #fff; text-align: center; padding: 14px 10px; font-size: 1.15rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
         .content { padding: 15px 20px; }
 
@@ -34,12 +34,13 @@
         .warn-green { background: #f0fdf4; border-left: 4px solid #16a34a; color: #166534; }
 
         .diagram-wrapper { position: relative; width: 100%; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; margin-top: 10px; }
-        canvas { width: 100%; height: 380px; background: #ffffff; display: block; }
+        canvas { width: 100%; height: 410px; background: #ffffff; display: block; }
 
         .inputs-overlay { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; padding-top: 10px; border-top: 1px dashed #cbd5e1; }
         .seg-input-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; }
         .seg-input-header { font-size: 0.85rem; font-weight: bold; color: #005a36; margin-bottom: 8px; text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; }
-        
+        .node-input-header { font-size: 0.82rem; font-weight: bold; color: #b91c1c; margin: 10px 0 6px 0; text-align: center; border-top: 1px dashed #cbd5e1; border-bottom: 1px solid #e2e8f0; padding: 4px 0; }
+
         .input-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; font-size: 0.8rem; }
         .input-row label { color: #334155; font-weight: 600; }
         
@@ -90,13 +91,13 @@
         <div id="warn_box" class="warning-box"></div>
 
         <!-- II. SƠ ĐỒ TRẮC DỌC & NHẬP LIỆU -->
-        <div class="section-title">II. Sơ đồ Trắc dọc & Nhập dữ liệu tại đoạn tuyến</div>
+        <div class="section-title">II. Sơ đồ Trắc dọc & Nhập dữ liệu phân đoạn</div>
         
         <div class="diagram-wrapper">
             <canvas id="profileCanvas"></canvas>
 
             <div class="inputs-overlay">
-                <!-- ĐOẠN 1-2 -->
+                <!-- THÔNG SỐ ĐOẠN 1-2 & NÚT 1 -->
                 <div class="seg-input-card">
                     <div class="seg-input-header">ĐOẠN 1 - 2</div>
                     <div class="input-row"><label>Chiều dài L (m):</label><input type="number" id="l12" value="10000" onchange="calculateProfile()"></div>
@@ -118,11 +119,13 @@
                     </div>
                     <div class="input-row"><label>Cỡ ống (DN):</label><select id="dn12" onchange="calculateProfile()"></select></div>
                     <div class="sub-info" id="sub12">D<sub>in</sub>: - mm</div>
-                    <div class="input-row"><label>Z<sub>Nút 1</sub> (m):</label><input type="number" id="z1" value="5.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Áp lực P<sub>1</sub> (m):</label><input type="number" id="p1_avail" value="42.0" onchange="calculateProfile()"></div>
+
+                    <div class="node-input-header">NHẬP DỮ LIỆU NÚT 1</div>
+                    <div class="input-row"><label>Z<sub>Nút 1</sub> điểm đầu (m):</label><input type="number" id="z1" value="5.0" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Áp lực nguồn P<sub>1</sub> (m):</label><input type="number" id="p1_avail" value="42.0" onchange="calculateProfile()"></div>
                 </div>
 
-                <!-- ĐOẠN 2-3 -->
+                <!-- THÔNG SỐ ĐOẠN 2-3 & NÚT 2 -->
                 <div class="seg-input-card">
                     <div class="seg-input-header">ĐOẠN 2 - 3</div>
                     <div class="input-row"><label>Chiều dài L (m):</label><input type="number" id="l23" value="5000" onchange="calculateProfile()"></div>
@@ -144,11 +147,13 @@
                     </div>
                     <div class="input-row"><label>Cỡ ống (DN):</label><select id="dn23" onchange="calculateProfile()"></select></div>
                     <div class="sub-info" id="sub23">D<sub>in</sub>: - mm</div>
+
+                    <div class="node-input-header">NHẬP DỮ LIỆU NÚT 2</div>
                     <div class="input-row"><label>Z<sub>Nút 2</sub> (m):</label><input type="number" id="z2" value="22.0" onchange="calculateProfile()"></div>
                     <div class="input-row"><label>Q<sub>rút Nút 2</sub> (m³/ngđ):</label><input type="number" id="q_out2" value="0" onchange="calculateProfile()"></div>
                 </div>
 
-                <!-- ĐOẠN 3-4 -->
+                <!-- THÔNG SỐ ĐOẠN 3-4 & NÚT 3, NÚT 4 -->
                 <div class="seg-input-card">
                     <div class="seg-input-header">ĐOẠN 3 - 4</div>
                     <div class="input-row"><label>Chiều dài L (m):</label><input type="number" id="l34" value="10000" onchange="calculateProfile()"></div>
@@ -170,10 +175,12 @@
                     </div>
                     <div class="input-row"><label>Cỡ ống (DN):</label><select id="dn34" onchange="calculateProfile()"></select></div>
                     <div class="sub-info" id="sub34">D<sub>in</sub>: - mm</div>
+
+                    <div class="node-input-header">NHẬP DỮ LIỆU NÚT 3 & 4</div>
                     <div class="input-row"><label>Z<sub>Nút 3</sub> (m):</label><input type="number" id="z3" value="3.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>rút Nút 3</sub> (m³/ngđ):</label><input type="number" id="q_out3" value="2143" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Z<sub>Nút 4</sub> (m):</label><input type="number" id="z4" value="3.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>rút Nút 4</sub> (m³/ngđ):</label><input type="number" id="q_out4" value="5100" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Q<sub>rút Nút 3</sub> (m³/ngđ):</label><input type="number" id="q_out3" value="0" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Z<sub>Nút 4</sub> điểm cuối (m):</label><input type="number" id="z4" value="3.0" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Q<sub>rút Nút 4</sub> (m³/ngđ):</label><input type="number" id="q_out4" value="10000" onchange="calculateProfile()"></div>
                 </div>
             </div>
 
@@ -188,7 +195,6 @@
 </div>
 
 <script>
-    // CƠ SỞ DỮ LIỆU BỔ SUNG ĐẦY ĐỦ ĐƯỜNG KÍNH TRONG D_IN CHO GANG DẺO, HDPE, INOX TỰ TÍNH THEO PN10, PN12.5, PN16
     const RAW_SIZES = [50, 63, 75, 90, 110, 125, 140, 160, 180, 200, 225, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710, 800, 900, 1000, 1200];
 
     function getPipeDb(mat, pn) {
@@ -336,10 +342,10 @@
 
         drawProfileCanvas({
             nodes: [
-                { name: "Nút 1", dist: 0, z: z1, H: H1, p: p1 },
-                { name: "Nút 2", dist: l12, z: z2, H: H2, p: p2 },
-                { name: "Nút 3", dist: l12 + l23, z: z3, H: H3, p: p3 },
-                { name: "Nút 4", dist: l12 + l23 + l34, z: z4, H: H4, p: p4 }
+                { name: "Nút 1", dist: 0, z: z1, H: H1, p: p1, qOutNgd: 0 },
+                { name: "Nút 2", dist: l12, z: z2, H: H2, p: p2, qOutNgd: qOut2Ngd },
+                { name: "Nút 3", dist: l12 + l23, z: z3, H: H3, p: p3, qOutNgd: qOut3Ngd },
+                { name: "Nút 4", dist: l12 + l23 + l34, z: z4, H: H4, p: p4, qOutNgd: qOut4Ngd }
             ],
             segments: [
                 { q: q12, v: v12, hf: hf12 },
@@ -357,11 +363,11 @@
         const ctx = canvas.getContext('2d');
 
         canvas.width = canvas.parentElement.clientWidth;
-        canvas.height = 380;
+        canvas.height = 410;
 
         const W = canvas.width;
         const H = canvas.height;
-        const padL = 55, padR = 30, padT = 75, padB = 45;
+        const padL = 55, padR = 30, padT = 75, padB = 70;
 
         ctx.clearRect(0, 0, W, H);
 
@@ -408,30 +414,21 @@
         ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 2.5; ctx.setLineDash([6, 4]); ctx.stroke();
         ctx.setLineDash([]);
 
-        // 3 DÒNG THÔNG SỐ TRÊN TỪNG ĐOẠN - CÁC MÀU HÀI HÒA
+        // THÔNG SỐ CÁC ĐOẠN ỐNG
         for (let i = 0; i < 3; i++) {
             let xMid = (getX(nodes[i].dist) + getX(nodes[i+1].dist)) / 2;
             let yHMid = (getY(nodes[i].H) + getY(nodes[i+1].H)) / 2;
-
             let segInfo = segs[i];
 
             ctx.font = "bold 11px sans-serif";
             ctx.textAlign = "center";
 
-            // Dòng 1: Q (Xanh dương)
-            ctx.fillStyle = "#005a9e";
-            ctx.fillText(`Q = ${segInfo.q.toFixed(1)} m³/h`, xMid, yHMid + 14);
-
-            // Dòng 2: v (Xanh lá)
-            ctx.fillStyle = "#15803d";
-            ctx.fillText(`v = ${segInfo.v.toFixed(2)} m/s`, xMid, yHMid + 28);
-
-            // Dòng 3: hf (Đỏ đất)
-            ctx.fillStyle = "#b91c1c";
-            ctx.fillText(`hf = ${segInfo.hf.toFixed(2)} m`, xMid, yHMid + 42);
+            ctx.fillStyle = "#005a9e"; ctx.fillText(`Q = ${segInfo.q.toFixed(1)} m³/h`, xMid, yHMid + 14);
+            ctx.fillStyle = "#15803d"; ctx.fillText(`v = ${segInfo.v.toFixed(2)} m/s`, xMid, yHMid + 28);
+            ctx.fillStyle = "#b91c1c"; ctx.fillText(`hf = ${segInfo.hf.toFixed(2)} m`, xMid, yHMid + 42);
         }
 
-        // ĐƯỜNG TỔNG TOÀN TUYẾN - NẾT XÁM CHUẨN EXCEL (#94a3b8)
+        // ĐƯỜNG TỔNG TOÀN TUYẾN (NẾT XÁM CHUẨN EXCEL)
         let topY = 22;
         let x0 = getX(0);
         let x3 = getX(nodes[3].dist);
@@ -452,23 +449,38 @@
         ctx.fillStyle = "#b91c1c"; ctx.textAlign = "center";
         ctx.fillText(totalText, (x0 + x3)/2, topY + 4);
 
-        // Nút & Áp lực
+        // HIỂN THỊ NÚT VÀ ĐƯỜNG NỐI XÁM MẢNH ĐƯỢC BỔ SUNG ĐẦY ĐỦ
         nodes.forEach((n) => {
             let x = getX(n.dist);
             let yZ = getY(n.z);
             let yH = getY(n.H);
 
+            // Đường nối dóng từ H xuống Z
             ctx.beginPath(); ctx.moveTo(x, yZ); ctx.lineTo(x, yH);
             ctx.strokeStyle = n.p < 0 ? "#dc2626" : "#cbd5e1"; ctx.lineWidth = 1.5; ctx.stroke();
 
-            ctx.beginPath(); ctx.arc(x, yZ, 5, 0, Math.PI * 2); ctx.fillStyle = "#15803d"; ctx.fill();
+            // Chấm tròn đỏ tại Nút trên mặt đất
+            ctx.beginPath(); ctx.arc(x, yZ, 5, 0, Math.PI * 2); ctx.fillStyle = "#dc2626"; ctx.fill();
             ctx.beginPath(); ctx.arc(x, yH, 4, 0, Math.PI * 2); ctx.fillStyle = "#0284c7"; ctx.fill();
 
+            // Tên Nút
             ctx.fillStyle = "#0f172a"; ctx.font = "bold 11px sans-serif"; ctx.textAlign = "center";
             ctx.fillText(n.name, x, H - padB + 16);
-            ctx.font = "10px sans-serif"; ctx.fillStyle = "#64748b";
-            ctx.fillText(`Z=${n.z}m`, x, H - padB + 30);
 
+            // Đường dẫn xám mảnh kéo xuống thông số bên dưới
+            ctx.beginPath(); ctx.moveTo(x, yZ + 6); ctx.lineTo(x, H - padB + 22);
+            ctx.strokeStyle = "#94a3b8"; ctx.lineWidth = 1; ctx.setLineDash([2, 2]); ctx.stroke(); ctx.setLineDash([]);
+
+            // Chữ nhỏ thể hiện Z và Q_rút dưới nút
+            ctx.font = "10px sans-serif"; ctx.fillStyle = "#475569";
+            ctx.fillText(`Z = ${n.z}m`, x, H - padB + 34);
+
+            if (n.qOutNgd > 0) {
+                ctx.fillStyle = "#b91c1c";
+                ctx.fillText(`Q = ${n.qOutNgd}m³/ngđ`, x, H - padB + 48);
+            }
+
+            // Áp lực P phía trên Nút
             ctx.fillStyle = n.p < 0 ? "#dc2626" : "#0284c7"; ctx.font = "bold 11px sans-serif";
             ctx.fillText(`P=${n.p.toFixed(1)}m`, x, yH - 8);
         });
