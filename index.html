@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tính Toán Thủy Lực Tuyến Ống 4 Nút - HueWACO</title>
+    <title>Tính Toán Thủy Lực Tuyến Ống Phân Đoạn - HueWACO</title>
     <style>
         :root {
             --excel-green: #107c41;
@@ -28,15 +28,13 @@
         th, td { border: 1px solid var(--border-color); padding: 6px; text-align: center; }
         th { background: #f0f7f2; color: var(--section-title); font-weight: 700; }
         
-        /* Ẩn dấu tích mũi tên tăng giảm số */
+        /* Ẩn dấu nút mũi tên tăng giảm số */
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
-        input[type="number"] {
-            -moz-appearance: textfield;
-        }
+        input[type="number"] { -moz-appearance: textfield; }
 
         input, select { width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.85rem; text-align: center; outline: none; }
         input:focus, select:focus { border-color: var(--excel-green); background: #fffde6; }
@@ -86,13 +84,13 @@
                     <td>Đoạn 1</td>
                     <td><input type="number" id="z1" value="5.0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
                     <td><input type="number" id="q_out1" value="0" readonly style="background:#eee;"></td>
-                    <td><input type="number" id="p1_avail" value="35.0" step="any" onfocus="this.select()" title="Áp lực dư nguồn/bơm" onchange="calculateProfile()"></td>
+                    <td><input type="number" id="p1_avail" value="45.0" step="any" onfocus="this.select()" title="Áp lực dư nguồn/bơm" onchange="calculateProfile()"></td>
                 </tr>
                 <tr>
                     <td><b>Nút 2</b></td>
                     <td>Đoạn 2</td>
-                    <td><input type="number" id="z2" value="25.0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
-                    <td><input type="number" id="q_out2" value="10.0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
+                    <td><input type="number" id="z2" value="22.0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
+                    <td><input type="number" id="q_out2" value="0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
                     <td>
                         <div class="pyc-group">
                             <select id="pyc_type2" onchange="togglePyc(2)">
@@ -106,8 +104,8 @@
                 <tr>
                     <td><b>Nút 3</b></td>
                     <td>Đoạn 3</td>
-                    <td><input type="number" id="z3" value="12.0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
-                    <td><input type="number" id="q_out3" value="15.0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
+                    <td><input type="number" id="z3" value="3.0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
+                    <td><input type="number" id="q_out3" value="0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
                     <td>
                         <div class="pyc-group">
                             <select id="pyc_type3" onchange="togglePyc(3)">
@@ -121,15 +119,15 @@
                 <tr>
                     <td><b>Nút 4</b></td>
                     <td>Đoạn 4</td>
-                    <td><input type="number" id="z4" value="6.0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
-                    <td><input type="number" id="q_out4" value="50.0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
+                    <td><input type="number" id="z4" value="3.0" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
+                    <td><input type="number" id="q_out4" value="10000" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
                     <td>
                         <div class="pyc-group">
                             <select id="pyc_type4" onchange="togglePyc(4)">
                                 <option value="manual" selected>Tự nhập</option>
                                 <option value="none">Không yêu cầu</option>
                             </select>
-                            <input type="number" id="p4_req" value="10.0" step="any" onfocus="this.select()" onchange="calculateProfile()">
+                            <input type="number" id="p4_req" value="15.0" step="any" onfocus="this.select()" onchange="calculateProfile()">
                         </div>
                     </td>
                 </tr>
@@ -150,7 +148,7 @@
             <tbody>
                 <tr>
                     <td><b>Đoạn 1-2</b></td>
-                    <td><input type="number" id="l12" value="1200" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
+                    <td><input type="number" id="l12" value="10000" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
                     <td>
                         <select id="mat12" onchange="updatePipeList(1)">
                             <option value="hdpe" selected>HDPE (C=140)</option>
@@ -166,9 +164,9 @@
                     <td><input type="number" id="l23" value="800" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
                     <td>
                         <select id="mat23" onchange="updatePipeList(2)">
-                            <option value="hdpe" selected>HDPE (C=140)</option>
+                            <option value="hdpe">HDPE (C=140)</option>
                             <option value="pvc">uPVC (C=140)</option>
-                            <option value="ductile">Gang Dẻo (C=130)</option>
+                            <option value="ductile" selected>Gang Dẻo (C=130)</option>
                             <option value="inox">Inox (C=140)</option>
                         </select>
                     </td>
@@ -179,9 +177,9 @@
                     <td><input type="number" id="l34" value="1500" step="any" onfocus="this.select()" onchange="calculateProfile()"></td>
                     <td>
                         <select id="mat34" onchange="updatePipeList(3)">
-                            <option value="hdpe" selected>HDPE (C=140)</option>
+                            <option value="hdpe">HDPE (C=140)</option>
                             <option value="pvc">uPVC (C=140)</option>
-                            <option value="ductile">Gang Dẻo (C=130)</option>
+                            <option value="ductile" selected>Gang Dẻo (C=130)</option>
                             <option value="inox">Inox (C=140)</option>
                         </select>
                     </td>
@@ -225,30 +223,45 @@
 </div>
 
 <script>
-    // CƠ SỞ DỮ LIỆU ĐƯỜNG KÍNH THỰC TẾ (DN & ĐƯỜNG KÍNH TRONG Di)
+    // CƠ SỞ DỮ LIỆU ĐƯỜNG KÍNH ĐẦY ĐỦ CÁC CẤP ỐNG (DN & Di thực tế)
     const PIPE_DATABASE = {
         hdpe: [
-            { dn: 63, din: 55.4 }, { dn: 75, din: 66.0 }, { dn: 90, din: 79.2 },
-            { dn: 110, din: 96.8 }, { dn: 160, din: 141.0 }, { dn: 200, din: 176.2 },
-            { dn: 225, din: 198.2 }, { dn: 250, din: 220.4 }, { dn: 280, din: 246.8 },
-            { dn: 315, din: 277.6 }, { dn: 355, din: 312.8 }, { dn: 400, din: 352.6 },
-            { dn: 500, din: 440.6 }, { dn: 630, din: 555.2 }
+            { dn: 25, din: 22.0 }, { dn: 32, din: 28.2 }, { dn: 40, din: 35.2 },
+            { dn: 50, din: 44.0 }, { dn: 63, din: 55.4 }, { dn: 75, din: 66.0 },
+            { dn: 90, din: 79.2 }, { dn: 110, din: 96.8 }, { dn: 125, din: 110.2 },
+            { dn: 140, din: 123.4 }, { dn: 160, din: 141.0 }, { dn: 180, din: 158.6 },
+            { dn: 200, din: 176.2 }, { dn: 225, din: 198.2 }, { dn: 250, din: 220.4 },
+            { dn: 280, din: 246.8 }, { dn: 315, din: 277.6 }, { dn: 355, din: 312.8 },
+            { dn: 400, din: 352.6 }, { dn: 450, din: 396.6 }, { dn: 500, din: 440.6 },
+            { dn: 560, din: 493.6 }, { dn: 630, din: 555.2 }, { dn: 710, din: 625.8 },
+            { dn: 800, din: 705.2 }, { dn: 900, din: 793.4 }, { dn: 1000, din: 881.4 },
+            { dn: 1200, din: 1057.8 }
         ],
         pvc: [
-            { dn: 63, din: 59.4 }, { dn: 75, din: 69.2 }, { dn: 90, din: 83.0 },
-            { dn: 110, din: 101.6 }, { dn: 140, din: 129.2 }, { dn: 160, din: 147.6 },
-            { dn: 200, din: 184.6 }, { dn: 225, din: 207.8 }, { dn: 250, din: 230.8 },
-            { dn: 315, din: 290.8 }, { dn: 400, din: 369.4 }, { dn: 500, din: 461.8 }
+            { dn: 21, din: 18.6 }, { dn: 27, din: 24.4 }, { dn: 34, din: 31.0 },
+            { dn: 42, din: 38.0 }, { dn: 48, din: 44.2 }, { dn: 60, din: 55.4 },
+            { dn: 75, din: 69.2 }, { dn: 90, din: 83.0 }, { dn: 110, din: 101.6 },
+            { dn: 125, din: 115.4 }, { dn: 140, din: 129.2 }, { dn: 160, din: 147.6 },
+            { dn: 180, din: 166.2 }, { dn: 200, din: 184.6 }, { dn: 225, din: 207.8 },
+            { dn: 250, din: 230.8 }, { dn: 280, din: 258.6 }, { dn: 315, din: 290.8 },
+            { dn: 355, din: 327.8 }, { dn: 400, din: 369.4 }, { dn: 450, din: 415.6 },
+            { dn: 500, din: 461.8 }, { dn: 630, din: 581.8 }
         ],
         ductile: [
             { dn: 80, din: 86.0 }, { dn: 100, din: 106.0 }, { dn: 150, din: 158.0 },
             { dn: 200, din: 209.4 }, { dn: 250, din: 260.4 }, { dn: 300, din: 311.6 },
-            { dn: 350, din: 362.6 }, { dn: 400, din: 412.8 }, { dn: 500, din: 514.0 }
+            { dn: 350, din: 362.6 }, { dn: 400, din: 412.8 }, { dn: 450, din: 462.8 },
+            { dn: 500, din: 514.0 }, { dn: 600, din: 615.2 }, { dn: 700, din: 716.4 },
+            { dn: 800, din: 818.6 }, { dn: 900, din: 919.8 }, { dn: 1000, din: 1021.0 },
+            { dn: 1200, din: 1224.4 }
         ],
         inox: [
+            { dn: 15, din: 17.1 }, { dn: 20, din: 22.7 }, { dn: 25, din: 28.1 },
+            { dn: 32, din: 36.8 }, { dn: 40, din: 42.7 }, { dn: 50, din: 54.7 },
             { dn: 65, din: 70.1 }, { dn: 80, din: 82.9 }, { dn: 100, din: 108.3 },
             { dn: 125, din: 132.9 }, { dn: 150, din: 161.5 }, { dn: 200, din: 211.5 },
-            { dn: 250, din: 264.6 }, { dn: 300, din: 314.9 }, { dn: 400, din: 396.4 }
+            { dn: 250, din: 264.6 }, { dn: 300, din: 314.9 }, { dn: 350, din: 346.0 },
+            { dn: 400, din: 396.4 }, { dn: 450, din: 447.0 }, { dn: 500, din: 497.0 }
         ]
     };
 
@@ -276,9 +289,9 @@
         dnSelect.innerHTML = '';
         list.forEach(pipe => {
             const opt = document.createElement('option');
-            opt.value = pipe.din; // Lưu giá trị là đường kính trong Di để tính toán
+            opt.value = pipe.din; // Giá trị value là đường kính trong Di (mm) dùng để tính toán
             opt.textContent = `DN${pipe.dn}`;
-            if ((segIdx === 1 && pipe.dn === 250) || (segIdx === 2 && pipe.dn === 225) || (segIdx === 3 && pipe.dn === 200)) {
+            if ((segIdx === 1 && pipe.dn === 250) || (segIdx === 2 && pipe.dn === 500) || (segIdx === 3 && pipe.dn === 500)) {
                 opt.selected = true;
             }
             dnSelect.appendChild(opt);
@@ -288,7 +301,7 @@
         calculateProfile();
     }
 
-    // Hazen-Williams SI chuẩn hằng số 11.737 (dùng Di mét)
+    // Hazen-Williams SI chuẩn hằng số 11.737
     function calcHf(L, Q_m3h, C, Di_mm) {
         if (Q_m3h <= 0 || Di_mm <= 0 || L <= 0) return 0;
         const Q_m3s = Q_m3h / 3600;
@@ -320,17 +333,16 @@
         const c23 = MATERIAL_C[mat23] || 140;
         const c34 = MATERIAL_C[mat34] || 140;
 
-        // Lấy đường kính trong Di đã gán ẩn trong select DN
         const di12 = parseFloat(document.getElementById('dn12').value) || 1;
         const di23 = parseFloat(document.getElementById('dn23').value) || 1;
         const di34 = parseFloat(document.getElementById('dn34').value) || 1;
 
-        // Lưu lượng phân đoạn
+        // Lưu lượng từng đoạn
         const q34 = qOut4;
         const q23 = q34 + qOut3;
         const q12 = q23 + qOut2;
 
-        // Tổn thất áp lực
+        // Tổn thất áp lực dọc đường
         const hf12 = calcHf(l12, q12, c12, di12);
         const hf23 = calcHf(l23, q23, c23, di23);
         const hf34 = calcHf(l34, q34, c34, di34);
@@ -347,7 +359,7 @@
         const p3 = H3 - z3;
         const p4 = H4 - z4;
 
-        // Kết quả hiển thị
+        // Hiển thị kết quả
         document.getElementById('res_q12').innerText = q12.toFixed(1) + " m³/h";
         document.getElementById('res_q23').innerText = q23.toFixed(1) + " m³/h";
         document.getElementById('res_q34').innerText = q34.toFixed(1) + " m³/h";
@@ -358,7 +370,7 @@
         document.getElementById('res_p3').innerText = p3.toFixed(2) + " m";
         document.getElementById('res_p4').innerText = p4.toFixed(2) + " m";
 
-        // Đánh giá áp lực theo P_yc (nếu có yêu cầu)
+        // Đánh giá áp lực
         const warnBox = document.getElementById('warn_box');
         let minP = Math.min(p2, p3, p4);
         let warnMsg = [];
@@ -390,7 +402,7 @@
             warnBox.style.display = "block";
         }
 
-        // Vẽ trắc dọc
+        // Vẽ trắc dọc Canvas
         drawProfileCanvas({
             nodes: [
                 { name: "Nút 1", dist: 0, z: z1, H: H1, p: p1 },
