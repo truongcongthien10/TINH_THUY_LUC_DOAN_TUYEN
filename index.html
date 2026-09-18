@@ -12,13 +12,13 @@
             --card-bg: #ffffff;
             --border-color: #cbd5e1;
             --text-dark: #0f172a;
-            --text-red: #d83b01;
+            --text-red: #b91c1c;
             --accent-blue: #0284c7;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg-color); color: var(--text-dark); padding: 15px; }
-        .container { max-width: 1000px; margin: 0 auto; background: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--border-color); }
+        .container { max-width: 1020px; margin: 0 auto; background: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--border-color); }
         .header-bar { background: var(--excel-green); color: #fff; text-align: center; padding: 14px 10px; font-size: 1.15rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
         .content { padding: 15px 20px; }
 
@@ -33,26 +33,26 @@
         .warn-red { background: #fef2f2; border-left: 4px solid #dc2626; color: #991b1b; }
         .warn-green { background: #f0fdf4; border-left: 4px solid #16a34a; color: #166534; }
 
-        /* KHU VỰC ĐỒ THỊ TƯƠNG TÁC KÈM INPUT */
-        .diagram-wrapper { position: relative; width: 100%; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 10px 10px 25px 10px; margin-top: 10px; }
-        canvas { width: 100%; height: 360px; background: #ffffff; display: block; }
+        .diagram-wrapper { position: relative; width: 100%; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; margin-top: 10px; }
+        canvas { width: 100%; height: 380px; background: #ffffff; display: block; }
 
-        /* BẢNG BẢNG NHẬP THÔNG SỐ TẠI CHỖ TRÊN SƠ ĐỒ (INPUT OVERLAY) */
-        .inputs-overlay { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; padding-top: 10px; border-top: 1px dashed #e2e8f0; }
-        .seg-input-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 10px; }
-        .seg-input-header { font-size: 0.82rem; font-weight: bold; color: #005a36; margin-bottom: 6px; text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; }
+        .inputs-overlay { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; padding-top: 10px; border-top: 1px dashed #cbd5e1; }
+        .seg-input-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; }
+        .seg-input-header { font-size: 0.85rem; font-weight: bold; color: #005a36; margin-bottom: 8px; text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; }
         
-        .input-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; font-size: 0.78rem; }
-        .input-row label { color: #475569; font-weight: 600; }
+        .input-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; font-size: 0.8rem; }
+        .input-row label { color: #334155; font-weight: 600; }
         
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; }
 
-        .seg-input-card input, .seg-input-card select { width: 85px; padding: 3px 5px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.8rem; text-align: center; outline: none; background: #fff; }
+        .seg-input-card input, .seg-input-card select { width: 95px; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.82rem; text-align: center; outline: none; background: #fff; }
         .seg-input-card input:focus, .seg-input-card select:focus { border-color: #d97706; background: #fff9c4; }
 
-        .btn-calc { width: 100%; background: #0284c7; color: #fff; border: none; padding: 11px; font-size: 0.95rem; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 12px; text-transform: uppercase; }
+        .sub-info { font-size: 0.72rem; color: #166534; font-weight: 600; text-align: right; margin-top: -2px; margin-bottom: 4px; }
+
+        .btn-calc { width: 100%; background: #0284c7; color: #fff; border: none; padding: 12px; font-size: 1rem; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 12px; text-transform: uppercase; }
         .btn-calc:hover { background: #0369a1; }
 
         .footer { padding: 12px 20px; font-size: 0.8rem; color: #64748b; background: #fff; border-top: 1px solid var(--border-color); margin-top: 15px; display: flex; justify-content: space-between; }
@@ -64,11 +64,11 @@
     <div class="header-bar">Tính Toán Thủy Lực & Sơ Đồ Trắc Dọc Tương Tác</div>
     
     <div class="content">
-        <!-- III. KẾT QUẢ TỔNG THỂ -->
+        <!-- I. KẾT QUẢ TỔNG THỂ -->
         <div class="section-title">
             <span>I. Kết quả Thủy lực Tổng thể</span>
-            <span style="font-weight: normal; font-size: 0.8rem; color: #334155; text-transform: none;">
-                K<sub>giờ</sub>: <input type="number" id="k_gio" value="1.4" step="0.05" style="width:50px; height:24px; padding:2px; text-align:center;" onchange="calculateProfile()">
+            <span style="font-weight: normal; font-size: 0.82rem; color: #334155; text-transform: none;">
+                Hệ số K<sub>giờ</sub>: <input type="number" id="k_gio" value="1.4" step="0.05" style="width:55px; height:24px; padding:2px; text-align:center;" onchange="calculateProfile()">
             </span>
         </div>
 
@@ -83,19 +83,18 @@
             </div>
             <div class="result-card">
                 <div class="result-card-title">Tổng tổn thất H<sub>f</sub></div>
-                <div class="result-card-value" id="res_hf_total" style="color: #d83b01;">- m</div>
+                <div class="result-card-value" id="res_hf_total" style="color: #b91c1c;">- m</div>
             </div>
         </div>
 
         <div id="warn_box" class="warning-box"></div>
 
-        <!-- II. SƠ ĐỒ TRẮC DỌC VÀ BẢNG NHẬP TRỰC TIẾP TẠI NÚT/ĐOẠN -->
+        <!-- II. SƠ ĐỒ TRẮC DỌC & NHẬP LIỆU -->
         <div class="section-title">II. Sơ đồ Trắc dọc & Nhập dữ liệu tại đoạn tuyến</div>
         
         <div class="diagram-wrapper">
             <canvas id="profileCanvas"></canvas>
 
-            <!-- Ô NHẬP LIỆU GỌN GÀNG PHÍA DƯỚI ĐỒ THỊ BỔ TRỢ CHO CÁC PHÂN ĐOẠN -->
             <div class="inputs-overlay">
                 <!-- ĐOẠN 1-2 -->
                 <div class="seg-input-card">
@@ -104,14 +103,23 @@
                     <div class="input-row">
                         <label>Vật liệu:</label>
                         <select id="mat12" onchange="updatePipeList(1)">
-                            <option value="hdpe">HDPE</option>
-                            <option value="pvc">uPVC</option>
                             <option value="ductile" selected>Gang Dẻo</option>
+                            <option value="hdpe">HDPE</option>
+                            <option value="inox">Inox</option>
+                        </select>
+                    </div>
+                    <div class="input-row">
+                        <label>Áp lực PN:</label>
+                        <select id="pn12" onchange="updatePipeList(1)">
+                            <option value="PN10" selected>PN10</option>
+                            <option value="PN12.5">PN12.5</option>
+                            <option value="PN16">PN16</option>
                         </select>
                     </div>
                     <div class="input-row"><label>Cỡ ống (DN):</label><select id="dn12" onchange="calculateProfile()"></select></div>
-                    <div class="input-row"><label>Z điểm đầu Nút 1 (m):</label><input type="number" id="z1" value="5.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Áp lực Nút 1 P1 (m):</label><input type="number" id="p1_avail" value="42.0" onchange="calculateProfile()"></div>
+                    <div class="sub-info" id="sub12">D<sub>in</sub>: - mm</div>
+                    <div class="input-row"><label>Z<sub>Nút 1</sub> (m):</label><input type="number" id="z1" value="5.0" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Áp lực P<sub>1</sub> (m):</label><input type="number" id="p1_avail" value="42.0" onchange="calculateProfile()"></div>
                 </div>
 
                 <!-- ĐOẠN 2-3 -->
@@ -121,14 +129,23 @@
                     <div class="input-row">
                         <label>Vật liệu:</label>
                         <select id="mat23" onchange="updatePipeList(2)">
-                            <option value="hdpe">HDPE</option>
-                            <option value="pvc">uPVC</option>
                             <option value="ductile" selected>Gang Dẻo</option>
+                            <option value="hdpe">HDPE</option>
+                            <option value="inox">Inox</option>
+                        </select>
+                    </div>
+                    <div class="input-row">
+                        <label>Áp lực PN:</label>
+                        <select id="pn23" onchange="updatePipeList(2)">
+                            <option value="PN10" selected>PN10</option>
+                            <option value="PN12.5">PN12.5</option>
+                            <option value="PN16">PN16</option>
                         </select>
                     </div>
                     <div class="input-row"><label>Cỡ ống (DN):</label><select id="dn23" onchange="calculateProfile()"></select></div>
-                    <div class="input-row"><label>Z Nút 2 (m):</label><input type="number" id="z2" value="22.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>rút</sub> Nút 2 (m³/ngđ):</label><input type="number" id="q_out2" value="0" onchange="calculateProfile()"></div>
+                    <div class="sub-info" id="sub23">D<sub>in</sub>: - mm</div>
+                    <div class="input-row"><label>Z<sub>Nút 2</sub> (m):</label><input type="number" id="z2" value="22.0" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Q<sub>rút Nút 2</sub> (m³/ngđ):</label><input type="number" id="q_out2" value="0" onchange="calculateProfile()"></div>
                 </div>
 
                 <!-- ĐOẠN 3-4 -->
@@ -138,16 +155,25 @@
                     <div class="input-row">
                         <label>Vật liệu:</label>
                         <select id="mat34" onchange="updatePipeList(3)">
-                            <option value="hdpe">HDPE</option>
-                            <option value="pvc">uPVC</option>
                             <option value="ductile" selected>Gang Dẻo</option>
+                            <option value="hdpe">HDPE</option>
+                            <option value="inox">Inox</option>
+                        </select>
+                    </div>
+                    <div class="input-row">
+                        <label>Áp lực PN:</label>
+                        <select id="pn34" onchange="updatePipeList(3)">
+                            <option value="PN10" selected>PN10</option>
+                            <option value="PN12.5">PN12.5</option>
+                            <option value="PN16">PN16</option>
                         </select>
                     </div>
                     <div class="input-row"><label>Cỡ ống (DN):</label><select id="dn34" onchange="calculateProfile()"></select></div>
-                    <div class="input-row"><label>Z Nút 3 (m):</label><input type="number" id="z3" value="3.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>rút</sub> Nút 3 (m³/ngđ):</label><input type="number" id="q_out3" value="2143" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Z Nút 4 (m):</label><input type="number" id="z4" value="3.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>rút</sub> Nút 4 (m³/ngđ):</label><input type="number" id="q_out4" value="5100" onchange="calculateProfile()"></div>
+                    <div class="sub-info" id="sub34">D<sub>in</sub>: - mm</div>
+                    <div class="input-row"><label>Z<sub>Nút 3</sub> (m):</label><input type="number" id="z3" value="3.0" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Q<sub>rút Nút 3</sub> (m³/ngđ):</label><input type="number" id="q_out3" value="2143" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Z<sub>Nút 4</sub> (m):</label><input type="number" id="z4" value="3.0" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Q<sub>rút Nút 4</sub> (m³/ngđ):</label><input type="number" id="q_out4" value="5100" onchange="calculateProfile()"></div>
                 </div>
             </div>
 
@@ -162,19 +188,44 @@
 </div>
 
 <script>
-    const PIPE_DATABASE = {
-        hdpe: [{ dn: 110, din: 96.8 }, { dn: 160, din: 141.0 }, { dn: 200, din: 176.2 }, { dn: 225, din: 198.2 }, { dn: 250, din: 220.4 }, { dn: 315, din: 277.6 }, { dn: 400, din: 352.6 }, { dn: 500, din: 440.6 }],
-        pvc: [{ dn: 110, din: 101.6 }, { dn: 160, din: 147.6 }, { dn: 200, din: 184.6 }, { dn: 225, din: 207.8 }, { dn: 250, din: 230.8 }, { dn: 315, din: 290.8 }, { dn: 400, din: 369.4 }, { dn: 500, din: 461.8 }],
-        ductile: [{ dn: 100, din: 106.0 }, { dn: 150, din: 158.0 }, { dn: 200, din: 209.4 }, { dn: 250, din: 260.4 }, { dn: 300, din: 311.6 }, { dn: 350, din: 362.6 }, { dn: 400, din: 412.8 }, { dn: 500, din: 514.0 }]
-    };
+    // CƠ SỞ DỮ LIỆU BỔ SUNG ĐẦY ĐỦ ĐƯỜNG KÍNH TRONG D_IN CHO GANG DẺO, HDPE, INOX TỰ TÍNH THEO PN10, PN12.5, PN16
+    const RAW_SIZES = [50, 63, 75, 90, 110, 125, 140, 160, 180, 200, 225, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710, 800, 900, 1000, 1200];
 
-    const MATERIAL_C = { hdpe: 140, pvc: 140, ductile: 130 };
+    function getPipeDb(mat, pn) {
+        let list = [];
+        RAW_SIZES.forEach(dn => {
+            let din = dn;
+            if (mat === 'hdpe') {
+                let sdr = pn === 'PN10' ? 17 : pn === 'PN12.5' ? 13.6 : 11;
+                let wall = dn / sdr;
+                din = dn - 2 * wall;
+            } else if (mat === 'ductile') {
+                if (dn >= 80) {
+                    let wall = pn === 'PN10' ? 6.0 : pn === 'PN12.5' ? 6.5 : 7.0;
+                    din = dn * 1.06 - 2 * wall; 
+                } else {
+                    return;
+                }
+            } else if (mat === 'inox') {
+                let wall = pn === 'PN10' ? 3.0 : pn === 'PN12.5' ? 4.0 : 5.0;
+                din = dn - 2 * wall;
+            }
+            if (din > 0) {
+                list.push({ dn: dn, din: parseFloat(din.toFixed(1)) });
+            }
+        });
+        return list;
+    }
+
+    const MATERIAL_C = { hdpe: 140, ductile: 130, inox: 140 };
 
     function updatePipeList(segIdx) {
         const segStr = segIdx === 1 ? '12' : segIdx === 2 ? '23' : '34';
         const mat = document.getElementById(`mat${segStr}`).value;
+        const pn = document.getElementById(`pn${segStr}`).value;
         const dnSelect = document.getElementById(`dn${segStr}`);
-        const list = PIPE_DATABASE[mat] || [];
+        
+        const list = getPipeDb(mat, pn);
 
         dnSelect.innerHTML = '';
         list.forEach(pipe => {
@@ -185,7 +236,7 @@
             dnSelect.appendChild(opt);
         });
 
-        if (!dnSelect.value && list.length > 0) dnSelect.selectedIndex = 0;
+        if (!dnSelect.value && list.length > 0) dnSelect.selectedIndex = Math.min(5, list.length - 1);
         calculateProfile();
     }
 
@@ -204,6 +255,11 @@
     }
 
     function calculateProfile() {
+        ['12', '23', '34'].forEach(s => {
+            const dinVal = parseFloat(document.getElementById(`dn${s}`).value) || 0;
+            document.getElementById(`sub${s}`).innerHTML = `D<sub>in</sub>: <b>${dinVal.toFixed(1)}</b> mm`;
+        });
+
         const z1 = parseFloat(document.getElementById('z1').value) || 0;
         const z2 = parseFloat(document.getElementById('z2').value) || 0;
         const z3 = parseFloat(document.getElementById('z3').value) || 0;
@@ -301,11 +357,11 @@
         const ctx = canvas.getContext('2d');
 
         canvas.width = canvas.parentElement.clientWidth;
-        canvas.height = 360;
+        canvas.height = 380;
 
         const W = canvas.width;
         const H = canvas.height;
-        const padL = 55, padR = 30, padT = 70, padB = 45;
+        const padL = 55, padR = 30, padT = 75, padB = 45;
 
         ctx.clearRect(0, 0, W, H);
 
@@ -352,33 +408,40 @@
         ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 2.5; ctx.setLineDash([6, 4]); ctx.stroke();
         ctx.setLineDash([]);
 
-        // 1. CHỮ THÔNG SỐ CÁC ĐOẠN - MÀU ĐỎ NỔI BẬT KHÔNG BỊ RỐI
+        // 3 DÒNG THÔNG SỐ TRÊN TỪNG ĐOẠN - CÁC MÀU HÀI HÒA
         for (let i = 0; i < 3; i++) {
             let xMid = (getX(nodes[i].dist) + getX(nodes[i+1].dist)) / 2;
             let yHMid = (getY(nodes[i].H) + getY(nodes[i+1].H)) / 2;
 
             let segInfo = segs[i];
-            let labelText = `Q = ${segInfo.q.toFixed(1)}m³/h | v = ${segInfo.v.toFixed(2)}m/s | hf = ${segInfo.hf.toFixed(2)}m`;
 
             ctx.font = "bold 11px sans-serif";
-            ctx.fillStyle = "#d83b01";
             ctx.textAlign = "center";
-            ctx.fillText(labelText, xMid, yHMid + 16);
+
+            // Dòng 1: Q (Xanh dương)
+            ctx.fillStyle = "#005a9e";
+            ctx.fillText(`Q = ${segInfo.q.toFixed(1)} m³/h`, xMid, yHMid + 14);
+
+            // Dòng 2: v (Xanh lá)
+            ctx.fillStyle = "#15803d";
+            ctx.fillText(`v = ${segInfo.v.toFixed(2)} m/s`, xMid, yHMid + 28);
+
+            // Dòng 3: hf (Đỏ đất)
+            ctx.fillStyle = "#b91c1c";
+            ctx.fillText(`hf = ${segInfo.hf.toFixed(2)} m`, xMid, yHMid + 42);
         }
 
-        // 2. ĐƯỜNG MŨI TÊN TỔNG TOÀN TUYẾN - MÀU XÁM NHÃ NHẶN CHUẨN EXCEL (#94a3b8)
+        // ĐƯỜNG TỔNG TOÀN TUYẾN - NẾT XÁM CHUẨN EXCEL (#94a3b8)
         let topY = 22;
         let x0 = getX(0);
         let x3 = getX(nodes[3].dist);
 
-        ctx.strokeStyle = "#94a3b8"; ctx.lineWidth = 1.8; // Màu xám chuẩn Excel
+        ctx.strokeStyle = "#94a3b8"; ctx.lineWidth = 1.8;
         ctx.beginPath(); ctx.moveTo(x0, topY); ctx.lineTo(x3, topY); ctx.stroke();
         
-        // Mũi tên xám 2 đầu
         ctx.beginPath(); ctx.moveTo(x0 + 6, topY - 4); ctx.lineTo(x0, topY); ctx.lineTo(x0 + 6, topY + 4); ctx.fillStyle = "#94a3b8"; ctx.fill();
         ctx.beginPath(); ctx.moveTo(x3 - 6, topY - 4); ctx.lineTo(x3, topY); ctx.lineTo(x3 - 6, topY + 4); ctx.fillStyle = "#94a3b8"; ctx.fill();
 
-        // Nhãn chữ Tổng màu đỏ nằm đè không bo khung
         let totalText = `TỔNG TOÀN TUYẾN: L = ${data.totalLengthKm.toFixed(1)} km | Q = ${data.totalQ.toFixed(1)} m³/h | Hf = ${data.totalHf.toFixed(2)} m`;
         ctx.font = "bold 11.5px sans-serif";
         let totalWidth = ctx.measureText(totalText).width;
@@ -386,7 +449,7 @@
         ctx.fillStyle = "#ffffff";
         ctx.fillRect((x0 + x3)/2 - totalWidth/2 - 4, topY - 8, totalWidth + 8, 16);
 
-        ctx.fillStyle = "#d83b01"; ctx.textAlign = "center";
+        ctx.fillStyle = "#b91c1c"; ctx.textAlign = "center";
         ctx.fillText(totalText, (x0 + x3)/2, topY + 4);
 
         // Nút & Áp lực
