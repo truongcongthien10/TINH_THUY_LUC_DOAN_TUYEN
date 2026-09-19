@@ -314,7 +314,6 @@
 
     let patternsData = [];
 
-    // TỰ ĐỘNG ĐỌC BỘ NHỚ LOCALSTORAGE
     function loadPatterns() {
         let saved = localStorage.getItem('hw_hydraulic_patterns');
         if (saved) {
@@ -325,7 +324,6 @@
         }
     }
 
-    // TỰ ĐỘNG LƯU BỘ NHỚ LOCALSTORAGE
     function savePatterns() {
         localStorage.setItem('hw_hydraulic_patterns', JSON.stringify(patternsData));
     }
@@ -758,7 +756,7 @@
         ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 2.5; ctx.setLineDash([6, 4]); ctx.stroke();
         ctx.setLineDash([]);
 
-        // THÔNG SỐ CÁC ĐOẠN ỐNG - NÂNG KHOẢNG CÁCH CHỮ HF TRÁNH BỊ DÍNH SÁT SỐ
+        // THÔNG SỐ CÁC ĐOẠN ỐNG - TỐI ƯU CĂN LỀ CHỮ H_F KHÔNG BỊ CHÈN NHAU
         for (let i = 0; i < 3; i++) {
             let xMid = (getX(nodes[i].dist) + getX(nodes[i+1].dist)) / 2;
             let yHMid = (getY(nodes[i].H) + getY(nodes[i+1].H)) / 2;
@@ -767,21 +765,12 @@
             ctx.font = "bold 11px sans-serif";
             ctx.textAlign = "center";
 
-            ctx.fillStyle = "#005a9e"; ctx.fillText(`Q = ${segInfo.q.toFixed(1)} m³/h`, xMid, yHMid + 22);
+            ctx.fillStyle = "#005a9e"; ctx.fillText(`Q = ${segInfo.q.toFixed(1)} m³/h`, xMid, yHMid + 20);
             ctx.fillStyle = "#15803d"; ctx.fillText(`v = ${segInfo.v.toFixed(2)} m/s`, xMid, yHMid + 36);
             
-            // CĂN LẠI KHOẢNG CÁCH CHUẨN ĐỂ CHỮ F KHÔNG ĐÈ VÀO DẤU = VÀ CON SỐ
+            // SỬ DỤNG PHƯƠNG PHÁP CHUỖI ĐƠN HIỂN THỊ CHUẨN ĐẮC ĐỊA NÓI KHÔNG VỚI LỖI ĐÈ CHỮ
             ctx.fillStyle = "#b91c1c";
-            let hfValStr = ` = ${segInfo.hf.toFixed(2)} m`;
-            ctx.font = "bold 11px sans-serif";
-            let valW = ctx.measureText(hfValStr).width;
-            let startHfX = xMid - (18 + valW) / 2;
-
-            ctx.fillText(`H`, startHfX, yHMid + 50);
-            ctx.font = "bold 9px sans-serif";
-            ctx.fillText(`f`, startHfX + 8, yHMid + 53);
-            ctx.font = "bold 11px sans-serif";
-            ctx.fillText(hfValStr, startHfX + 14, yHMid + 50);
+            ctx.fillText(`H_f = ${segInfo.hf.toFixed(2)} m`, xMid, yHMid + 52);
         }
 
         // ĐƯỜNG TỔNG TOÀN TUYẾN
@@ -795,27 +784,17 @@
         ctx.beginPath(); ctx.moveTo(x0 + 6, topY - 4); ctx.lineTo(x0, topY); ctx.lineTo(x0 + 6, topY + 4); ctx.fillStyle = "#94a3b8"; ctx.fill();
         ctx.beginPath(); ctx.moveTo(x3 - 6, topY - 4); ctx.lineTo(x3, topY); ctx.lineTo(x3 - 6, topY + 4); ctx.fillStyle = "#94a3b8"; ctx.fill();
 
-        let tPart1 = `LÚC ${data.hourText} | L = ${data.totalLengthKm.toFixed(1)} km | Q = ${data.totalQ.toFixed(1)} m³/h | H`;
-        let tPart2 = `f = ${data.totalHf.toFixed(2)} m`;
-        
+        let totalText = `LÚC ${data.hourText} | L = ${data.totalLengthKm.toFixed(1)} km | Q = ${data.totalQ.toFixed(1)} m³/h | H_f = ${data.totalHf.toFixed(2)} m`;
         ctx.font = "bold 11.5px sans-serif";
-        let w1 = ctx.measureText(tPart1).width;
-        let w2 = ctx.measureText(tPart2).width;
-        let totalW = w1 + w2 + 6;
-
-        let startX = (x0 + x3)/2 - totalW/2;
+        let totalW = ctx.measureText(totalText).width;
 
         ctx.fillStyle = "#ffffff";
-        ctx.fillRect(startX - 4, topY - 8, totalW + 8, 16);
+        ctx.fillRect((x0 + x3)/2 - totalW/2 - 4, topY - 8, totalW + 8, 16);
 
-        ctx.fillStyle = "#b91c1c"; ctx.textAlign = "left";
-        ctx.fillText(tPart1, startX, topY + 4);
-        ctx.font = "bold 9.5px sans-serif";
-        ctx.fillText(`f`, startX + w1, topY + 7);
-        ctx.font = "bold 11.5px sans-serif";
-        ctx.fillText(` = ${data.totalHf.toFixed(2)} m`, startX + w1 + 6, topY + 4);
+        ctx.fillStyle = "#b91c1c"; ctx.textAlign = "center";
+        ctx.fillText(totalText, (x0 + x3)/2, topY + 4);
 
-        // HIỂN THỊ CÁC NÚT VÀ CĂN CHỈNH KHOẢNG CÁCH CHỮ Q_N-X SUB
+        // HIỂN THỊ CÁC NÚT
         nodes.forEach((n) => {
             let x = getX(n.dist);
             let yZ = getY(n.z);
@@ -851,52 +830,14 @@
                 ctx.fillText(`Z = ${n.z}m`, x + 15, H - padB + 58);
                 if (n.qOutH > 0) {
                     ctx.fillStyle = "#b91c1c";
-                    let textQ = `Q`;
-                    let subText = `n-4`;
-                    let valText = ` = ${n.qOutH.toFixed(1)} m³/h`;
-
-                    ctx.font = "bold 10px sans-serif";
-                    let wQ = ctx.measureText(textQ).width;
-                    ctx.font = "bold 8px sans-serif";
-                    let wSub = ctx.measureText(subText).width;
-                    ctx.font = "10px sans-serif";
-                    let wVal = ctx.measureText(valText).width;
-
-                    let totalQW = wQ + wSub + wVal + 2;
-                    let qStartX = x + 15 - totalQW;
-
-                    ctx.font = "bold 10px sans-serif";
-                    ctx.fillText(textQ, qStartX + wQ, H - padB + 70);
-                    ctx.font = "bold 8px sans-serif";
-                    ctx.fillText(subText, qStartX + wQ + wSub, H - padB + 72);
-                    ctx.font = "10px sans-serif";
-                    ctx.fillText(valText, qStartX + totalQW, H - padB + 70);
+                    ctx.fillText(`Q_n-4 = ${n.qOutH.toFixed(1)} m³/h`, x + 15, H - padB + 70);
                 }
             } else {
                 ctx.textAlign = "center";
                 ctx.fillText(`Z = ${n.z}m`, x, H - padB + 58);
                 if (n.qOutH > 0) {
                     ctx.fillStyle = "#b91c1c";
-                    let textQ = `Q`;
-                    let subText = `n-${n.id}`;
-                    let valText = ` = ${n.qOutH.toFixed(1)} m³/h`;
-
-                    ctx.font = "bold 10px sans-serif";
-                    let wQ = ctx.measureText(textQ).width;
-                    ctx.font = "bold 8px sans-serif";
-                    let wSub = ctx.measureText(subText).width;
-                    ctx.font = "10px sans-serif";
-                    let wVal = ctx.measureText(valText).width;
-
-                    let totalQW = wQ + wSub + wVal + 2;
-                    let qStartX = x - totalQW / 2;
-
-                    ctx.font = "bold 10px sans-serif";
-                    ctx.fillText(textQ, qStartX + wQ, H - padB + 70);
-                    ctx.font = "bold 8px sans-serif";
-                    ctx.fillText(subText, qStartX + wQ + wSub, H - padB + 72);
-                    ctx.font = "10px sans-serif";
-                    ctx.fillText(valText, qStartX + totalQW, H - padB + 70);
+                    ctx.fillText(`Q_n-${n.id} = ${n.qOutH.toFixed(1)} m³/h`, x, H - padB + 70);
                 }
             }
 
