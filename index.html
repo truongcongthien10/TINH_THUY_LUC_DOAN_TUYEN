@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sơ Đồ Thủy Lực Mô Phỏng 24h & Biểu Đồ Pattern - HueWACO</title>
+    <title>Sơ Đồ Thủy Lực Đa Pattern 24h - HueWACO</title>
     <style>
         :root {
             --excel-green: #005a36;
@@ -36,11 +36,15 @@
         .btn-sim-alt { background: #005a36; }
         .btn-sim-alt:hover { background: #004428; }
 
-        /* BẢNG DỌC VÀ BIỂU ĐỒ PATTERN THEO PHONG CÁCH EPANET */
+        /* BẢNG DỌC VÀ BIỂU ĐỒ PATTERN 3 LOẠI */
         .pattern-panel { display: none; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-bottom: 12px; }
+        .pattern-tabs { display: flex; gap: 8px; margin-bottom: 8px; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px; }
+        .tab-btn { padding: 5px 12px; font-size: 0.78rem; font-weight: bold; border: 1px solid #cbd5e1; background: #f1f5f9; border-radius: 4px; cursor: pointer; }
+        .tab-btn.active { background: #0284c7; color: #fff; border-color: #0284c7; }
+
         .pattern-layout { display: flex; gap: 15px; height: 280px; }
         
-        .pattern-table-wrapper { width: 200px; border: 1px solid #cbd5e1; border-radius: 4px; overflow-y: auto; background: #fafafa; }
+        .pattern-table-wrapper { width: 220px; border: 1px solid #cbd5e1; border-radius: 4px; overflow-y: auto; background: #fafafa; }
         .pattern-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; text-align: center; }
         .pattern-table th { position: sticky; top: 0; background: #e2e8f0; color: #334155; font-weight: bold; padding: 6px 4px; border-bottom: 1px solid #cbd5e1; }
         .pattern-table td { padding: 4px; border-bottom: 1px solid #f1f5f9; }
@@ -89,10 +93,10 @@
 <body>
 
 <div class="container">
-    <div class="header-bar">TÍNH TOÁN THỦY LỰC & MÔ PHỎNG NĂNG ĐỘNG 24H - HUEWACO</div>
+    <div class="header-bar">TÍNH TOÁN THỦY LỰC & MÔ PHỎNG ĐA PATTERN 24H - HUEWACO</div>
     
     <div class="content">
-        <!-- KHU VỰC THỜI GIAN VÀ NÚT CHẠY MÔ PHỎNG -->
+        <!-- THỜI GIAN & ĐIỀU KHIỂN MÔ PHỎNG -->
         <div class="simulation-bar">
             <div class="sim-time-display" id="simTimeText">⏰ Giờ: 08:00</div>
             <div class="sim-slider-container">
@@ -101,13 +105,23 @@
                 <span style="font-size:0.75rem; font-weight:bold; color:#475569;">23h</span>
             </div>
             <button class="btn-sim" id="btnPlay" onclick="togglePlay()"><span id="playIcon">▶</span> Mô Phỏng 24h</button>
-            <button class="btn-sim btn-sim-alt" onclick="togglePatternPanel()">⚙️ Bảng & Đồ Thị Pattern</button>
+            <button class="btn-sim btn-sim-alt" onclick="togglePatternPanel()">⚙️ Quản Lý 3 Pattern</button>
         </div>
 
-        <!-- BẢNG DỌC VÀ BIỂU ĐỒ PATTERN 24H (EPANET STYLE) -->
+        <!-- BẢNG CẤU HÌNH ĐA PATTERN (3 PATTERNS) -->
         <div class="pattern-panel" id="patternPanel">
+            <div class="pattern-tabs">
+                <button class="tab-btn active" id="tab_0" onclick="switchPatternTab(0)">Pattern 1 (Sinh Hoạt)</button>
+                <button class="tab-btn" id="tab_1" onclick="switchPatternTab(1)">Pattern 2 (Khu CN/Dịch Vụ)</button>
+                <button class="tab-btn" id="tab_2" onclick="switchPatternTab(2)">Pattern 3 (Đặc Thù/Nông Thôn)</button>
+            </div>
+            
+            <div style="margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+                <span style="font-size:0.78rem; font-weight:bold; color:#334155;">Tên gọi gợi nhớ:</span>
+                <input type="text" id="pattern_name_input" style="padding:2px 6px; font-size:0.78rem; border:1px solid #cbd5e1; border-radius:3px; width:220px;" onchange="updatePatternName(this.value)">
+            </div>
+
             <div class="pattern-layout">
-                <!-- BẢNG DỌC BÊN TRÁI -->
                 <div class="pattern-table-wrapper">
                     <table class="pattern-table">
                         <thead>
@@ -119,19 +133,18 @@
                         <tbody id="patternTbody"></tbody>
                     </table>
                 </div>
-                <!-- BIỂU ĐỒ BÊN PHẢI -->
                 <div class="pattern-chart-wrapper">
-                    <div class="pattern-chart-title">Biểu đồ Hệ số Nhu cầu Dùng nước (Pattern - Multiplier Curve)</div>
+                    <div class="pattern-chart-title">So sánh Đồ thị Biến thiên các Pattern (Demand Patterns)</div>
                     <canvas id="patternCanvas" class="pattern-chart-canvas"></canvas>
                 </div>
             </div>
         </div>
 
-        <!-- I. KẾT QUẢ TỔNG THỂ CỦA GIỜ ĐANG CHỌN -->
+        <!-- I. KẾT QUẢ TỔNG THỂ -->
         <div class="section-title">
             <span>I. Kết quả Thủy lực lúc <span id="lblCurrentHour" style="color:#0284c7;">08:00</span></span>
             <span style="font-weight: normal; font-size: 0.8rem; color: #334155; text-transform: none;">
-                Hệ số giờ hiện tại C<sub>t</sub>: <b id="lblCurrentCt" style="color:#b91c1c;">1.30</b>
+                Mô phỏng năng động theo cấu hình Đa Pattern
             </span>
         </div>
 
@@ -213,6 +226,10 @@
                     <div class="node-input-header">DỮ LIỆU NÚT 2</div>
                     <div class="input-row"><label>Z<sub>2</sub> (m):</label><input type="number" id="z2" value="22.0" onchange="calculateProfile()"></div>
                     <div class="input-row"><label>Q<sub>n-2 TB</sub> (m³/ngđ):</label><input type="number" id="q_out2" value="0" onchange="calculateProfile()"></div>
+                    <div class="input-row">
+                        <label>Mẫu Pattern:</label>
+                        <select id="pat_node2" onchange="calculateProfile()"></select>
+                    </div>
                 </div>
 
                 <!-- CỘT 3 -->
@@ -241,6 +258,10 @@
                     <div class="node-input-header">DỮ LIỆU NÚT 3</div>
                     <div class="input-row"><label>Z<sub>3</sub> (m):</label><input type="number" id="z3" value="3.0" onchange="calculateProfile()"></div>
                     <div class="input-row"><label>Q<sub>n-3 TB</sub> (m³/ngđ):</label><input type="number" id="q_out3" value="0" onchange="calculateProfile()"></div>
+                    <div class="input-row">
+                        <label>Mẫu Pattern:</label>
+                        <select id="pat_node3" onchange="calculateProfile()"></select>
+                    </div>
                 </div>
 
                 <!-- CỘT 4 -->
@@ -251,6 +272,10 @@
                     <div class="node-input-header" style="margin-top: 2px;">DỮ LIỆU NÚT 4</div>
                     <div class="input-row"><label>Z<sub>4</sub> điểm cuối (m):</label><input type="number" id="z4" value="3.0" onchange="calculateProfile()"></div>
                     <div class="input-row"><label>Q<sub>n-4 TB</sub> (m³/ngđ):</label><input type="number" id="q_out4" value="10000" onchange="calculateProfile()"></div>
+                    <div class="input-row">
+                        <label>Mẫu Pattern:</label>
+                        <select id="pat_node4" onchange="calculateProfile()"></select>
+                    </div>
                 </div>
             </div>
 
@@ -265,13 +290,26 @@
 </div>
 
 <script>
-    let defaultPattern = [
-        0.40, 0.35, 0.30, 0.30, 0.45, 0.85, 
-        1.40, 1.30, 1.15, 1.05, 1.10, 1.10, 
-        1.00, 0.95, 0.90, 1.05, 1.35, 1.50, 
-        1.40, 1.20, 0.95, 0.75, 0.60, 0.45
+    // CẤU HÌNH TỐI ĐA 3 PATTERNS
+    let patternsData = [
+        {
+            name: "Pattern 1 - Sinh Hoạt Đô Thị",
+            color: "#0284c7",
+            values: [0.40, 0.35, 0.30, 0.30, 0.45, 0.85, 1.40, 1.30, 1.15, 1.05, 1.10, 1.10, 1.00, 0.95, 0.90, 1.05, 1.35, 1.50, 1.40, 1.20, 0.95, 0.75, 0.60, 0.45]
+        },
+        {
+            name: "Pattern 2 - Khu CN / Dịch Vụ",
+            color: "#d83b01",
+            values: [0.20, 0.20, 0.20, 0.20, 0.30, 0.70, 1.20, 1.30, 1.30, 1.30, 1.30, 1.20, 1.10, 1.20, 1.30, 1.30, 1.20, 1.00, 0.80, 0.50, 0.30, 0.20, 0.20, 0.20]
+        },
+        {
+            name: "Pattern 3 - Nông Thôn / Đặc Thù",
+            color: "#15803d",
+            values: [0.30, 0.25, 0.25, 0.25, 0.40, 0.90, 1.50, 1.40, 1.10, 0.90, 0.90, 0.90, 0.85, 0.85, 0.85, 0.95, 1.20, 1.40, 1.30, 1.00, 0.80, 0.60, 0.45, 0.35]
+        }
     ];
 
+    let activePatternIdx = 0;
     let currentHour = 8;
     let isPlaying = false;
     let timerId = null;
@@ -306,25 +344,58 @@
 
     const MATERIAL_C = { hdpe: 140, ductile: 130, inox: 140 };
 
-    // TẠO BẢNG DỌC BÊN TRÁI
     function initPatternTable() {
         const tbody = document.getElementById('patternTbody');
         tbody.innerHTML = '';
+        let pat = patternsData[activePatternIdx];
+        document.getElementById('pattern_name_input').value = pat.name;
+
         for (let h = 0; h < 24; h++) {
             let hStr = (h < 10 ? '0' + h : '' + h) + ':00';
             let tr = document.createElement('tr');
             tr.innerHTML = `
                 <td style="font-weight:600; color:#475569;">${hStr}</td>
-                <td><input type="number" id="pat_${h}" value="${defaultPattern[h].toFixed(2)}" step="0.05" onchange="updatePatternVal(${h}, this.value)"></td>
+                <td><input type="number" id="pat_${h}" value="${pat.values[h].toFixed(2)}" step="0.05" onchange="updatePatternVal(${h}, this.value)"></td>
             `;
             tbody.appendChild(tr);
         }
     }
 
-    function updatePatternVal(h, val) {
-        defaultPattern[h] = parseFloat(val) || 1.0;
+    function switchPatternTab(idx) {
+        activePatternIdx = idx;
+        for (let i = 0; i < 3; i++) {
+            document.getElementById(`tab_${i}`).className = i === idx ? 'tab-btn active' : 'tab-btn';
+        }
+        initPatternTable();
         drawPatternChart();
         calculateProfile();
+    }
+
+    function updatePatternName(newName) {
+        patternsData[activePatternIdx].name = newName;
+        updatePatternSelectBoxes();
+        drawPatternChart();
+    }
+
+    function updatePatternVal(h, val) {
+        patternsData[activePatternIdx].values[h] = parseFloat(val) || 1.0;
+        drawPatternChart();
+        calculateProfile();
+    }
+
+    function updatePatternSelectBoxes() {
+        ['pat_node2', 'pat_node3', 'pat_node4'].forEach((id, idx) => {
+            const sel = document.getElementById(id);
+            const prevVal = sel.value !== "" ? sel.value : idx.toString();
+            sel.innerHTML = '';
+            patternsData.forEach((p, pIdx) => {
+                const opt = document.createElement('option');
+                opt.value = pIdx;
+                opt.textContent = p.name;
+                sel.appendChild(opt);
+            });
+            sel.value = prevVal < patternsData.length ? prevVal : "0";
+        });
     }
 
     function togglePatternPanel() {
@@ -335,7 +406,7 @@
         }
     }
 
-    // VẼ BIỂU ĐỒ ĐƯỜNG BÊN PHẢI (EPANET PATTERN CHART)
+    // VẼ BIỂU ĐỒ 3 ĐƯỜNG PATTERN SO SÁNH
     function drawPatternChart() {
         const canvas = document.getElementById('patternCanvas');
         if (!canvas) return;
@@ -350,13 +421,12 @@
 
         ctx.clearRect(0, 0, W, H);
 
-        let maxVal = Math.max(...defaultPattern) + 0.2;
-        if (maxVal < 1.6) maxVal = 1.6;
+        let maxVal = 1.8;
 
         function getX(h) { return padL + (h / 23) * (W - padL - padR); }
         function getY(v) { return H - padB - (v / maxVal) * (H - padT - padB); }
 
-        // Lưới ngang & Nhãn y
+        // Lưới ngang
         ctx.strokeStyle = "#f1f5f9"; ctx.lineWidth = 1;
         for (let v = 0; v <= maxVal; v += 0.4) {
             let y = getY(v);
@@ -374,28 +444,26 @@
             ctx.fillText(hStr, x, H - 8);
         }
 
-        // Tô diện tích dưới đường
-        ctx.beginPath();
-        ctx.moveTo(getX(0), getY(defaultPattern[0]));
-        for (let h = 1; h < 24; h++) ctx.lineTo(getX(h), getY(defaultPattern[h]));
-        ctx.lineTo(getX(23), H - padB);
-        ctx.lineTo(getX(0), H - padB);
-        ctx.closePath();
-        ctx.fillStyle = "rgba(2, 132, 199, 0.15)"; ctx.fill();
+        // Vẽ 3 đường Pattern
+        patternsData.forEach((patObj, pIdx) => {
+            ctx.beginPath();
+            ctx.moveTo(getX(0), getY(patObj.values[0]));
+            for (let h = 1; h < 24; h++) ctx.lineTo(getX(h), getY(patObj.values[h]));
+            ctx.strokeStyle = patObj.color;
+            ctx.lineWidth = pIdx === activePatternIdx ? 2.5 : 1.2;
+            if (pIdx !== activePatternIdx) ctx.setLineDash([4, 3]);
+            else ctx.setLineDash([]);
+            ctx.stroke();
+            ctx.setLineDash([]);
 
-        // Đường biểu đồ
-        ctx.beginPath();
-        ctx.moveTo(getX(0), getY(defaultPattern[0]));
-        for (let h = 1; h < 24; h++) ctx.lineTo(getX(h), getY(defaultPattern[h]));
-        ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 2; ctx.stroke();
-
-        // Các điểm nút trên đường
-        for (let h = 0; h < 24; h++) {
-            let x = getX(h);
-            let y = getY(defaultPattern[h]);
-            ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2);
-            ctx.fillStyle = h === currentHour ? "#d83b01" : "#0284c7"; ctx.fill();
-        }
+            // Điểm nút
+            for (let h = 0; h < 24; h++) {
+                let x = getX(h);
+                let y = getY(patObj.values[h]);
+                ctx.beginPath(); ctx.arc(x, y, pIdx === activePatternIdx ? 3.5 : 2, 0, Math.PI * 2);
+                ctx.fillStyle = patObj.color; ctx.fill();
+            }
+        });
     }
 
     function onSliderChange(h) {
@@ -466,11 +534,8 @@
             document.getElementById(`sub${s}`).innerHTML = `D<sub>in</sub>: <b>${dinVal.toFixed(1)}</b> mm`;
         });
 
-        const Ct = defaultPattern[currentHour];
         const hourStr = (currentHour < 10 ? '0' + currentHour : currentHour) + ':00';
-
         document.getElementById('lblCurrentHour').innerText = hourStr;
-        document.getElementById('lblCurrentCt').innerText = Ct.toFixed(2);
 
         const z1 = parseFloat(document.getElementById('z1').value) || 0;
         const z2 = parseFloat(document.getElementById('z2').value) || 0;
@@ -481,9 +546,18 @@
         const qOut3Ngd = parseFloat(document.getElementById('q_out3').value) || 0;
         const qOut4Ngd = parseFloat(document.getElementById('q_out4').value) || 0;
 
-        const qOut2 = (qOut2Ngd / 24) * Ct;
-        const qOut3 = (qOut3Ngd / 24) * Ct;
-        const qOut4 = (qOut4Ngd / 24) * Ct;
+        // LẤY HỆ SỐ C_T THEO PATTERN GÁN RIÊNG CHO TỪNG NÚT
+        const pIdx2 = parseInt(document.getElementById('pat_node2').value) || 0;
+        const pIdx3 = parseInt(document.getElementById('pat_node3').value) || 0;
+        const pIdx4 = parseInt(document.getElementById('pat_node4').value) || 0;
+
+        const ct2 = patternsData[pIdx2].values[currentHour];
+        const ct3 = patternsData[pIdx3].values[currentHour];
+        const ct4 = patternsData[pIdx4].values[currentHour];
+
+        const qOut2 = (qOut2Ngd / 24) * ct2;
+        const qOut3 = (qOut3Ngd / 24) * ct3;
+        const qOut4 = (qOut4Ngd / 24) * ct4;
 
         const p1Avail = parseFloat(document.getElementById('p1_avail').value) || 0;
 
@@ -706,6 +780,7 @@
     }
 
     window.onload = function() {
+        updatePatternSelectBoxes();
         initPatternTable();
         updatePipeList(1);
         updatePipeList(2);
