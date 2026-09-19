@@ -20,77 +20,83 @@
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg-color); color: var(--text-dark); padding: 8px; }
         
         .container { width: 100%; max-width: 1200px; margin: 0 auto; background: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--border-color); }
-        .header-bar { background: var(--excel-green); color: #fff; text-align: center; padding: 12px 10px; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
-        .content { padding: 12px 15px; }
+        .header-bar { background: var(--excel-green); color: #fff; text-align: center; padding: 10px; font-size: 1.05rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
+        .content { padding: 10px 12px; }
 
-        .section-title { font-weight: 700; color: #005a36; background: var(--excel-green-light); border-left: 4px solid var(--excel-green); padding: 6px 10px; margin: 10px 0 8px 0; font-size: 0.9rem; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+        .section-title { font-weight: 700; color: #005a36; background: var(--excel-green-light); border-left: 4px solid var(--excel-green); padding: 6px 10px; margin: 8px 0; font-size: 0.85rem; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
 
-        /* KHU VỰC ĐIỀU KHIỂN MÔ PHỎNG 24H */
-        .simulation-bar { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-        .sim-time-display { font-size: 1.1rem; font-weight: bold; color: #0284c7; min-width: 110px; }
-        .sim-slider-container { flex: 1; min-width: 200px; display: flex; align-items: center; gap: 8px; }
-        .sim-slider { width: 100%; height: 8px; border-radius: 4px; outline: none; background: #cbd5e1; cursor: pointer; accent-color: #0284c7; }
+        /* BẢNG ĐIỀU KHIỂN MÔ PHỎNG */
+        .simulation-bar { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 6px; padding: 8px 12px; margin-bottom: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+        .sim-time-display { font-size: 1rem; font-weight: bold; color: #0284c7; min-width: 100px; }
+        .sim-slider-container { flex: 1; min-width: 180px; display: flex; align-items: center; gap: 8px; }
+        .sim-slider { width: 100%; height: 6px; border-radius: 4px; outline: none; background: #cbd5e1; cursor: pointer; accent-color: #0284c7; }
         
-        .btn-sim { background: #0284c7; color: #fff; border: none; padding: 6px 14px; font-size: 0.85rem; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .btn-sim { background: #0284c7; color: #fff; border: none; padding: 5px 12px; font-size: 0.8rem; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
         .btn-sim:hover { background: #0369a1; }
         .btn-sim-alt { background: #005a36; }
         .btn-sim-alt:hover { background: #004428; }
 
-        /* BẢNG DỌC VÀ BIỂU ĐỒ PATTERN 3 LOẠI */
-        .pattern-panel { display: none; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-bottom: 12px; }
-        .pattern-tabs { display: flex; gap: 8px; margin-bottom: 8px; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px; }
+        /* CẤU HÌNH PATTERN */
+        .pattern-panel { display: none; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-bottom: 10px; }
+        .pattern-tabs { display: flex; gap: 6px; margin-bottom: 8px; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px; }
         
-        .tab-btn { padding: 6px 14px; font-size: 0.8rem; font-weight: bold; border: 1px solid #cbd5e1; background: #f1f5f9; color: #475569; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
-        .tab-btn.active-p0 { background: #0284c7 !important; color: #fff !important; border-color: #0284c7 !important; box-shadow: 0 2px 4px rgba(2,132,199,0.3); }
-        .tab-btn.active-p1 { background: #d83b01 !important; color: #fff !important; border-color: #d83b01 !important; box-shadow: 0 2px 4px rgba(216,59,1,0.3); }
-        .tab-btn.active-p2 { background: #15803d !important; color: #fff !important; border-color: #15803d !important; box-shadow: 0 2px 4px rgba(21,128,61,0.3); }
+        .tab-btn { padding: 5px 12px; font-size: 0.78rem; font-weight: bold; border: 1px solid #cbd5e1; background: #f1f5f9; color: #475569; border-radius: 4px; cursor: pointer; }
+        .tab-btn.active-p0 { background: #0284c7 !important; color: #fff !important; border-color: #0284c7 !important; }
+        .tab-btn.active-p1 { background: #d83b01 !important; color: #fff !important; border-color: #d83b01 !important; }
+        .tab-btn.active-p2 { background: #15803d !important; color: #fff !important; border-color: #15803d !important; }
 
-        .pattern-layout { display: flex; gap: 15px; height: 280px; }
-        
-        .pattern-table-wrapper { width: 220px; border: 1px solid #cbd5e1; border-radius: 4px; overflow-y: auto; background: #fafafa; }
-        .pattern-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; text-align: center; }
-        .pattern-table th { position: sticky; top: 0; background: #e2e8f0; color: #334155; font-weight: bold; padding: 6px 4px; border-bottom: 1px solid #cbd5e1; }
-        .pattern-table td { padding: 4px; border-bottom: 1px solid #f1f5f9; }
-        .pattern-table tr:hover { background: #f0f9ff; }
-        .pattern-table input { width: 65px; text-align: center; border: 1px solid #cbd5e1; border-radius: 3px; padding: 2px; font-size: 0.78rem; font-weight: bold; color: #0284c7; }
+        .pattern-layout { display: flex; gap: 12px; height: 260px; }
+        .pattern-table-wrapper { width: 200px; border: 1px solid #cbd5e1; border-radius: 4px; overflow-y: auto; background: #fafafa; }
+        .pattern-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: center; }
+        .pattern-table th { position: sticky; top: 0; background: #e2e8f0; color: #334155; font-weight: bold; padding: 5px 2px; }
+        .pattern-table td { padding: 3px 2px; border-bottom: 1px solid #f1f5f9; }
+        .pattern-table input { width: 60px; text-align: center; border: 1px solid #cbd5e1; border-radius: 3px; padding: 2px; font-size: 0.75rem; font-weight: bold; color: #0284c7; }
 
-        .pattern-chart-wrapper { flex: 1; border: 1px solid #cbd5e1; border-radius: 4px; padding: 8px; background: #ffffff; display: flex; flex-direction: column; }
-        .pattern-chart-title { font-size: 0.85rem; font-weight: bold; color: #005a36; text-align: center; margin-bottom: 4px; }
+        .pattern-chart-wrapper { flex: 1; border: 1px solid #cbd5e1; border-radius: 4px; padding: 6px; background: #ffffff; display: flex; flex-direction: column; }
+        .pattern-chart-title { font-size: 0.8rem; font-weight: bold; color: #005a36; text-align: center; margin-bottom: 4px; }
         .pattern-chart-canvas { width: 100%; flex: 1; }
 
-        .result-simple-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; }
-        .result-card { background: #f0f9ff; border: 1px solid #bae6fd; padding: 8px; border-radius: 6px; }
-        .result-card-title { font-size: 0.78rem; color: #0369a1; font-weight: 700; text-transform: uppercase; }
-        .result-card-value { font-size: 1.2rem; font-weight: bold; color: #0284c7; }
+        .result-simple-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; }
+        .result-card { background: #f0f9ff; border: 1px solid #bae6fd; padding: 6px; border-radius: 6px; }
+        .result-card-title { font-size: 0.75rem; color: #0369a1; font-weight: 700; text-transform: uppercase; }
+        .result-card-value { font-size: 1.1rem; font-weight: bold; color: #0284c7; }
 
-        .warning-box { margin-top: 8px; padding: 8px 12px; border-radius: 4px; font-size: 0.82rem; line-height: 1.4; display: none; }
+        .warning-box { margin-top: 6px; padding: 6px 10px; border-radius: 4px; font-size: 0.78rem; line-height: 1.3; display: none; }
         .warn-red { background: #fef2f2; border-left: 4px solid #dc2626; color: #991b1b; }
         .warn-green { background: #f0fdf4; border-left: 4px solid #16a34a; color: #166534; }
 
-        .diagram-wrapper { position: relative; width: 100%; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px; margin-top: 8px; }
+        .diagram-wrapper { position: relative; width: 100%; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 6px; margin-top: 6px; }
         canvas { width: 100%; height: 380px; background: #ffffff; display: block; }
 
-        .inputs-overlay { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed #cbd5e1; }
-        .seg-input-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px; }
-        .seg-input-header { font-size: 0.8rem; font-weight: bold; color: #005a36; margin-bottom: 6px; text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 3px; }
-        .node-input-header { font-size: 0.78rem; font-weight: bold; color: #b91c1c; margin: 8px 0 4px 0; text-align: center; border-top: 1px dashed #cbd5e1; border-bottom: 1px solid #e2e8f0; padding: 2px 0; }
+        .inputs-overlay { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; padding-top: 6px; border-top: 1px dashed #cbd5e1; }
+        .seg-input-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px; }
+        .seg-input-header { font-size: 0.78rem; font-weight: bold; color: #005a36; margin-bottom: 4px; text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 2px; }
+        .node-input-header { font-size: 0.75rem; font-weight: bold; color: #b91c1c; margin: 6px 0 4px 0; text-align: center; border-top: 1px dashed #cbd5e1; border-bottom: 1px solid #e2e8f0; padding: 2px 0; }
 
-        .input-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; font-size: 0.75rem; }
+        .input-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; font-size: 0.72rem; }
         .input-row label { color: #334155; font-weight: 600; white-space: nowrap; }
         
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; }
 
-        .seg-input-card input, .seg-input-card select { width: 85px; padding: 3px 2px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.76rem; text-align: center; outline: none; background: #fff; height: 24px; }
-        .seg-input-card input:focus, .seg-input-card select:focus { border-color: #d97706; background: #fff9c4; }
+        /* TỐI ƯU Ô VÀ CHỮ PATTERN */
+        .seg-input-card input { width: 75px; padding: 2px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 0.72rem; text-align: center; outline: none; background: #fff; height: 22px; }
+        .seg-input-card select { width: 110px; padding: 1px 2px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 0.71rem; text-align: center; outline: none; background: #fff; height: 22px; text-overflow: ellipsis; }
 
-        .sub-info { font-size: 0.7rem; color: #166534; font-weight: 600; text-align: right; margin-bottom: 2px; }
+        .sub-info { font-size: 0.68rem; color: #166534; font-weight: 600; text-align: right; margin-bottom: 2px; }
 
-        .btn-calc { width: 100%; background: #0284c7; color: #fff; border: none; padding: 10px; font-size: 0.95rem; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; text-transform: uppercase; }
-        .btn-calc:hover { background: #0369a1; }
+        .btn-calc { width: 100%; background: #0284c7; color: #fff; border: none; padding: 8px; font-size: 0.9rem; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 8px; text-transform: uppercase; }
 
-        .footer { padding: 10px 15px; font-size: 0.75rem; color: #64748b; background: #fff; border-top: 1px solid var(--border-color); margin-top: 12px; display: flex; justify-content: space-between; }
+        .footer { padding: 8px 12px; font-size: 0.72rem; color: #64748b; background: #fff; border-top: 1px solid var(--border-color); margin-top: 10px; display: flex; justify-content: space-between; }
+
+        /* MẶC ĐỊNH XOAY NGANG TRÊN ĐIỆN THOẠI */
+        @media screen and (max-width: 768px) and (orientation: portrait) {
+            body::before {
+                content: "📱 Vui lòng xoay ngang điện thoại để có khung nhìn tối ưu nhất!";
+                display: block; background: #fef3c7; color: #92400e; text-align: center; padding: 6px; font-size: 0.75rem; font-weight: bold; border-bottom: 1px solid #fcd34d; margin-bottom: 6px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -99,19 +105,19 @@
     <div class="header-bar">TÍNH TOÁN THỦY LỰC & MÔ PHỎNG ĐA PATTERN 24H - HUEWACO</div>
     
     <div class="content">
-        <!-- THỜI GIAN & ĐIỀU KHIỂN MÔ PHỎNG -->
+        <!-- ĐIỀU KHIỂN THỜI GIAN -->
         <div class="simulation-bar">
             <div class="sim-time-display" id="simTimeText">⏰ Giờ: 08:00</div>
             <div class="sim-slider-container">
-                <span style="font-size:0.75rem; font-weight:bold; color:#475569;">00h</span>
+                <span style="font-size:0.72rem; font-weight:bold; color:#475569;">00h</span>
                 <input type="range" min="0" max="23" value="8" class="sim-slider" id="timeSlider" oninput="onSliderChange(this.value)">
-                <span style="font-size:0.75rem; font-weight:bold; color:#475569;">23h</span>
+                <span style="font-size:0.72rem; font-weight:bold; color:#475569;">23h</span>
             </div>
             <button class="btn-sim" id="btnPlay" onclick="togglePlay()"><span id="playIcon">▶</span> Mô Phỏng 24h</button>
             <button class="btn-sim btn-sim-alt" onclick="togglePatternPanel()">⚙️ Pattern</button>
         </div>
 
-        <!-- BẢNG CẤU HÌNH ĐA PATTERN (3 PATTERNS) -->
+        <!-- CẤU HÌNH PATTERN -->
         <div class="pattern-panel" id="patternPanel">
             <div class="pattern-tabs">
                 <button class="tab-btn active-p0" id="tab_0" onclick="switchPatternTab(0)">Pattern 1 (Sinh Hoạt)</button>
@@ -119,9 +125,9 @@
                 <button class="tab-btn" id="tab_2" onclick="switchPatternTab(2)">Pattern 3 (Đặc Thù/Nông Thôn)</button>
             </div>
             
-            <div style="margin-bottom:8px; display:flex; align-items:center; gap:8px;">
-                <span style="font-size:0.78rem; font-weight:bold; color:#334155;">Tên gọi gợi nhớ:</span>
-                <input type="text" id="pattern_name_input" style="padding:2px 6px; font-size:0.78rem; border:1px solid #cbd5e1; border-radius:3px; width:220px;" onchange="updatePatternName(this.value)">
+            <div style="margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                <span style="font-size:0.75rem; font-weight:bold; color:#334155;">Tên gọi:</span>
+                <input type="text" id="pattern_name_input" style="padding:2px 4px; font-size:0.75rem; border:1px solid #cbd5e1; border-radius:3px; width:200px;" onchange="updatePatternName(this.value)">
             </div>
 
             <div class="pattern-layout">
@@ -137,16 +143,16 @@
                     </table>
                 </div>
                 <div class="pattern-chart-wrapper">
-                    <div class="pattern-chart-title">So sánh Đồ thị Biến thiên các Pattern (Demand Patterns)</div>
+                    <div class="pattern-chart-title">So sánh Đồ thị Biến thiên các Pattern</div>
                     <canvas id="patternCanvas" class="pattern-chart-canvas"></canvas>
                 </div>
             </div>
         </div>
 
-        <!-- I. KẾT QUẢ TỔNG THỂ -->
+        <!-- KẾT QUẢ TỔNG THỂ -->
         <div class="section-title">
             <span>I. Kết quả Thủy lực lúc <span id="lblCurrentHour" style="color:#0284c7;">08:00</span></span>
-            <span style="font-weight: normal; font-size: 0.8rem; color: #334155; text-transform: none;">
+            <span style="font-weight: normal; font-size: 0.75rem; color: #334155; text-transform: none;">
                 Mô phỏng năng động theo cấu hình Đa Pattern
             </span>
         </div>
@@ -168,7 +174,7 @@
 
         <div id="warn_box" class="warning-box"></div>
 
-        <!-- II. SƠ ĐỒ TRẮC DỌC & NHẬP LIỆU BỐN CỘT -->
+        <!-- SƠ ĐỒ TRẮC DỌC & NHẬP LIỆU -->
         <div class="section-title">II. Sơ đồ Trắc dọc & Nhập dữ liệu phân đoạn (4 Cột)</div>
         
         <div class="diagram-wrapper">
@@ -228,9 +234,9 @@
 
                     <div class="node-input-header">DỮ LIỆU NÚT 2</div>
                     <div class="input-row"><label>Z<sub>2</sub> (m):</label><input type="number" id="z2" value="22.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>n-2 TB</sub> (m³/ngđ):</label><input type="number" id="q_out2" value="0" onchange="calculateProfile()"></div>
-                    <div class="input-row">
-                        <label>Mẫu Pattern:</label>
+                    <div class="input-row"><label>Q<sub>n-2 TB</sub> (m³/ngđ):</label><input type="number" id="q_out2" value="0" onchange="onQInputChange(2)"></div>
+                    <div class="input-row" id="row_pat_2" style="display:none;">
+                        <label>Pattern:</label>
                         <select id="pat_node2" onchange="onNodePatternChange(2)"></select>
                     </div>
                 </div>
@@ -260,9 +266,9 @@
 
                     <div class="node-input-header">DỮ LIỆU NÚT 3</div>
                     <div class="input-row"><label>Z<sub>3</sub> (m):</label><input type="number" id="z3" value="3.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>n-3 TB</sub> (m³/ngđ):</label><input type="number" id="q_out3" value="0" onchange="calculateProfile()"></div>
-                    <div class="input-row">
-                        <label>Mẫu Pattern:</label>
+                    <div class="input-row"><label>Q<sub>n-3 TB</sub> (m³/ngđ):</label><input type="number" id="q_out3" value="0" onchange="onQInputChange(3)"></div>
+                    <div class="input-row" id="row_pat_3" style="display:none;">
+                        <label>Pattern:</label>
                         <select id="pat_node3" onchange="onNodePatternChange(3)"></select>
                     </div>
                 </div>
@@ -270,13 +276,13 @@
                 <!-- CỘT 4 -->
                 <div class="seg-input-card" style="background: #f0fdf4; border-color: #bbf7d0;">
                     <div class="seg-input-header" style="color: #15803d; border-bottom-color: #bbf7d0;">ĐIỂM CUỐI TUYẾN</div>
-                    <p style="font-size: 0.65rem; color: #475569; text-align: center; margin-bottom: 4px;">Dữ liệu nút xả cuối toàn tuyến</p>
+                    <p style="font-size: 0.62rem; color: #475569; text-align: center; margin-bottom: 4px;">Dữ liệu nút xả cuối toàn tuyến</p>
 
                     <div class="node-input-header" style="margin-top: 2px;">DỮ LIỆU NÚT 4</div>
                     <div class="input-row"><label>Z<sub>4</sub> điểm cuối (m):</label><input type="number" id="z4" value="3.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>n-4 TB</sub> (m³/ngđ):</label><input type="number" id="q_out4" value="10000" onchange="calculateProfile()"></div>
-                    <div class="input-row">
-                        <label>Mẫu Pattern:</label>
+                    <div class="input-row"><label>Q<sub>n-4 TB</sub> (m³/ngđ):</label><input type="number" id="q_out4" value="10000" onchange="onQInputChange(4)"></div>
+                    <div class="input-row" id="row_pat_4">
+                        <label>Pattern:</label>
                         <select id="pat_node4" onchange="onNodePatternChange(4)"></select>
                     </div>
                 </div>
@@ -293,21 +299,20 @@
 </div>
 
 <script>
-    // CẤU HÌNH TỐI ĐA 3 PATTERNS VỚI MÀU ĐẶC TRƯNG TƯƠNG ỨNG
     let patternsData = [
         {
             name: "Pattern 1 (Sinh Hoạt)",
-            color: "#0284c7", // Xanh dương
+            color: "#0284c7",
             values: [0.40, 0.35, 0.30, 0.30, 0.45, 0.85, 1.40, 1.30, 1.15, 1.05, 1.10, 1.10, 1.00, 0.95, 0.90, 1.05, 1.35, 1.50, 1.40, 1.20, 0.95, 0.75, 0.60, 0.45]
         },
         {
             name: "Pattern 2 (Khu CN/Dịch Vụ)",
-            color: "#d83b01", // Đỏ cam
+            color: "#d83b01",
             values: [0.20, 0.20, 0.20, 0.20, 0.30, 0.70, 1.20, 1.30, 1.30, 1.30, 1.30, 1.20, 1.10, 1.20, 1.30, 1.30, 1.20, 1.00, 0.80, 0.50, 0.30, 0.20, 0.20, 0.20]
         },
         {
             name: "Pattern 3 (Đặc Thù/Nông Thôn)",
-            color: "#15803d", // Xanh lá
+            color: "#15803d",
             values: [0.30, 0.25, 0.25, 0.25, 0.40, 0.90, 1.50, 1.40, 1.10, 0.90, 0.90, 0.90, 0.85, 0.85, 0.85, 0.95, 1.20, 1.40, 1.30, 1.00, 0.80, 0.60, 0.45, 0.35]
         }
     ];
@@ -390,7 +395,7 @@
     function updatePatternSelectBoxes() {
         ['pat_node2', 'pat_node3', 'pat_node4'].forEach((id) => {
             const sel = document.getElementById(id);
-            const prevVal = sel.value !== "" ? sel.value : "0"; // Mặc định chọn Pattern 0 (Sinh hoạt)
+            const prevVal = sel.value !== "" ? sel.value : "0";
             sel.innerHTML = '';
             patternsData.forEach((p, pIdx) => {
                 const opt = document.createElement('option');
@@ -403,6 +408,18 @@
             sel.value = prevVal;
             applySelectColor(sel);
         });
+    }
+
+    // ẨN/HIỂN THỊ DÒNG PATTERN KHI NHU CẦU BẰNG 0 HOẶC KHÁC 0
+    function onQInputChange(nodeIdx) {
+        const qVal = parseFloat(document.getElementById(`q_out${nodeIdx}`).value) || 0;
+        const rowPat = document.getElementById(`row_pat_${nodeIdx}`);
+        if (qVal > 0) {
+            rowPat.style.display = "flex";
+        } else {
+            rowPat.style.display = "none";
+        }
+        calculateProfile();
     }
 
     function onNodePatternChange(nodeIdx) {
@@ -425,18 +442,17 @@
         }
     }
 
-    // VẼ BIỂU ĐỒ PATTERN TỰ ĐỔI MÀU SÁNG SẮC THEO PATTERN ĐANG CHỌN
     function drawPatternChart() {
         const canvas = document.getElementById('patternCanvas');
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
 
-        canvas.width = canvas.parentElement.clientWidth - 16;
-        canvas.height = canvas.parentElement.clientHeight - 30;
+        canvas.width = canvas.parentElement.clientWidth - 12;
+        canvas.height = canvas.parentElement.clientHeight - 25;
 
         const W = canvas.width;
         const H = canvas.height;
-        const padL = 35, padR = 15, padT = 20, padB = 25;
+        const padL = 30, padR = 15, padT = 15, padB = 20;
 
         ctx.clearRect(0, 0, W, H);
 
@@ -445,43 +461,39 @@
         function getX(h) { return padL + (h / 23) * (W - padL - padR); }
         function getY(v) { return H - padB - (v / maxVal) * (H - padT - padB); }
 
-        // Lưới ngang
         ctx.strokeStyle = "#f1f5f9"; ctx.lineWidth = 1;
         for (let v = 0; v <= maxVal; v += 0.4) {
             let y = getY(v);
             ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
-            ctx.fillStyle = "#94a3b8"; ctx.font = "9px sans-serif";
-            ctx.fillText(v.toFixed(1), 8, y + 3);
+            ctx.fillStyle = "#94a3b8"; ctx.font = "8px sans-serif";
+            ctx.fillText(v.toFixed(1), 5, y + 3);
         }
 
-        // Nhãn x
         ctx.textAlign = "center";
         for (let h = 0; h < 24; h += 3) {
             let x = getX(h);
             let hStr = (h < 10 ? '0' + h : '' + h) + 'h';
-            ctx.fillStyle = "#94a3b8"; ctx.font = "9px sans-serif";
-            ctx.fillText(hStr, x, H - 8);
+            ctx.fillStyle = "#94a3b8"; ctx.font = "8px sans-serif";
+            ctx.fillText(hStr, x, H - 5);
         }
 
-        // Vẽ 3 đường Pattern với màu sắc đặc trưng
         patternsData.forEach((patObj, pIdx) => {
             ctx.beginPath();
             ctx.moveTo(getX(0), getY(patObj.values[0]));
             for (let h = 1; h < 24; h++) ctx.lineTo(getX(h), getY(patObj.values[h]));
             
             ctx.strokeStyle = patObj.color;
-            ctx.lineWidth = pIdx === activePatternIdx ? 2.8 : 1.2;
+            ctx.lineWidth = pIdx === activePatternIdx ? 2.5 : 1.2;
             if (pIdx !== activePatternIdx) ctx.setLineDash([4, 3]);
             else ctx.setLineDash([]);
             
             ctx.stroke();
             ctx.setLineDash([]);
 
-            // Điểm nút
             for (let h = 0; h < 24; h++) {
                 let x = getX(h);
                 let y = getY(patObj.values[h]);
-                ctx.beginPath(); ctx.arc(x, y, pIdx === activePatternIdx ? 3.5 : 2, 0, Math.PI * 2);
+                ctx.beginPath(); ctx.arc(x, y, pIdx === activePatternIdx ? 3 : 1.8, 0, Math.PI * 2);
                 ctx.fillStyle = patObj.color; ctx.fill();
             }
         });
@@ -567,7 +579,6 @@
         const qOut3Ngd = parseFloat(document.getElementById('q_out3').value) || 0;
         const qOut4Ngd = parseFloat(document.getElementById('q_out4').value) || 0;
 
-        // LẤY C_T THEO PATTERN GÁN CHO TỪNG NÚT
         const pIdx2 = parseInt(document.getElementById('pat_node2').value) || 0;
         const pIdx3 = parseInt(document.getElementById('pat_node3').value) || 0;
         const pIdx4 = parseInt(document.getElementById('pat_node4').value) || 0;
@@ -667,7 +678,8 @@
 
         const W = canvas.width;
         const H = canvas.height;
-        const padL = 55, padR = 30, padT = 75, padB = 75;
+        // TĂNG LỀ PHẢI PADR ĐỂ NÚT 4 KHÔNG BỊ TRÀN CHỮ
+        const padL = 55, padR = 50, padT = 75, padB = 75;
 
         ctx.clearRect(0, 0, W, H);
 
@@ -714,7 +726,7 @@
         ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 2.5; ctx.setLineDash([6, 4]); ctx.stroke();
         ctx.setLineDash([]);
 
-        // THÔNG SỐ CÁC ĐOẠN ỐNG
+        // THÔNG SỐ CÁC ĐOẠN ỐNG - ĐỔI SANG H_F SUB
         for (let i = 0; i < 3; i++) {
             let xMid = (getX(nodes[i].dist) + getX(nodes[i+1].dist)) / 2;
             let yHMid = (getY(nodes[i].H) + getY(nodes[i+1].H)) / 2;
@@ -725,7 +737,7 @@
 
             ctx.fillStyle = "#005a9e"; ctx.fillText(`Q = ${segInfo.q.toFixed(1)} m³/h`, xMid, yHMid + 22);
             ctx.fillStyle = "#15803d"; ctx.fillText(`v = ${segInfo.v.toFixed(2)} m/s`, xMid, yHMid + 36);
-            ctx.fillStyle = "#b91c1c"; ctx.fillText(`h_f = ${segInfo.hf.toFixed(2)} m`, xMid, yHMid + 50);
+            ctx.fillStyle = "#b91c1c"; ctx.fillText(`H_f = ${segInfo.hf.toFixed(2)} m`, xMid, yHMid + 50);
         }
 
         // ĐƯỜNG TỔNG TOÀN TUYẾN
@@ -749,7 +761,7 @@
         ctx.fillStyle = "#b91c1c"; ctx.textAlign = "center";
         ctx.fillText(totalText, (x0 + x3)/2, topY + 4);
 
-        // HIỂN THỊ NÚT
+        // HIỂN THỊ NÚT VỚI KHOẢNG CÁCH NHÃN VÀ CĂN LỀ NÚT 4 AN TOÀN
         nodes.forEach((n) => {
             let x = getX(n.dist);
             let yZ = getY(n.z);
@@ -761,6 +773,7 @@
             ctx.beginPath(); ctx.arc(x, yZ, 5, 0, Math.PI * 2); ctx.fillStyle = "#dc2626"; ctx.fill();
             ctx.beginPath(); ctx.arc(x, yH, 4, 0, Math.PI * 2); ctx.fillStyle = "#0284c7"; ctx.fill();
 
+            // VÒNG TRÒN NÚT
             let circleY = H - padB + 18;
             ctx.beginPath(); ctx.arc(x, circleY, 9, 0, Math.PI * 2);
             ctx.fillStyle = "#ffffff"; ctx.fill();
@@ -769,24 +782,37 @@
             ctx.fillStyle = "#005a36"; ctx.font = "bold 11px sans-serif"; ctx.textAlign = "center";
             ctx.fillText(n.id, x, circleY + 4);
 
+            // ĐẨY HỞ KHOẢNG CÁCH "ĐIỂM ĐẦU" VÀ "ĐIỂM CUỐI" DƯỚI NÚT
             if (n.label) {
                 ctx.font = "10px sans-serif"; ctx.fillStyle = "#005a36";
-                ctx.fillText(n.label, x, circleY + 17);
+                ctx.fillText(n.label, x, circleY + 20); // Đã đẩy rộng thêm khoảng cách
             }
 
-            let lineStartY = n.label ? circleY + 22 : circleY + 12;
+            let lineStartY = n.label ? circleY + 25 : circleY + 12;
             ctx.beginPath(); ctx.moveTo(x, lineStartY); ctx.lineTo(x, H - padB + 48);
             ctx.strokeStyle = "#94a3b8"; ctx.lineWidth = 1; ctx.setLineDash([2, 2]); ctx.stroke(); ctx.setLineDash([]);
 
             ctx.font = "10px sans-serif"; ctx.fillStyle = "#475569";
-            ctx.fillText(`Z = ${n.z}m`, x, H - padB + 58);
-
-            if (n.qOutH > 0) {
-                ctx.fillStyle = "#b91c1c";
-                ctx.fillText(`Q_{n-${n.id}} = ${n.qOutH.toFixed(1)}m³/h`, x, H - padB + 70);
+            
+            // CĂN LỀ RIÊNG NÚT CUỐI ĐỂ KHÔNG BỊ TRÀN KHUNG
+            if (n.id === "4") {
+                ctx.textAlign = "right";
+                ctx.fillText(`Z = ${n.z}m`, x + 15, H - padB + 58);
+                if (n.qOutH > 0) {
+                    ctx.fillStyle = "#b91c1c";
+                    ctx.fillText(`Q_{n-4} = ${n.qOutH.toFixed(1)} m³/h`, x + 15, H - padB + 70);
+                }
+            } else {
+                ctx.textAlign = "center";
+                ctx.fillText(`Z = ${n.z}m`, x, H - padB + 58);
+                if (n.qOutH > 0) {
+                    ctx.fillStyle = "#b91c1c";
+                    ctx.fillText(`Q_{n-${n.id}} = ${n.qOutH.toFixed(1)} m³/h`, x, H - padB + 70);
+                }
             }
 
             ctx.fillStyle = n.p < 0 ? "#dc2626" : "#0284c7"; ctx.font = "bold 11px sans-serif";
+            ctx.textAlign = "center";
             ctx.fillText(`P=${n.p.toFixed(1)}m`, x, yH - 8);
         });
 
@@ -806,6 +832,9 @@
         updatePipeList(1);
         updatePipeList(2);
         updatePipeList(3);
+        onQInputChange(2);
+        onQInputChange(3);
+        onQInputChange(4);
         calculateProfile();
     };
 
