@@ -80,7 +80,6 @@
         input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; }
 
-        /* TỐI ƯU Ô VÀ CHỮ PATTERN */
         .seg-input-card input { width: 75px; padding: 2px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 0.72rem; text-align: center; outline: none; background: #fff; height: 22px; }
         .seg-input-card select { width: 110px; padding: 1px 2px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 0.71rem; text-align: center; outline: none; background: #fff; height: 22px; text-overflow: ellipsis; }
 
@@ -90,7 +89,6 @@
 
         .footer { padding: 8px 12px; font-size: 0.72rem; color: #64748b; background: #fff; border-top: 1px solid var(--border-color); margin-top: 10px; display: flex; justify-content: space-between; }
 
-        /* MẶC ĐỊNH XOAY NGANG TRÊN ĐIỆN THOẠI */
         @media screen and (max-width: 768px) and (orientation: portrait) {
             body::before {
                 content: "📱 Vui lòng xoay ngang điện thoại để có khung nhìn tối ưu nhất!";
@@ -125,9 +123,10 @@
                 <button class="tab-btn" id="tab_2" onclick="switchPatternTab(2)">Pattern 3 (Đặc Thù/Nông Thôn)</button>
             </div>
             
-            <div style="margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+            <!-- MỞ RỘNG Ô TÊN GỌI TỚI 320PX VA DỄ DÀNG THAY ĐỔI TÊN PATTERN -->
+            <div style="margin-bottom:6px; display:flex; align-items:center; gap:8px;">
                 <span style="font-size:0.75rem; font-weight:bold; color:#334155;">Tên gọi:</span>
-                <input type="text" id="pattern_name_input" style="padding:2px 4px; font-size:0.75rem; border:1px solid #cbd5e1; border-radius:3px; width:200px;" onchange="updatePatternName(this.value)">
+                <input type="text" id="pattern_name_input" style="padding:3px 6px; font-size:0.78rem; font-weight:bold; border:1px solid #cbd5e1; border-radius:4px; width:320px;" oninput="updatePatternName(this.value)">
             </div>
 
             <div class="pattern-layout">
@@ -234,7 +233,7 @@
 
                     <div class="node-input-header">DỮ LIỆU NÚT 2</div>
                     <div class="input-row"><label>Z<sub>2</sub> (m):</label><input type="number" id="z2" value="22.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>n-2 TB</sub> (m³/ngđ):</label><input type="number" id="q_out2" value="0" onchange="onQInputChange(2)"></div>
+                    <div class="input-row"><label>Q<sub>n-2</sub> (m³/ngđ):</label><input type="number" id="q_out2" value="0" onchange="onQInputChange(2)"></div>
                     <div class="input-row" id="row_pat_2" style="display:none;">
                         <label>Pattern:</label>
                         <select id="pat_node2" onchange="onNodePatternChange(2)"></select>
@@ -266,7 +265,7 @@
 
                     <div class="node-input-header">DỮ LIỆU NÚT 3</div>
                     <div class="input-row"><label>Z<sub>3</sub> (m):</label><input type="number" id="z3" value="3.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>n-3 TB</sub> (m³/ngđ):</label><input type="number" id="q_out3" value="0" onchange="onQInputChange(3)"></div>
+                    <div class="input-row"><label>Q<sub>n-3</sub> (m³/ngđ):</label><input type="number" id="q_out3" value="0" onchange="onQInputChange(3)"></div>
                     <div class="input-row" id="row_pat_3" style="display:none;">
                         <label>Pattern:</label>
                         <select id="pat_node3" onchange="onNodePatternChange(3)"></select>
@@ -280,7 +279,7 @@
 
                     <div class="node-input-header" style="margin-top: 2px;">DỮ LIỆU NÚT 4</div>
                     <div class="input-row"><label>Z<sub>4</sub> điểm cuối (m):</label><input type="number" id="z4" value="3.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>n-4 TB</sub> (m³/ngđ):</label><input type="number" id="q_out4" value="10000" onchange="onQInputChange(4)"></div>
+                    <div class="input-row"><label>Q<sub>n-4</sub> (m³/ngđ):</label><input type="number" id="q_out4" value="10000" onchange="onQInputChange(4)"></div>
                     <div class="input-row" id="row_pat_4">
                         <label>Pattern:</label>
                         <select id="pat_node4" onchange="onNodePatternChange(4)"></select>
@@ -382,6 +381,7 @@
 
     function updatePatternName(newName) {
         patternsData[activePatternIdx].name = newName;
+        document.getElementById(`tab_${activePatternIdx}`).innerText = newName;
         updatePatternSelectBoxes();
         drawPatternChart();
     }
@@ -410,7 +410,6 @@
         });
     }
 
-    // ẨN/HIỂN THỊ DÒNG PATTERN KHI NHU CẦU BẰNG 0 HOẶC KHÁC 0
     function onQInputChange(nodeIdx) {
         const qVal = parseFloat(document.getElementById(`q_out${nodeIdx}`).value) || 0;
         const rowPat = document.getElementById(`row_pat_${nodeIdx}`);
@@ -635,7 +634,9 @@
         const totalLengthKm = (l12 + l23 + l34) / 1000;
         document.getElementById('res_total_length').innerText = totalLengthKm.toFixed(1) + " km";
         document.getElementById('res_total_q').innerText = q12.toFixed(1) + " m³/h";
-        document.getElementById('res_hf_total').innerText = hfTotal.toFixed(2) + " m";
+        
+        // CHỈNH CHỮ HF TRÊN KHUNG TIÊU ĐỀ THÀNH SUBSCRIPT CHUẨN
+        document.getElementById('res_hf_total').innerHTML = hfTotal.toFixed(2) + " m";
 
         const warnBox = document.getElementById('warn_box');
         let minP = Math.min(p2, p3, p4);
@@ -678,7 +679,6 @@
 
         const W = canvas.width;
         const H = canvas.height;
-        // TĂNG LỀ PHẢI PADR ĐỂ NÚT 4 KHÔNG BỊ TRÀN CHỮ
         const padL = 55, padR = 50, padT = 75, padB = 75;
 
         ctx.clearRect(0, 0, W, H);
@@ -726,7 +726,7 @@
         ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 2.5; ctx.setLineDash([6, 4]); ctx.stroke();
         ctx.setLineDash([]);
 
-        // THÔNG SỐ CÁC ĐOẠN ỐNG - ĐỔI SANG H_F SUB
+        // THÔNG SỐ CÁC ĐOẠN ỐNG - ĐÃ SỬA CHỮ H_F THÀNH H_F SUB TRÊN ĐỒ THỊ
         for (let i = 0; i < 3; i++) {
             let xMid = (getX(nodes[i].dist) + getX(nodes[i+1].dist)) / 2;
             let yHMid = (getY(nodes[i].H) + getY(nodes[i+1].H)) / 2;
@@ -737,10 +737,17 @@
 
             ctx.fillStyle = "#005a9e"; ctx.fillText(`Q = ${segInfo.q.toFixed(1)} m³/h`, xMid, yHMid + 22);
             ctx.fillStyle = "#15803d"; ctx.fillText(`v = ${segInfo.v.toFixed(2)} m/s`, xMid, yHMid + 36);
-            ctx.fillStyle = "#b91c1c"; ctx.fillText(`H_f = ${segInfo.hf.toFixed(2)} m`, xMid, yHMid + 50);
+            
+            // ĐÃ KHẮC PHỤC HIỂN THỊ CHỮ H_F THÀNH Hf SUB CHUẨN
+            ctx.fillStyle = "#b91c1c";
+            ctx.fillText(`H`, xMid - 18, yHMid + 50);
+            ctx.font = "bold 9px sans-serif";
+            ctx.fillText(`f`, xMid - 12, yHMid + 53);
+            ctx.font = "bold 11px sans-serif";
+            ctx.fillText(` = ${segInfo.hf.toFixed(2)} m`, xMid + 8, yHMid + 50);
         }
 
-        // ĐƯỜNG TỔNG TOÀN TUYẾN
+        // ĐƯỜNG TỔNG TOÀN TUYẾN - SỬA KHUNG H_F TIÊU ĐỀ
         let topY = 22;
         let x0 = getX(0);
         let x3 = getX(nodes[3].dist);
@@ -751,17 +758,27 @@
         ctx.beginPath(); ctx.moveTo(x0 + 6, topY - 4); ctx.lineTo(x0, topY); ctx.lineTo(x0 + 6, topY + 4); ctx.fillStyle = "#94a3b8"; ctx.fill();
         ctx.beginPath(); ctx.moveTo(x3 - 6, topY - 4); ctx.lineTo(x3, topY); ctx.lineTo(x3 - 6, topY + 4); ctx.fillStyle = "#94a3b8"; ctx.fill();
 
-        let totalText = `LÚC ${data.hourText} | L = ${data.totalLengthKm.toFixed(1)} km | Q = ${data.totalQ.toFixed(1)} m³/h | H_f = ${data.totalHf.toFixed(2)} m`;
+        let tPart1 = `LÚC ${data.hourText} | L = ${data.totalLengthKm.toFixed(1)} km | Q = ${data.totalQ.toFixed(1)} m³/h | H`;
+        let tPart2 = `f = ${data.totalHf.toFixed(2)} m`;
+        
         ctx.font = "bold 11.5px sans-serif";
-        let totalWidth = ctx.measureText(totalText).width;
+        let w1 = ctx.measureText(tPart1).width;
+        let w2 = ctx.measureText(tPart2).width;
+        let totalW = w1 + w2 + 5;
+
+        let startX = (x0 + x3)/2 - totalW/2;
 
         ctx.fillStyle = "#ffffff";
-        ctx.fillRect((x0 + x3)/2 - totalWidth/2 - 4, topY - 8, totalWidth + 8, 16);
+        ctx.fillRect(startX - 4, topY - 8, totalW + 8, 16);
 
-        ctx.fillStyle = "#b91c1c"; ctx.textAlign = "center";
-        ctx.fillText(totalText, (x0 + x3)/2, topY + 4);
+        ctx.fillStyle = "#b91c1c"; ctx.textAlign = "left";
+        ctx.fillText(tPart1, startX, topY + 4);
+        ctx.font = "bold 9.5px sans-serif";
+        ctx.fillText(`f`, startX + w1 - 2, topY + 7);
+        ctx.font = "bold 11.5px sans-serif";
+        ctx.fillText(` = ${data.totalHf.toFixed(2)} m`, startX + w1 + 3, topY + 4);
 
-        // HIỂN THỊ NÚT VỚI KHOẢNG CÁCH NHÃN VÀ CĂN LỀ NÚT 4 AN TOÀN
+        // HIỂN THỊ CÁC NÚT VÀ CHỮ Q_{N-4} SỬA THÀNH N-4 SUB LỚN ĐẸP
         nodes.forEach((n) => {
             let x = getX(n.dist);
             let yZ = getY(n.z);
@@ -773,7 +790,6 @@
             ctx.beginPath(); ctx.arc(x, yZ, 5, 0, Math.PI * 2); ctx.fillStyle = "#dc2626"; ctx.fill();
             ctx.beginPath(); ctx.arc(x, yH, 4, 0, Math.PI * 2); ctx.fillStyle = "#0284c7"; ctx.fill();
 
-            // VÒNG TRÒN NÚT
             let circleY = H - padB + 18;
             ctx.beginPath(); ctx.arc(x, circleY, 9, 0, Math.PI * 2);
             ctx.fillStyle = "#ffffff"; ctx.fill();
@@ -782,10 +798,9 @@
             ctx.fillStyle = "#005a36"; ctx.font = "bold 11px sans-serif"; ctx.textAlign = "center";
             ctx.fillText(n.id, x, circleY + 4);
 
-            // ĐẨY HỞ KHOẢNG CÁCH "ĐIỂM ĐẦU" VÀ "ĐIỂM CUỐI" DƯỚI NÚT
             if (n.label) {
                 ctx.font = "10px sans-serif"; ctx.fillStyle = "#005a36";
-                ctx.fillText(n.label, x, circleY + 20); // Đã đẩy rộng thêm khoảng cách
+                ctx.fillText(n.label, x, circleY + 20);
             }
 
             let lineStartY = n.label ? circleY + 25 : circleY + 12;
@@ -794,20 +809,58 @@
 
             ctx.font = "10px sans-serif"; ctx.fillStyle = "#475569";
             
-            // CĂN LỀ RIÊNG NÚT CUỐI ĐỂ KHÔNG BỊ TRÀN KHUNG
             if (n.id === "4") {
                 ctx.textAlign = "right";
                 ctx.fillText(`Z = ${n.z}m`, x + 15, H - padB + 58);
                 if (n.qOutH > 0) {
                     ctx.fillStyle = "#b91c1c";
-                    ctx.fillText(`Q_{n-4} = ${n.qOutH.toFixed(1)} m³/h`, x + 15, H - padB + 70);
+                    // ĐÃ SỬA CHUỖI Q_{n-4} THÀNH ĐỊNH DẠNG Q_n-4 CHUẨN TOÁN HỌC
+                    let textQ = `Q`;
+                    let subText = `n-4`;
+                    let valText = ` = ${n.qOutH.toFixed(1)} m³/h`;
+
+                    ctx.font = "bold 10px sans-serif";
+                    let wQ = ctx.measureText(textQ).width;
+                    ctx.font = "bold 8px sans-serif";
+                    let wSub = ctx.measureText(subText).width;
+                    ctx.font = "10px sans-serif";
+                    let wVal = ctx.measureText(valText).width;
+
+                    let totalQW = wQ + wSub + wVal;
+                    let qStartX = x + 15 - totalQW;
+
+                    ctx.font = "bold 10px sans-serif";
+                    ctx.fillText(textQ, qStartX + wQ, H - padB + 70);
+                    ctx.font = "bold 8px sans-serif";
+                    ctx.fillText(subText, qStartX + wQ + wSub, H - padB + 72);
+                    ctx.font = "10px sans-serif";
+                    ctx.fillText(valText, qStartX + totalQW, H - padB + 70);
                 }
             } else {
                 ctx.textAlign = "center";
                 ctx.fillText(`Z = ${n.z}m`, x, H - padB + 58);
                 if (n.qOutH > 0) {
                     ctx.fillStyle = "#b91c1c";
-                    ctx.fillText(`Q_{n-${n.id}} = ${n.qOutH.toFixed(1)} m³/h`, x, H - padB + 70);
+                    let textQ = `Q`;
+                    let subText = `n-${n.id}`;
+                    let valText = ` = ${n.qOutH.toFixed(1)} m³/h`;
+
+                    ctx.font = "bold 10px sans-serif";
+                    let wQ = ctx.measureText(textQ).width;
+                    ctx.font = "bold 8px sans-serif";
+                    let wSub = ctx.measureText(subText).width;
+                    ctx.font = "10px sans-serif";
+                    let wVal = ctx.measureText(valText).width;
+
+                    let totalQW = wQ + wSub + wVal;
+                    let qStartX = x - totalQW / 2;
+
+                    ctx.font = "bold 10px sans-serif";
+                    ctx.fillText(textQ, qStartX + wQ, H - padB + 70);
+                    ctx.font = "bold 8px sans-serif";
+                    ctx.fillText(subText, qStartX + wQ + wSub, H - padB + 72);
+                    ctx.font = "10px sans-serif";
+                    ctx.fillText(valText, qStartX + totalQW, H - padB + 70);
                 }
             }
 
