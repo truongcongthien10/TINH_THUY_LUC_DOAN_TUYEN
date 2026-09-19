@@ -2,8 +2,8 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sơ Đồ Thủy Lực Tương Tác Trực Quan - HueWACO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sơ Đồ Thủy Lực Mô Phỏng 24h - HueWACO</title>
     <style>
         :root {
             --excel-green: #005a36;
@@ -17,62 +17,102 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg-color); color: var(--text-dark); padding: 15px; }
-        /* Tăng chiều rộng tổng thể để các cột rộng rãi hơn */
-        .container { max-width: 1200px; margin: 0 auto; background: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--border-color); }
-        .header-bar { background: var(--excel-green); color: #fff; text-align: center; padding: 14px 10px; font-size: 1.15rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
-        .content { padding: 15px 20px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg-color); color: var(--text-dark); padding: 8px; }
+        
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; background: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--border-color); }
+        .header-bar { background: var(--excel-green); color: #fff; text-align: center; padding: 12px 10px; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
+        .content { padding: 12px 15px; }
 
-        .section-title { font-weight: 700; color: #005a36; background: var(--excel-green-light); border-left: 4px solid var(--excel-green); padding: 8px 12px; margin: 12px 0 10px 0; font-size: 0.95rem; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+        .section-title { font-weight: 700; color: #005a36; background: var(--excel-green-light); border-left: 4px solid var(--excel-green); padding: 6px 10px; margin: 10px 0 8px 0; font-size: 0.9rem; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
 
-        .result-simple-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; text-align: center; }
-        .result-card { background: #f0f9ff; border: 1px solid #bae6fd; padding: 10px; border-radius: 6px; }
-        .result-card-title { font-size: 0.8rem; color: #0369a1; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; }
-        .result-card-value { font-size: 1.25rem; font-weight: bold; color: #0284c7; }
+        /* KHU VỰC ĐIỀU KHIỂN MÔ PHỎNG 24H */
+        .simulation-bar { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+        .sim-time-display { font-size: 1.1rem; font-weight: bold; color: #0284c7; min-width: 110px; }
+        .sim-slider-container { flex: 1; min-width: 200px; display: flex; align-items: center; gap: 8px; }
+        .sim-slider { width: 100%; height: 8px; border-radius: 4px; outline: none; background: #cbd5e1; cursor: pointer; accent-color: #0284c7; }
+        
+        .btn-sim { background: #0284c7; color: #fff; border: none; padding: 6px 14px; font-size: 0.85rem; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .btn-sim:hover { background: #0369a1; }
+        .btn-sim-alt { background: #005a36; }
+        .btn-sim-alt:hover { background: #004428; }
 
-        .warning-box { margin-top: 10px; padding: 10px 14px; border-radius: 4px; font-size: 0.85rem; line-height: 1.4; display: none; }
+        .result-simple-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; }
+        .result-card { background: #f0f9ff; border: 1px solid #bae6fd; padding: 8px; border-radius: 6px; }
+        .result-card-title { font-size: 0.78rem; color: #0369a1; font-weight: 700; text-transform: uppercase; }
+        .result-card-value { font-size: 1.2rem; font-weight: bold; color: #0284c7; }
+
+        .warning-box { margin-top: 8px; padding: 8px 12px; border-radius: 4px; font-size: 0.82rem; line-height: 1.4; display: none; }
         .warn-red { background: #fef2f2; border-left: 4px solid #dc2626; color: #991b1b; }
         .warn-green { background: #f0fdf4; border-left: 4px solid #16a34a; color: #166534; }
 
-        .diagram-wrapper { position: relative; width: 100%; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; margin-top: 10px; }
-        canvas { width: 100%; height: 420px; background: #ffffff; display: block; }
+        .diagram-wrapper { position: relative; width: 100%; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px; margin-top: 8px; }
+        canvas { width: 100%; height: 380px; background: #ffffff; display: block; }
 
-        /* NỚI RỘNG KHANG GIỮA CÁC CỘT VÀ TĂNG RỘNG Ô CHỌN */
-        .inputs-overlay { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; padding-top: 10px; border-top: 1px dashed #cbd5e1; }
-        .seg-input-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 8px; }
-        .seg-input-header { font-size: 0.82rem; font-weight: bold; color: #005a36; margin-bottom: 6px; text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 3px; }
-        .node-input-header { font-size: 0.8rem; font-weight: bold; color: #b91c1c; margin: 8px 0 6px 0; text-align: center; border-top: 1px dashed #cbd5e1; border-bottom: 1px solid #e2e8f0; padding: 3px 0; }
+        .inputs-overlay { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed #cbd5e1; }
+        .seg-input-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px; }
+        .seg-input-header { font-size: 0.8rem; font-weight: bold; color: #005a36; margin-bottom: 6px; text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 3px; }
+        .node-input-header { font-size: 0.78rem; font-weight: bold; color: #b91c1c; margin: 8px 0 4px 0; text-align: center; border-top: 1px dashed #cbd5e1; border-bottom: 1px solid #e2e8f0; padding: 2px 0; }
 
-        .input-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; font-size: 0.76rem; }
+        .input-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; font-size: 0.75rem; }
         .input-row label { color: #334155; font-weight: 600; white-space: nowrap; }
         
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; }
 
-        /* TĂNG CHIỀU RỘNG Ô CHỌN LÊN 90PX VÀ GIẢM PADDING ĐỂ HIỂN THỊ ĐỦ CHỮ "GANG DẺO" */
-        .seg-input-card input, .seg-input-card select { width: 90px; padding: 3px 2px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.78rem; text-align: center; outline: none; background: #fff; }
+        .seg-input-card input, .seg-input-card select { width: 85px; padding: 3px 2px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.76rem; text-align: center; outline: none; background: #fff; height: 24px; }
         .seg-input-card input:focus, .seg-input-card select:focus { border-color: #d97706; background: #fff9c4; }
 
-        .sub-info { font-size: 0.72rem; color: #166534; font-weight: 600; text-align: right; margin-top: -1px; margin-bottom: 4px; }
+        .sub-info { font-size: 0.7rem; color: #166534; font-weight: 600; text-align: right; margin-bottom: 2px; }
 
-        .btn-calc { width: 100%; background: #0284c7; color: #fff; border: none; padding: 12px; font-size: 1rem; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 12px; text-transform: uppercase; }
+        .btn-calc { width: 100%; background: #0284c7; color: #fff; border: none; padding: 10px; font-size: 0.95rem; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; text-transform: uppercase; }
         .btn-calc:hover { background: #0369a1; }
 
-        .footer { padding: 12px 20px; font-size: 0.8rem; color: #64748b; background: #fff; border-top: 1px solid var(--border-color); margin-top: 15px; display: flex; justify-content: space-between; }
+        /* BẢNG CẤU HÌNH HE SO PATTERN 24H (MODAL/POPUP THU GỌN) */
+        .pattern-panel { display: none; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-top: 8px; }
+        .pattern-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; text-align: center; font-size: 0.7rem; }
+        .pattern-box { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 3px; padding: 4px 2px; }
+        .pattern-box input { width: 100%; border: 1px solid #cbd5e1; border-radius: 2px; font-size: 0.7rem; text-align: center; }
+
+        .footer { padding: 10px 15px; font-size: 0.75rem; color: #64748b; background: #fff; border-top: 1px solid var(--border-color); margin-top: 12px; display: flex; justify-content: space-between; }
+
+        @media screen and (orientation: portrait) {
+            body::before {
+                content: "📱 Xoay ngang màn hình điện thoại để trải nghiệm đồ thị tốt nhất!";
+                display: block; background: #fef3c7; color: #92400e; text-align: center; padding: 5px; font-size: 0.75rem; font-weight: bold; border-bottom: 1px solid #fcd34d; margin-bottom: 5px;
+            }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header-bar">Tính Toán Thủy Lực & Sơ Đồ Trắc Dọc Tương Tác</div>
+    <div class="header-bar">TÍNH TOÁN THỦY LỰC & MÔ PHỎNG NĂNG ĐỘNG 24H - HUEWACO</div>
     
     <div class="content">
-        <!-- I. KẾT QUẢ TỔNG THỂ -->
+        <!-- KHU VỰC THỜI GIAN VÀ NÚT CHẠY MÔ PHỎNG -->
+        <div class="simulation-bar">
+            <div class="sim-time-display" id="simTimeText">⏰ Giờ: 08:00</div>
+            <div class="sim-slider-container">
+                <span style="font-size:0.75rem; font-weight:bold; color:#475569;">00h</span>
+                <input type="range" min="0" max="23" value="8" class="sim-slider" id="timeSlider" oninput="onSliderChange(this.value)">
+                <span style="font-size:0.75rem; font-weight:bold; color:#475569;">23h</span>
+            </div>
+            <button class="btn-sim" id="btnPlay" onclick="togglePlay()"><span id="playIcon">▶</span> Mô Phỏng 24h</button>
+            <button class="btn-sim btn-sim-alt" onclick="togglePatternPanel()">⚙️ Chỉnh Pattern 24h</button>
+        </div>
+
+        <!-- BẢNG CHỈNH SỬA CẮT MẪU PATTERN 24 HỜ -->
+        <div class="pattern-panel" id="patternPanel">
+            <div style="font-weight:bold; font-size:0.8rem; color:#005a36; margin-bottom:6px;">BẢNG HỆ SỐ NHU CẦU DÙNG NƯỚC THEO GIỜ (HOURLY PATTERN C<sub>t</sub>):</div>
+            <div class="pattern-grid" id="patternGrid"></div>
+        </div>
+
+        <!-- I. KẾT QUẢ TỔNG THỂ CỦA GIỜ ĐANG CHỌN -->
         <div class="section-title">
-            <span>I. Kết quả Thủy lực Tổng thể</span>
-            <span style="font-weight: normal; font-size: 0.82rem; color: #334155; text-transform: none;">
-                Hệ số K<sub>giờ</sub>: <input type="number" id="k_gio" value="1.4" step="0.05" style="width:50px; height:24px; padding:2px; text-align:center;" onchange="calculateProfile()">
+            <span>I. Kết quả Thủy lực lúc <span id="lblCurrentHour" style="color:#0284c7;">08:00</span></span>
+            <span style="font-weight: normal; font-size: 0.8rem; color: #334155; text-transform: none;">
+                Hệ số giờ hiện tại C<sub>t</sub>: <b id="lblCurrentCt" style="color:#b91c1c;">1.30</b>
             </span>
         </div>
 
@@ -82,7 +122,7 @@
                 <div class="result-card-value" id="res_total_length">- km</div>
             </div>
             <div class="result-card">
-                <div class="result-card-title">Lưu lượng tổng Q<sub>giờ</sub></div>
+                <div class="result-card-title">Lưu lượng truyền tải Q<sub>12</sub></div>
                 <div class="result-card-value" id="res_total_q">- m³/h</div>
             </div>
             <div class="result-card">
@@ -100,7 +140,7 @@
             <canvas id="profileCanvas"></canvas>
 
             <div class="inputs-overlay">
-                <!-- CỘT 1: ĐOẠN 1-2 & NÚT 1 -->
+                <!-- CỘT 1 -->
                 <div class="seg-input-card">
                     <div class="seg-input-header">ĐOẠN 1 - 2</div>
                     <div class="input-row"><label>Chiều dài L (m):</label><input type="number" id="l12" value="10000" onchange="calculateProfile()"></div>
@@ -128,7 +168,7 @@
                     <div class="input-row"><label>Áp lực P<sub>1</sub> (m):</label><input type="number" id="p1_avail" value="42.0" onchange="calculateProfile()"></div>
                 </div>
 
-                <!-- CỘT 2: ĐOẠN 2-3 & NÚT 2 -->
+                <!-- CỘT 2 -->
                 <div class="seg-input-card">
                     <div class="seg-input-header">ĐOẠN 2 - 3</div>
                     <div class="input-row"><label>Chiều dài L (m):</label><input type="number" id="l23" value="5000" onchange="calculateProfile()"></div>
@@ -153,10 +193,10 @@
 
                     <div class="node-input-header">DỮ LIỆU NÚT 2</div>
                     <div class="input-row"><label>Z<sub>2</sub> (m):</label><input type="number" id="z2" value="22.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>rút 2</sub> (m³/ngđ):</label><input type="number" id="q_out2" value="0" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Q<sub>n-2 TB</sub> (m³/ngđ):</label><input type="number" id="q_out2" value="0" onchange="calculateProfile()"></div>
                 </div>
 
-                <!-- CỘT 3: ĐOẠN 3-4 & NÚT 3 -->
+                <!-- CỘT 3 -->
                 <div class="seg-input-card">
                     <div class="seg-input-header">ĐOẠN 3 - 4</div>
                     <div class="input-row"><label>Chiều dài L (m):</label><input type="number" id="l34" value="10000" onchange="calculateProfile()"></div>
@@ -181,17 +221,17 @@
 
                     <div class="node-input-header">DỮ LIỆU NÚT 3</div>
                     <div class="input-row"><label>Z<sub>3</sub> (m):</label><input type="number" id="z3" value="3.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>rút 3</sub> (m³/ngđ):</label><input type="number" id="q_out3" value="0" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Q<sub>n-3 TB</sub> (m³/ngđ):</label><input type="number" id="q_out3" value="0" onchange="calculateProfile()"></div>
                 </div>
 
-                <!-- CỘT 4: NÚT 4 (ĐIỂM CUỐI) -->
+                <!-- CỘT 4 -->
                 <div class="seg-input-card" style="background: #f0fdf4; border-color: #bbf7d0;">
                     <div class="seg-input-header" style="color: #15803d; border-bottom-color: #bbf7d0;">ĐIỂM CUỐI TUYẾN</div>
-                    <p style="font-size: 0.72rem; color: #475569; text-align: center; margin-bottom: 8px;">Dữ liệu điểm xả/nút cuối toàn tuyến</p>
+                    <p style="font-size: 0.65rem; color: #475569; text-align: center; margin-bottom: 4px;">Dữ liệu nút xả cuối toàn tuyến</p>
 
                     <div class="node-input-header" style="margin-top: 2px;">DỮ LIỆU NÚT 4</div>
                     <div class="input-row"><label>Z<sub>4</sub> điểm cuối (m):</label><input type="number" id="z4" value="3.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>rút 4</sub> (m³/ngđ):</label><input type="number" id="q_out4" value="10000" onchange="calculateProfile()"></div>
+                    <div class="input-row"><label>Q<sub>n-4 TB</sub> (m³/ngđ):</label><input type="number" id="q_out4" value="10000" onchange="calculateProfile()"></div>
                 </div>
             </div>
 
@@ -201,11 +241,23 @@
 
     <div class="footer">
         <div>Copyright © <b>PHÒNG KỸ THUẬT - HueWACO</b></div>
-        <div>Hệ thống tính toán thủy lực tuyến ống © 2026</div>
+        <div>Hệ thống tính toán thủy lực © 2026</div>
     </div>
 </div>
 
 <script>
+    // CHUỖI 24 HỆ SỐ MẶC ĐỊNH CHO PATTERN C_T THEO GIỜ
+    let defaultPattern = [
+        0.40, 0.35, 0.30, 0.30, 0.45, 0.85, 
+        1.40, 1.30, 1.15, 1.05, 1.10, 1.10, 
+        1.00, 0.95, 0.90, 1.05, 1.35, 1.50, 
+        1.40, 1.20, 0.95, 0.75, 0.60, 0.45
+    ];
+
+    let currentHour = 8;
+    let isPlaying = false;
+    let timerId = null;
+
     const RAW_SIZES = [50, 63, 75, 90, 110, 125, 140, 160, 180, 200, 225, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710, 800, 900, 1000, 1200];
 
     function getPipeDb(mat, pn) {
@@ -235,6 +287,57 @@
     }
 
     const MATERIAL_C = { hdpe: 140, ductile: 130, inox: 140 };
+
+    function initPatternGrid() {
+        const grid = document.getElementById('patternGrid');
+        grid.innerHTML = '';
+        for (let h = 0; h < 24; h++) {
+            let hStr = h < 10 ? '0' + h : '' + h;
+            let box = document.createElement('div');
+            box.className = 'pattern-box';
+            box.innerHTML = `
+                <div>${hStr}h</div>
+                <input type="number" id="pat_${h}" value="${defaultPattern[h]}" step="0.05" onchange="updatePatternVal(${h}, this.value)">
+            `;
+            grid.appendChild(box);
+        }
+    }
+
+    function updatePatternVal(h, val) {
+        defaultPattern[h] = parseFloat(val) || 1.0;
+        calculateProfile();
+    }
+
+    function togglePatternPanel() {
+        const p = document.getElementById('patternPanel');
+        p.style.display = p.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function onSliderChange(h) {
+        currentHour = parseInt(h);
+        document.getElementById('simTimeText').innerText = `⏰ Giờ: ${currentHour < 10 ? '0' + currentHour : currentHour}:00`;
+        calculateProfile();
+    }
+
+    function togglePlay() {
+        isPlaying = !isPlaying;
+        const btn = document.getElementById('btnPlay');
+        const icon = document.getElementById('playIcon');
+        
+        if (isPlaying) {
+            btn.style.background = '#d83b01';
+            icon.innerText = '⏸';
+            timerId = setInterval(() => {
+                currentHour = (currentHour + 1) % 24;
+                document.getElementById('timeSlider').value = currentHour;
+                onSliderChange(currentHour);
+            }, 1000);
+        } else {
+            btn.style.background = '#0284c7';
+            icon.innerText = '▶';
+            clearInterval(timerId);
+        }
+    }
 
     function updatePipeList(segIdx) {
         const segStr = segIdx === 1 ? '12' : segIdx === 2 ? '23' : '34';
@@ -277,20 +380,25 @@
             document.getElementById(`sub${s}`).innerHTML = `D<sub>in</sub>: <b>${dinVal.toFixed(1)}</b> mm`;
         });
 
+        const Ct = defaultPattern[currentHour];
+        const hourStr = (currentHour < 10 ? '0' + currentHour : currentHour) + ':00';
+
+        document.getElementById('lblCurrentHour').innerText = hourStr;
+        document.getElementById('lblCurrentCt').innerText = Ct.toFixed(2);
+
         const z1 = parseFloat(document.getElementById('z1').value) || 0;
         const z2 = parseFloat(document.getElementById('z2').value) || 0;
         const z3 = parseFloat(document.getElementById('z3').value) || 0;
         const z4 = parseFloat(document.getElementById('z4').value) || 0;
 
-        const kGio = parseFloat(document.getElementById('k_gio').value) || 1.4;
-
         const qOut2Ngd = parseFloat(document.getElementById('q_out2').value) || 0;
         const qOut3Ngd = parseFloat(document.getElementById('q_out3').value) || 0;
         const qOut4Ngd = parseFloat(document.getElementById('q_out4').value) || 0;
 
-        const qOut2 = (qOut2Ngd * kGio) / 24;
-        const qOut3 = (qOut3Ngd * kGio) / 24;
-        const qOut4 = (qOut4Ngd * kGio) / 24;
+        // TÍNH Q_GIỜ THEO HỆ SỐ PATTERN C_T CỦA GIỜ HIỆN TẠI
+        const qOut2 = (qOut2Ngd / 24) * Ct;
+        const qOut3 = (qOut3Ngd / 24) * Ct;
+        const qOut4 = (qOut4Ngd / 24) * Ct;
 
         const p1Avail = parseFloat(document.getElementById('p1_avail').value) || 0;
 
@@ -343,20 +451,20 @@
 
         if (minP < 0) {
             warnBox.className = "warning-box warn-red";
-            warnBox.innerHTML = `⚠️ <b>CẢNH BÁO NGUY HIỂM:</b> Xảy ra chân không/áp lực âm (P<sub>min</sub> = ${minP.toFixed(2)}m). Cần tăng áp lực bơm điểm đầu hoặc nâng cỡ ống.`;
+            warnBox.innerHTML = `⚠️ <b>CẢNH BÁO NGUY HIỂM TẠI GIỜ ${hourStr}:</b> Xảy ra chân không/áp lực âm (P<sub>min</sub> = ${minP.toFixed(2)}m). Cần nâng áp lực bơm hoặc nâng cỡ ống!`;
             warnBox.style.display = "block";
         } else {
             warnBox.className = "warning-box warn-green";
-            warnBox.innerHTML = `✅ <b>AN TOÀN THỦY LỰC:</b> Tất cả các nút đều đạt áp lực tự nhiên và thỏa mãn áp lực yêu cầu.`;
+            warnBox.innerHTML = `✅ <b>AN TOÀN THỦY LỰC LÚC ${hourStr}:</b> Tất cả các nút đều thỏa mãn áp lực dư duy trì dòng chảy.`;
             warnBox.style.display = "block";
         }
 
         drawProfileCanvas({
             nodes: [
-                { id: "1", label: "Điểm đầu", dist: 0, z: z1, H: H1, p: p1, qOutNgd: 0 },
-                { id: "2", label: "", dist: l12, z: z2, H: H2, p: p2, qOutNgd: qOut2Ngd },
-                { id: "3", label: "", dist: l12 + l23, z: z3, H: H3, p: p3, qOutNgd: qOut3Ngd },
-                { id: "4", label: "Điểm cuối", dist: l12 + l23 + l34, z: z4, H: H4, p: p4, qOutNgd: qOut4Ngd }
+                { id: "1", label: "Điểm đầu", dist: 0, z: z1, H: H1, p: p1, qOutH: 0 },
+                { id: "2", label: "", dist: l12, z: z2, H: H2, p: p2, qOutH: qOut2 },
+                { id: "3", label: "", dist: l12 + l23, z: z3, H: H3, p: p3, qOutH: qOut3 },
+                { id: "4", label: "Điểm cuối", dist: l12 + l23 + l34, z: z4, H: H4, p: p4, qOutH: qOut4 }
             ],
             segments: [
                 { q: q12, v: v12, hf: hf12 },
@@ -365,7 +473,8 @@
             ],
             totalLengthKm: totalLengthKm,
             totalQ: q12,
-            totalHf: hfTotal
+            totalHf: hfTotal,
+            hourText: hourStr
         });
     }
 
@@ -374,7 +483,7 @@
         const ctx = canvas.getContext('2d');
 
         canvas.width = canvas.parentElement.clientWidth;
-        canvas.height = 420;
+        canvas.height = 380;
 
         const W = canvas.width;
         const H = canvas.height;
@@ -436,7 +545,7 @@
 
             ctx.fillStyle = "#005a9e"; ctx.fillText(`Q = ${segInfo.q.toFixed(1)} m³/h`, xMid, yHMid + 22);
             ctx.fillStyle = "#15803d"; ctx.fillText(`v = ${segInfo.v.toFixed(2)} m/s`, xMid, yHMid + 36);
-            ctx.fillStyle = "#b91c1c"; ctx.fillText(`hf = ${segInfo.hf.toFixed(2)} m`, xMid, yHMid + 50);
+            ctx.fillStyle = "#b91c1c"; ctx.fillText(`h_f = ${segInfo.hf.toFixed(2)} m`, xMid, yHMid + 50);
         }
 
         // ĐƯỜNG TỔNG TOÀN TUYẾN
@@ -450,7 +559,7 @@
         ctx.beginPath(); ctx.moveTo(x0 + 6, topY - 4); ctx.lineTo(x0, topY); ctx.lineTo(x0 + 6, topY + 4); ctx.fillStyle = "#94a3b8"; ctx.fill();
         ctx.beginPath(); ctx.moveTo(x3 - 6, topY - 4); ctx.lineTo(x3, topY); ctx.lineTo(x3 - 6, topY + 4); ctx.fillStyle = "#94a3b8"; ctx.fill();
 
-        let totalText = `TỔNG TOÀN TUYẾN: L = ${data.totalLengthKm.toFixed(1)} km | Q = ${data.totalQ.toFixed(1)} m³/h | Hf = ${data.totalHf.toFixed(2)} m`;
+        let totalText = `LÚC ${data.hourText} | L = ${data.totalLengthKm.toFixed(1)} km | Q = ${data.totalQ.toFixed(1)} m³/h | H_f = ${data.totalHf.toFixed(2)} m`;
         ctx.font = "bold 11.5px sans-serif";
         let totalWidth = ctx.measureText(totalText).width;
 
@@ -492,9 +601,9 @@
             ctx.font = "10px sans-serif"; ctx.fillStyle = "#475569";
             ctx.fillText(`Z = ${n.z}m`, x, H - padB + 58);
 
-            if (n.qOutNgd > 0) {
+            if (n.qOutH > 0) {
                 ctx.fillStyle = "#b91c1c";
-                ctx.fillText(`Q = ${n.qOutNgd}m³/ngđ`, x, H - padB + 70);
+                ctx.fillText(`Q_{n-${n.id}} = ${n.qOutH.toFixed(1)}m³/h`, x, H - padB + 70);
             }
 
             ctx.fillStyle = n.p < 0 ? "#dc2626" : "#0284c7"; ctx.font = "bold 11px sans-serif";
@@ -512,6 +621,7 @@
     }
 
     window.onload = function() {
+        initPatternGrid();
         updatePipeList(1);
         updatePipeList(2);
         updatePipeList(3);
