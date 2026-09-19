@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mô hình thủy lực mạng đường ống cấp nước - HueWACO</title>
+    <title>Sơ Đồ Thủy Lực Đa Pattern 24h - HueWACO</title>
     <style>
         :root {
             --excel-green: #005a36;
@@ -40,7 +40,7 @@
         .pattern-panel { display: none; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-bottom: 10px; }
         .pattern-tabs { display: flex; gap: 6px; margin-bottom: 8px; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px; }
         
-        .tab-btn { padding: 5px 12px; font-size: 0.78rem; font-weight: bold; border: 1px solid #cbd5e1; background: #f1f5f9; color: #475569; border-radius: 4px; cursor: pointer; }
+        .tab-btn { padding: 5px 14px; font-size: 0.78rem; font-weight: bold; border: 1px solid #cbd5e1; background: #f1f5f9; color: #475569; border-radius: 4px; cursor: pointer; }
         .tab-btn.active-p0 { background: #0284c7 !important; color: #fff !important; border-color: #0284c7 !important; }
         .tab-btn.active-p1 { background: #d83b01 !important; color: #fff !important; border-color: #d83b01 !important; }
         .tab-btn.active-p2 { background: #15803d !important; color: #fff !important; border-color: #15803d !important; }
@@ -85,9 +85,7 @@
 
         .sub-info { font-size: 0.68rem; color: #166534; font-weight: 600; text-align: right; margin-bottom: 2px; }
 
-        .btn-calc { width: 100%; background: #0284c7; color: #fff; border: none; padding: 8px; font-size: 0.9rem; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 8px; text-transform: uppercase; }
-
-        .footer { padding: 8px 12px; font-size: 0.72rem; color: #64748b; background: #fff; border-top: 1px solid var(--border-color); margin-top: 10px; display: flex; justify-content: space-between; }
+        .footer { padding: 8px 12px; font-size: 0.72rem; color: #64748b; background: #fff; border-top: 1px solid var(--border-color); margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
 
         @media screen and (max-width: 768px) and (orientation: portrait) {
             body::before {
@@ -100,7 +98,7 @@
 <body>
 
 <div class="container">
-    <div class="header-bar">MÔ HÌNH THỦY LỰC MẠNG ĐƯỜNG ỐNG CẤP NƯỚC - HUEWACO</div>
+    <div class="header-bar">TÍNH TOÁN THỦY LỰC & MÔ PHỎNG ĐA PATTERN 24H - HUEWACO</div>
     
     <div class="content">
         <!-- ĐIỀU KHIỂN THỜI GIAN -->
@@ -123,10 +121,10 @@
                 <button class="tab-btn" id="tab_2" onclick="switchPatternTab(2)">Khác</button>
             </div>
             
-            <!-- MỞ RỘNG Ô TÊN GỌI TỚI 320PX VA DỄ DÀNG THAY ĐỔI TÊN PATTERN -->
             <div style="margin-bottom:6px; display:flex; align-items:center; gap:8px;">
                 <span style="font-size:0.75rem; font-weight:bold; color:#334155;">Tên gọi:</span>
                 <input type="text" id="pattern_name_input" style="padding:3px 6px; font-size:0.78rem; font-weight:bold; border:1px solid #cbd5e1; border-radius:4px; width:320px;" oninput="updatePatternName(this.value)">
+                <button onclick="resetDefaultPatterns()" style="font-size:0.7rem; padding:3px 8px; background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; cursor:pointer;">Khôi phục mặc định</button>
             </div>
 
             <div class="pattern-layout">
@@ -152,7 +150,7 @@
         <div class="section-title">
             <span>I. Kết quả Thủy lực lúc <span id="lblCurrentHour" style="color:#0284c7;">08:00</span></span>
             <span style="font-weight: normal; font-size: 0.75rem; color: #334155; text-transform: none;">
-                Mô phỏng thủy lực theo nhu cầu dùng nước của khách hàng
+                Mô phỏng thủy lực theo nhu cầu dùng nước thực tế
             </span>
         </div>
 
@@ -174,7 +172,7 @@
         <div id="warn_box" class="warning-box"></div>
 
         <!-- SƠ ĐỒ TRẮC DỌC & NHẬP LIỆU -->
-        <div class="section-title">II. Sơ đồ trắc dọc toàn tuyến</div>
+        <div class="section-title">II. Sơ đồ Trắc dọc & Nhập dữ liệu phân đoạn (4 Cột)</div>
         
         <div class="diagram-wrapper">
             <canvas id="profileCanvas"></canvas>
@@ -286,19 +284,17 @@
                     </div>
                 </div>
             </div>
-
-            <button class="btn-calc" onclick="calculateProfile()">Cập Nhật Tính Toán Thủy Lực</button>
         </div>
     </div>
 
     <div class="footer">
         <div>Copyright © <b>PHÒNG KỸ THUẬT - HueWACO</b></div>
-        <div>Hệ thống tính toán thủy lực © 2026</div>
+        <div style="color:#166534; font-weight:bold;">🟢 Tự động tính toán (Real-time Active)</div>
     </div>
 </div>
 
 <script>
-    let patternsData = [
+    const DEFAULT_PATTERNS = [
         {
             name: "Sinh hoạt",
             color: "#0284c7",
@@ -307,7 +303,7 @@
         {
             name: "Công nghiệp",
             color: "#d83b01",
-            values: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+            values: [1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00]
         },
         {
             name: "Khác",
@@ -315,6 +311,36 @@
             values: [0.30, 0.25, 0.25, 0.25, 0.40, 0.90, 1.50, 1.40, 1.10, 0.90, 0.90, 0.90, 0.85, 0.85, 0.85, 0.95, 1.20, 1.40, 1.30, 1.00, 0.80, 0.60, 0.45, 0.35]
         }
     ];
+
+    let patternsData = [];
+
+    // TỰ ĐỘNG ĐỌC BỘ NHỚ LOCALSTORAGE
+    function loadPatterns() {
+        let saved = localStorage.getItem('hw_hydraulic_patterns');
+        if (saved) {
+            try { patternsData = JSON.parse(saved); } 
+            catch(e) { patternsData = JSON.parse(JSON.stringify(DEFAULT_PATTERNS)); }
+        } else {
+            patternsData = JSON.parse(JSON.stringify(DEFAULT_PATTERNS));
+        }
+    }
+
+    // TỰ ĐỘNG LƯU BỘ NHỚ LOCALSTORAGE
+    function savePatterns() {
+        localStorage.setItem('hw_hydraulic_patterns', JSON.stringify(patternsData));
+    }
+
+    function resetDefaultPatterns() {
+        if (confirm("Bạn có chắc chắn muốn khôi phục về bảng Pattern mặc định ban đầu?")) {
+            patternsData = JSON.parse(JSON.stringify(DEFAULT_PATTERNS));
+            savePatterns();
+            initPatternTable();
+            updatePatternTabsText();
+            updatePatternSelectBoxes();
+            drawPatternChart();
+            calculateProfile();
+        }
+    }
 
     let activePatternIdx = 0;
     let currentHour = 8;
@@ -368,6 +394,12 @@
         }
     }
 
+    function updatePatternTabsText() {
+        for (let i = 0; i < 3; i++) {
+            document.getElementById(`tab_${i}`).innerText = patternsData[i].name;
+        }
+    }
+
     function switchPatternTab(idx) {
         activePatternIdx = idx;
         for (let i = 0; i < 3; i++) {
@@ -382,12 +414,14 @@
     function updatePatternName(newName) {
         patternsData[activePatternIdx].name = newName;
         document.getElementById(`tab_${activePatternIdx}`).innerText = newName;
+        savePatterns();
         updatePatternSelectBoxes();
         drawPatternChart();
     }
 
     function updatePatternVal(h, val) {
         patternsData[activePatternIdx].values[h] = parseFloat(val) || 1.0;
+        savePatterns();
         drawPatternChart();
         calculateProfile();
     }
@@ -634,8 +668,6 @@
         const totalLengthKm = (l12 + l23 + l34) / 1000;
         document.getElementById('res_total_length').innerText = totalLengthKm.toFixed(1) + " km";
         document.getElementById('res_total_q').innerText = q12.toFixed(1) + " m³/h";
-        
-        // CHỈNH CHỮ HF TRÊN KHUNG TIÊU ĐỀ THÀNH SUBSCRIPT CHUẨN
         document.getElementById('res_hf_total').innerHTML = hfTotal.toFixed(2) + " m";
 
         const warnBox = document.getElementById('warn_box');
@@ -726,7 +758,7 @@
         ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 2.5; ctx.setLineDash([6, 4]); ctx.stroke();
         ctx.setLineDash([]);
 
-        // THÔNG SỐ CÁC ĐOẠN ỐNG - ĐÃ SỬA CHỮ H_F THÀNH H_F SUB TRÊN ĐỒ THỊ
+        // THÔNG SỐ CÁC ĐOẠN ỐNG - NÂNG KHOẢNG CÁCH CHỮ HF TRÁNH BỊ DÍNH SÁT SỐ
         for (let i = 0; i < 3; i++) {
             let xMid = (getX(nodes[i].dist) + getX(nodes[i+1].dist)) / 2;
             let yHMid = (getY(nodes[i].H) + getY(nodes[i+1].H)) / 2;
@@ -738,16 +770,21 @@
             ctx.fillStyle = "#005a9e"; ctx.fillText(`Q = ${segInfo.q.toFixed(1)} m³/h`, xMid, yHMid + 22);
             ctx.fillStyle = "#15803d"; ctx.fillText(`v = ${segInfo.v.toFixed(2)} m/s`, xMid, yHMid + 36);
             
-            // ĐÃ KHẮC PHỤC HIỂN THỊ CHỮ H_F THÀNH Hf SUB CHUẨN
+            // CĂN LẠI KHOẢNG CÁCH CHUẨN ĐỂ CHỮ F KHÔNG ĐÈ VÀO DẤU = VÀ CON SỐ
             ctx.fillStyle = "#b91c1c";
-            ctx.fillText(`H`, xMid - 18, yHMid + 50);
-            ctx.font = "bold 9px sans-serif";
-            ctx.fillText(`f`, xMid - 12, yHMid + 53);
+            let hfValStr = ` = ${segInfo.hf.toFixed(2)} m`;
             ctx.font = "bold 11px sans-serif";
-            ctx.fillText(` = ${segInfo.hf.toFixed(2)} m`, xMid + 8, yHMid + 50);
+            let valW = ctx.measureText(hfValStr).width;
+            let startHfX = xMid - (18 + valW) / 2;
+
+            ctx.fillText(`H`, startHfX, yHMid + 50);
+            ctx.font = "bold 9px sans-serif";
+            ctx.fillText(`f`, startHfX + 8, yHMid + 53);
+            ctx.font = "bold 11px sans-serif";
+            ctx.fillText(hfValStr, startHfX + 14, yHMid + 50);
         }
 
-        // ĐƯỜNG TỔNG TOÀN TUYẾN - SỬA KHUNG H_F TIÊU ĐỀ
+        // ĐƯỜNG TỔNG TOÀN TUYẾN
         let topY = 22;
         let x0 = getX(0);
         let x3 = getX(nodes[3].dist);
@@ -764,7 +801,7 @@
         ctx.font = "bold 11.5px sans-serif";
         let w1 = ctx.measureText(tPart1).width;
         let w2 = ctx.measureText(tPart2).width;
-        let totalW = w1 + w2 + 5;
+        let totalW = w1 + w2 + 6;
 
         let startX = (x0 + x3)/2 - totalW/2;
 
@@ -774,11 +811,11 @@
         ctx.fillStyle = "#b91c1c"; ctx.textAlign = "left";
         ctx.fillText(tPart1, startX, topY + 4);
         ctx.font = "bold 9.5px sans-serif";
-        ctx.fillText(`f`, startX + w1 - 2, topY + 7);
+        ctx.fillText(`f`, startX + w1, topY + 7);
         ctx.font = "bold 11.5px sans-serif";
-        ctx.fillText(` = ${data.totalHf.toFixed(2)} m`, startX + w1 + 3, topY + 4);
+        ctx.fillText(` = ${data.totalHf.toFixed(2)} m`, startX + w1 + 6, topY + 4);
 
-        // HIỂN THỊ CÁC NÚT VÀ CHỮ Q_{N-4} SỬA THÀNH N-4 SUB LỚN ĐẸP
+        // HIỂN THỊ CÁC NÚT VÀ CĂN CHỈNH KHOẢNG CÁCH CHỮ Q_N-X SUB
         nodes.forEach((n) => {
             let x = getX(n.dist);
             let yZ = getY(n.z);
@@ -814,7 +851,6 @@
                 ctx.fillText(`Z = ${n.z}m`, x + 15, H - padB + 58);
                 if (n.qOutH > 0) {
                     ctx.fillStyle = "#b91c1c";
-                    // ĐÃ SỬA CHUỖI Q_{n-4} THÀNH ĐỊNH DẠNG Q_n-4 CHUẨN TOÁN HỌC
                     let textQ = `Q`;
                     let subText = `n-4`;
                     let valText = ` = ${n.qOutH.toFixed(1)} m³/h`;
@@ -826,7 +862,7 @@
                     ctx.font = "10px sans-serif";
                     let wVal = ctx.measureText(valText).width;
 
-                    let totalQW = wQ + wSub + wVal;
+                    let totalQW = wQ + wSub + wVal + 2;
                     let qStartX = x + 15 - totalQW;
 
                     ctx.font = "bold 10px sans-serif";
@@ -852,7 +888,7 @@
                     ctx.font = "10px sans-serif";
                     let wVal = ctx.measureText(valText).width;
 
-                    let totalQW = wQ + wSub + wVal;
+                    let totalQW = wQ + wSub + wVal + 2;
                     let qStartX = x - totalQW / 2;
 
                     ctx.font = "bold 10px sans-serif";
@@ -880,6 +916,8 @@
     }
 
     window.onload = function() {
+        loadPatterns();
+        updatePatternTabsText();
         updatePatternSelectBoxes();
         initPatternTable();
         updatePipeList(1);
