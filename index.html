@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sơ Đồ Thủy Lực Mô Phỏng 24h - HueWACO</title>
+    <title>Sơ Đồ Thủy Lực Mô Phỏng 24h & Biểu Đồ Pattern - HueWACO</title>
     <style>
         :root {
             --excel-green: #005a36;
@@ -35,6 +35,21 @@
         .btn-sim:hover { background: #0369a1; }
         .btn-sim-alt { background: #005a36; }
         .btn-sim-alt:hover { background: #004428; }
+
+        /* BẢNG DỌC VÀ BIỂU ĐỒ PATTERN THEO PHONG CÁCH EPANET */
+        .pattern-panel { display: none; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-bottom: 12px; }
+        .pattern-layout { display: flex; gap: 15px; height: 280px; }
+        
+        .pattern-table-wrapper { width: 200px; border: 1px solid #cbd5e1; border-radius: 4px; overflow-y: auto; background: #fafafa; }
+        .pattern-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; text-align: center; }
+        .pattern-table th { position: sticky; top: 0; background: #e2e8f0; color: #334155; font-weight: bold; padding: 6px 4px; border-bottom: 1px solid #cbd5e1; }
+        .pattern-table td { padding: 4px; border-bottom: 1px solid #f1f5f9; }
+        .pattern-table tr:hover { background: #f0f9ff; }
+        .pattern-table input { width: 65px; text-align: center; border: 1px solid #cbd5e1; border-radius: 3px; padding: 2px; font-size: 0.78rem; font-weight: bold; color: #0284c7; }
+
+        .pattern-chart-wrapper { flex: 1; border: 1px solid #cbd5e1; border-radius: 4px; padding: 8px; background: #ffffff; display: flex; flex-direction: column; }
+        .pattern-chart-title { font-size: 0.85rem; font-weight: bold; color: #005a36; text-align: center; margin-bottom: 4px; }
+        .pattern-chart-canvas { width: 100%; flex: 1; }
 
         .result-simple-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; }
         .result-card { background: #f0f9ff; border: 1px solid #bae6fd; padding: 8px; border-radius: 6px; }
@@ -68,20 +83,7 @@
         .btn-calc { width: 100%; background: #0284c7; color: #fff; border: none; padding: 10px; font-size: 0.95rem; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; text-transform: uppercase; }
         .btn-calc:hover { background: #0369a1; }
 
-        /* BẢNG CẤU HÌNH HE SO PATTERN 24H (MODAL/POPUP THU GỌN) */
-        .pattern-panel { display: none; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-top: 8px; }
-        .pattern-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; text-align: center; font-size: 0.7rem; }
-        .pattern-box { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 3px; padding: 4px 2px; }
-        .pattern-box input { width: 100%; border: 1px solid #cbd5e1; border-radius: 2px; font-size: 0.7rem; text-align: center; }
-
         .footer { padding: 10px 15px; font-size: 0.75rem; color: #64748b; background: #fff; border-top: 1px solid var(--border-color); margin-top: 12px; display: flex; justify-content: space-between; }
-
-        @media screen and (orientation: portrait) {
-            body::before {
-                content: "📱 Xoay ngang màn hình điện thoại để trải nghiệm đồ thị tốt nhất!";
-                display: block; background: #fef3c7; color: #92400e; text-align: center; padding: 5px; font-size: 0.75rem; font-weight: bold; border-bottom: 1px solid #fcd34d; margin-bottom: 5px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -99,13 +101,30 @@
                 <span style="font-size:0.75rem; font-weight:bold; color:#475569;">23h</span>
             </div>
             <button class="btn-sim" id="btnPlay" onclick="togglePlay()"><span id="playIcon">▶</span> Mô Phỏng 24h</button>
-            <button class="btn-sim btn-sim-alt" onclick="togglePatternPanel()">⚙️ Chỉnh Pattern 24h</button>
+            <button class="btn-sim btn-sim-alt" onclick="togglePatternPanel()">⚙️ Bảng & Đồ Thị Pattern</button>
         </div>
 
-        <!-- BẢNG CHỈNH SỬA CẮT MẪU PATTERN 24 HỜ -->
+        <!-- BẢNG DỌC VÀ BIỂU ĐỒ PATTERN 24H (EPANET STYLE) -->
         <div class="pattern-panel" id="patternPanel">
-            <div style="font-weight:bold; font-size:0.8rem; color:#005a36; margin-bottom:6px;">BẢNG HỆ SỐ NHU CẦU DÙNG NƯỚC THEO GIỜ (HOURLY PATTERN C<sub>t</sub>):</div>
-            <div class="pattern-grid" id="patternGrid"></div>
+            <div class="pattern-layout">
+                <!-- BẢNG DỌC BÊN TRÁI -->
+                <div class="pattern-table-wrapper">
+                    <table class="pattern-table">
+                        <thead>
+                            <tr>
+                                <th>Giờ</th>
+                                <th>Multiplier (C<sub>t</sub>)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patternTbody"></tbody>
+                    </table>
+                </div>
+                <!-- BIỂU ĐỒ BÊN PHẢI -->
+                <div class="pattern-chart-wrapper">
+                    <div class="pattern-chart-title">Biểu đồ Hệ số Nhu cầu Dùng nước (Pattern - Multiplier Curve)</div>
+                    <canvas id="patternCanvas" class="pattern-chart-canvas"></canvas>
+                </div>
+            </div>
         </div>
 
         <!-- I. KẾT QUẢ TỔNG THỂ CỦA GIỜ ĐANG CHỌN -->
@@ -246,7 +265,6 @@
 </div>
 
 <script>
-    // CHUỖI 24 HỆ SỐ MẶC ĐỊNH CHO PATTERN C_T THEO GIỜ
     let defaultPattern = [
         0.40, 0.35, 0.30, 0.30, 0.45, 0.85, 
         1.40, 1.30, 1.15, 1.05, 1.10, 1.10, 
@@ -288,34 +306,102 @@
 
     const MATERIAL_C = { hdpe: 140, ductile: 130, inox: 140 };
 
-    function initPatternGrid() {
-        const grid = document.getElementById('patternGrid');
-        grid.innerHTML = '';
+    // TẠO BẢNG DỌC BÊN TRÁI
+    function initPatternTable() {
+        const tbody = document.getElementById('patternTbody');
+        tbody.innerHTML = '';
         for (let h = 0; h < 24; h++) {
-            let hStr = h < 10 ? '0' + h : '' + h;
-            let box = document.createElement('div');
-            box.className = 'pattern-box';
-            box.innerHTML = `
-                <div>${hStr}h</div>
-                <input type="number" id="pat_${h}" value="${defaultPattern[h]}" step="0.05" onchange="updatePatternVal(${h}, this.value)">
+            let hStr = (h < 10 ? '0' + h : '' + h) + ':00';
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="font-weight:600; color:#475569;">${hStr}</td>
+                <td><input type="number" id="pat_${h}" value="${defaultPattern[h].toFixed(2)}" step="0.05" onchange="updatePatternVal(${h}, this.value)"></td>
             `;
-            grid.appendChild(box);
+            tbody.appendChild(tr);
         }
     }
 
     function updatePatternVal(h, val) {
         defaultPattern[h] = parseFloat(val) || 1.0;
+        drawPatternChart();
         calculateProfile();
     }
 
     function togglePatternPanel() {
         const p = document.getElementById('patternPanel');
         p.style.display = p.style.display === 'block' ? 'none' : 'block';
+        if (p.style.display === 'block') {
+            drawPatternChart();
+        }
+    }
+
+    // VẼ BIỂU ĐỒ ĐƯỜNG BÊN PHẢI (EPANET PATTERN CHART)
+    function drawPatternChart() {
+        const canvas = document.getElementById('patternCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = canvas.parentElement.clientWidth - 16;
+        canvas.height = canvas.parentElement.clientHeight - 30;
+
+        const W = canvas.width;
+        const H = canvas.height;
+        const padL = 35, padR = 15, padT = 20, padB = 25;
+
+        ctx.clearRect(0, 0, W, H);
+
+        let maxVal = Math.max(...defaultPattern) + 0.2;
+        if (maxVal < 1.6) maxVal = 1.6;
+
+        function getX(h) { return padL + (h / 23) * (W - padL - padR); }
+        function getY(v) { return H - padB - (v / maxVal) * (H - padT - padB); }
+
+        // Lưới ngang & Nhãn y
+        ctx.strokeStyle = "#f1f5f9"; ctx.lineWidth = 1;
+        for (let v = 0; v <= maxVal; v += 0.4) {
+            let y = getY(v);
+            ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
+            ctx.fillStyle = "#94a3b8"; ctx.font = "9px sans-serif";
+            ctx.fillText(v.toFixed(1), 8, y + 3);
+        }
+
+        // Nhãn x
+        ctx.textAlign = "center";
+        for (let h = 0; h < 24; h += 3) {
+            let x = getX(h);
+            let hStr = (h < 10 ? '0' + h : '' + h) + 'h';
+            ctx.fillStyle = "#94a3b8"; ctx.font = "9px sans-serif";
+            ctx.fillText(hStr, x, H - 8);
+        }
+
+        // Tô diện tích dưới đường
+        ctx.beginPath();
+        ctx.moveTo(getX(0), getY(defaultPattern[0]));
+        for (let h = 1; h < 24; h++) ctx.lineTo(getX(h), getY(defaultPattern[h]));
+        ctx.lineTo(getX(23), H - padB);
+        ctx.lineTo(getX(0), H - padB);
+        ctx.closePath();
+        ctx.fillStyle = "rgba(2, 132, 199, 0.15)"; ctx.fill();
+
+        // Đường biểu đồ
+        ctx.beginPath();
+        ctx.moveTo(getX(0), getY(defaultPattern[0]));
+        for (let h = 1; h < 24; h++) ctx.lineTo(getX(h), getY(defaultPattern[h]));
+        ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 2; ctx.stroke();
+
+        // Các điểm nút trên đường
+        for (let h = 0; h < 24; h++) {
+            let x = getX(h);
+            let y = getY(defaultPattern[h]);
+            ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2);
+            ctx.fillStyle = h === currentHour ? "#d83b01" : "#0284c7"; ctx.fill();
+        }
     }
 
     function onSliderChange(h) {
         currentHour = parseInt(h);
         document.getElementById('simTimeText').innerText = `⏰ Giờ: ${currentHour < 10 ? '0' + currentHour : currentHour}:00`;
+        drawPatternChart();
         calculateProfile();
     }
 
@@ -395,7 +481,6 @@
         const qOut3Ngd = parseFloat(document.getElementById('q_out3').value) || 0;
         const qOut4Ngd = parseFloat(document.getElementById('q_out4').value) || 0;
 
-        // TÍNH Q_GIỜ THEO HỆ SỐ PATTERN C_T CỦA GIỜ HIỆN TẠI
         const qOut2 = (qOut2Ngd / 24) * Ct;
         const qOut3 = (qOut3Ngd / 24) * Ct;
         const qOut4 = (qOut4Ngd / 24) * Ct;
@@ -621,7 +706,7 @@
     }
 
     window.onload = function() {
-        initPatternGrid();
+        initPatternTable();
         updatePipeList(1);
         updatePipeList(2);
         updatePipeList(3);
@@ -629,6 +714,7 @@
     };
 
     window.onresize = function() {
+        drawPatternChart();
         calculateProfile();
     };
 </script>
