@@ -37,7 +37,7 @@
         .btn-sim-alt { background: #005a36; }
         .btn-sim-alt:hover { background: #004428; }
 
-        /* CẤU HÌNH PATTERN CHUẨN MỚI */
+        /* CẤU HÌNH PATTERN */
         .pattern-panel { display: none; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-bottom: 10px; }
         .pattern-category-bar { display: flex; gap: 10px; margin-bottom: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 4px; border: 1px solid #e2e8f0; align-items: center; }
         .pattern-category-title { font-size: 0.78rem; font-weight: bold; color: #005a36; }
@@ -54,7 +54,11 @@
         .pattern-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: center; }
         .pattern-table th { position: sticky; top: 0; background: #e2e8f0; color: #334155; font-weight: bold; padding: 5px 2px; }
         .pattern-table td { padding: 3px 2px; border-bottom: 1px solid #f1f5f9; }
-        .pattern-table input { width: 60px; text-align: center; border: 1px solid #cbd5e1; border-radius: 3px; padding: 2px; font-size: 0.75rem; font-weight: bold; color: #0284c7; }
+        
+        /* CẢI TIẾN MÀU HỆ SỐ PATTERN: 0 THÌ XÁM NHẠT, >0 THÌ NỔI BẬT */
+        .pattern-table input { width: 60px; text-align: center; border: 1px solid #cbd5e1; border-radius: 3px; padding: 2px; font-size: 0.75rem; font-weight: bold; outline: none; }
+        .pat-val-zero { color: #94a3b8 !important; background-color: #f8fafc !important; }
+        .pat-val-active { color: #0284c7 !important; background-color: #ffffff !important; }
 
         .pattern-chart-wrapper { flex: 1; border: 1px solid #cbd5e1; border-radius: 4px; padding: 6px; background: #ffffff; display: flex; flex-direction: column; }
         .pattern-chart-title { font-size: 0.8rem; font-weight: bold; color: #005a36; text-align: center; margin-bottom: 4px; }
@@ -72,7 +76,6 @@
         .diagram-wrapper { position: relative; width: 100%; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 6px; margin-top: 6px; }
         canvas { width: 100%; height: 380px; background: #ffffff; display: block; }
 
-        /* KHUNG NHẬP LIỆU PHÂN ĐOẠN 4 CỘT - CẢI TIẾN RỘNG LỀ SELECT */
         .inputs-overlay { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; padding-top: 6px; border-top: 1px dashed #cbd5e1; }
         .seg-input-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px; }
         .seg-input-header { font-size: 0.78rem; font-weight: bold; color: #005a36; margin-bottom: 4px; text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 2px; }
@@ -128,7 +131,7 @@
             <button class="btn-sim btn-sim-alt" onclick="togglePatternPanel()">⚙️ Pattern</button>
         </div>
 
-        <!-- CẤU HÌNH PATTERN CÓ PHÂN LOẠI MỚI -->
+        <!-- CẤU HÌNH PATTERN -->
         <div class="pattern-panel" id="patternPanel">
             <div class="pattern-category-bar">
                 <span class="pattern-category-title">Loại Pattern:</span>
@@ -247,7 +250,8 @@
                         </div>
                     </div>
                     
-                    <div id="p1_status_lbl" style="font-size:0.65rem; color:#0284c7; font-weight:bold; text-align:center; margin-top:4px; background:#e0f2fe; padding:3px; border-radius:3px;">
+                    <!-- CẢI TIẾN MÀU NỀN HIỂN THỊ TRẠNG THÁI NÚT 1 ĐẸP NỔI BẬT HƠN -->
+                    <div id="p1_status_lbl" style="font-size:0.70rem; font-weight:bold; text-align:center; margin-top:5px; padding:5px 8px; border-radius:5px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.3s ease;">
                         Đang lấy Áp lực Mạng = 25.0m
                     </div>
                 </div>
@@ -340,7 +344,7 @@
 </div>
 
 <script>
-    // PATTERN MẶC ĐỊNH CHUẨN
+    // PATTERN MẶC ĐỊNH
     const DEFAULT_PATTERNS = [
         {
             id: "p_sinhhoat",
@@ -378,7 +382,7 @@
 
     let patternsData = [];
     let activePatternIdx = 0;
-    let currentCategoryFilter = "demand"; // Mặc định hiển thị Nhu cầu dùng nước
+    let currentCategoryFilter = "demand";
     let currentHour = 8;
     let isPlaying = false;
     let timerId = null;
@@ -386,7 +390,7 @@
     let pulseDirection = -0.05;
 
     function loadPatterns() {
-        let saved = localStorage.getItem('hw_hydraulic_patterns_v6');
+        let saved = localStorage.getItem('hw_hydraulic_patterns_v7');
         let savedCat = localStorage.getItem('hw_hydraulic_cat_filter');
         if (savedCat) currentCategoryFilter = savedCat;
 
@@ -401,7 +405,7 @@
     }
 
     function savePatterns() {
-        localStorage.setItem('hw_hydraulic_patterns_v6', JSON.stringify(patternsData));
+        localStorage.setItem('hw_hydraulic_patterns_v7', JSON.stringify(patternsData));
         localStorage.setItem('hw_hydraulic_cat_filter', currentCategoryFilter);
     }
 
@@ -470,7 +474,6 @@
 
     const MATERIAL_C = { hdpe: 140, ductile: 130, inox: 140 };
 
-    // LỌC CÁC TABS THEO LOẠI PATTERN DÙNG NƯỚC HOẶC ÁP LỰC
     function filterPatternCategory(cat) {
         currentCategoryFilter = cat;
         savePatterns();
@@ -580,6 +583,7 @@
         }
     }
 
+    // TẠO BẢNG TỰ ĐỘNG CHUYỂN MÀU THEO GIÁ TRỊ GIỜ (0 -> XÁM, >0 -> XANH/ĐỎ)
     function initPatternTable() {
         const tbody = document.getElementById('patternTbody');
         tbody.innerHTML = '';
@@ -596,10 +600,13 @@
 
         for (let h = 0; h < 24; h++) {
             let hStr = (h < 10 ? '0' + h : '' + h) + ':00';
+            let val = pat.values[h];
+            let cls = val === 0 ? "pat-val-zero" : "pat-val-active";
+
             let tr = document.createElement('tr');
             tr.innerHTML = `
                 <td style="font-weight:600; color:#475569;">${hStr}</td>
-                <td><input type="number" id="pat_${h}" value="${pat.values[h].toFixed(2)}" step="0.05" onchange="updatePatternVal(${h}, this.value)"></td>
+                <td><input type="number" id="pat_${h}" class="${cls}" value="${val.toFixed(2)}" step="0.05" onchange="updatePatternVal(${h}, this)"></td>
             `;
             tbody.appendChild(tr);
         }
@@ -615,9 +622,18 @@
         }
     }
 
-    function updatePatternVal(h, val) {
+    function updatePatternVal(h, inputElem) {
+        let val = parseFloat(inputElem.value) || 0;
         if (patternsData[activePatternIdx]) {
-            patternsData[activePatternIdx].values[h] = parseFloat(val) || 0;
+            patternsData[activePatternIdx].values[h] = val;
+            
+            // Đổi class trực tiếp real-time
+            if (val === 0) {
+                inputElem.className = "pat-val-zero";
+            } else {
+                inputElem.className = "pat-val-active";
+            }
+
             savePatterns();
             drawPatternChart();
             calculateProfile();
@@ -825,7 +841,7 @@
         return Q_m3s / ((Math.PI * Math.pow(D_m, 2)) / 4);
     }
 
-    // TÍNH TOÁN THỦY LỰC MÔ HÌNH
+    // TÍNH TOÁN THỦY LỰC MÔ HÌNH & HIỂN THỊ MÀU NỀN ĐẸP NỔI BẬT NÚT 1
     function calculateProfile() {
         ['12', '23', '34'].forEach(s => {
             const dinVal = parseFloat(document.getElementById(`dn${s}`).value) || 0;
@@ -882,18 +898,25 @@
             }
         }
 
+        // TỐI ƯU MÀU NỀN TRẠNG THÁI P1 NỔI BẬT ĐẸP MẮT (HÌNH 3)
         const statusLbl = document.getElementById('p1_status_lbl');
         if (isPumpStationMode) {
             if (isPumpActive) {
                 statusLbl.innerHTML = `⚡ BƠM ĐANG CHẠY: <b>P1 = ${p1Avail.toFixed(1)}m</b>`;
-                statusLbl.style.background = "#f3e8ff"; statusLbl.style.color = "#6b21a8";
+                statusLbl.style.background = "linear-gradient(135deg, #f3e8ff, #e9d5ff)";
+                statusLbl.style.color = "#6b21a8";
+                statusLbl.style.border = "1px solid #c084fc";
             } else {
                 statusLbl.innerHTML = `🛑 BƠM NGHỈ ➔ ÁP LỰC MẠNG: <b>P1 = ${p1Avail.toFixed(1)}m</b>`;
-                statusLbl.style.background = "#fef2f2"; statusLbl.style.color = "#991b1b";
+                statusLbl.style.background = "linear-gradient(135deg, #fef2f2, #fee2e2)";
+                statusLbl.style.color = "#991b1b";
+                statusLbl.style.border = "1px solid #fca5a5";
             }
         } else {
             statusLbl.innerHTML = `💧 CẤP ÁP LỰC MẠNG: <b>P1 = ${p1Avail.toFixed(1)}m</b>`;
-            statusLbl.style.background = "#e0f2fe"; statusLbl.style.color = "#0369a1";
+            statusLbl.style.background = "linear-gradient(135deg, #e0f2fe, #bae6fd)";
+            statusLbl.style.color = "#0369a1";
+            statusLbl.style.border = "1px solid #38bdf8";
         }
 
         const l12 = parseFloat(document.getElementById('l12').value) || 0;
@@ -974,7 +997,7 @@
         });
     }
 
-    // VẼ SƠ ĐỒ CANVAS & ICON BƠM
+    // VẼ SƠ ĐỒ CANVAS - ĐỔI MÀU ĐƯỜNG ĐỊA HÌNH SANG XANH NƯỚC BIỂN & BỎ CHỮ BƠM ON/OFF
     function drawProfileCanvas(data) {
         const canvas = document.getElementById('profileCanvas');
         const ctx = canvas.getContext('2d');
@@ -1010,32 +1033,32 @@
         }
         ctx.setLineDash([]);
 
-        // Địa hình Z
+        // MÀU ĐƯỜNG ĐỊA HÌNH & MIỀN Z SANG XANH NƯỚC BIỂN (HÌNH 2)
         ctx.beginPath();
         ctx.moveTo(getX(nodes[0].dist), getY(nodes[0].z));
         for (let i = 1; i < nodes.length; i++) ctx.lineTo(getX(nodes[i].dist), getY(nodes[i].z));
         ctx.lineTo(getX(nodes[3].dist), H - padB);
         ctx.lineTo(getX(nodes[0].dist), H - padB);
         ctx.closePath();
-        ctx.fillStyle = "rgba(139, 195, 74, 0.22)"; ctx.fill();
+        ctx.fillStyle = "rgba(2, 132, 199, 0.12)"; ctx.fill(); // Phủ màu xanh nước biển nhạt
 
         ctx.beginPath();
         ctx.moveTo(getX(nodes[0].dist), getY(nodes[0].z));
         for (let i = 1; i < nodes.length; i++) ctx.lineTo(getX(nodes[i].dist), getY(nodes[i].z));
-        ctx.strokeStyle = "#4d7c0f"; ctx.lineWidth = 3; ctx.stroke();
+        ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 3; ctx.stroke(); // Đường địa hình Z màu xanh nước biển đậm
 
-        // Đường áp lực H
+        // Đường áp lực H (Nét đứt)
         ctx.beginPath();
         ctx.moveTo(getX(nodes[0].dist), getY(nodes[0].H));
         for (let i = 1; i < nodes.length; i++) ctx.lineTo(getX(nodes[i].dist), getY(nodes[i].H));
         ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 2.5; ctx.setLineDash([6, 4]); ctx.stroke();
         ctx.setLineDash([]);
 
-        // VẼ ICON TRẠM BƠM TẠI NÚT 1 KHI Ở CHẾ ĐỘ TRẠM BƠM TĂNG ÁP
+        // VẼ ICON TRẠM BƠM TẠI NÚT 1 (ĐÃ BỎ CHỮ BƠM ON / OFF THEO YÊU CẦU - HÌNH 2)
         if (data.isPumpStationMode) {
             let x1 = getX(nodes[0].dist);
             let z1Y = getY(nodes[0].z);
-            let pumpX = x1 + 18;
+            let pumpX = x1 + 22;
             let pumpY = z1Y - 14;
 
             ctx.save();
@@ -1052,7 +1075,7 @@
             ctx.fill();
             ctx.stroke();
 
-            // Cánh Bơm
+            // Biểu tượng Cánh Bơm trắng bên trong
             ctx.beginPath();
             ctx.moveTo(pumpX - 7, pumpY + 7);
             ctx.lineTo(pumpX + 8, pumpY);
@@ -1060,12 +1083,6 @@
             ctx.closePath();
             ctx.fillStyle = "#ffffff";
             ctx.fill();
-
-            // Nhãn Bơm
-            ctx.font = "bold 9px sans-serif";
-            ctx.fillStyle = data.isPumpActive ? "#15803d" : "#dc2626";
-            ctx.textAlign = "left";
-            ctx.fillText(data.isPumpActive ? "Bơm ON" : "Bơm OFF", pumpX + 14, pumpY + 3);
             ctx.restore();
         }
 
@@ -1198,8 +1215,8 @@
             ctx.fillText(`P=${n.p.toFixed(1)}m`, x, yH - 8);
         });
 
-        // Chú thích
-        ctx.fillStyle = "#4d7c0f"; ctx.fillRect(padL + 10, 48, 14, 8);
+        // Chú thích Chú giải màu sắc
+        ctx.fillStyle = "#0284c7"; ctx.fillRect(padL + 10, 48, 14, 8);
         ctx.fillStyle = "#334155"; ctx.font = "11px sans-serif"; ctx.textAlign = "left";
         ctx.fillText("Cao độ Z (m)", padL + 30, 55);
 
