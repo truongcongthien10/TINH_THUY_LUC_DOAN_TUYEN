@@ -37,15 +37,17 @@
         .btn-sim-alt { background: #005a36; }
         .btn-sim-alt:hover { background: #004428; }
 
-        /* CẤU HÌNH PATTERN PHÂN LOẠI */
+        /* CẤU HÌNH PATTERN CHUẨN MỚI */
         .pattern-panel { display: none; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-bottom: 10px; }
         .pattern-category-bar { display: flex; gap: 10px; margin-bottom: 8px; background: #f8fafc; padding: 6px 10px; border-radius: 4px; border: 1px solid #e2e8f0; align-items: center; }
         .pattern-category-title { font-size: 0.78rem; font-weight: bold; color: #005a36; }
-        .pattern-cat-select { font-size: 0.75rem; font-weight: bold; padding: 3px 6px; border-radius: 4px; border: 1px solid #cbd5e1; outline: none; }
+        .pattern-cat-select { font-size: 0.75rem; font-weight: bold; padding: 4px 8px; border-radius: 4px; border: 1px solid #cbd5e1; outline: none; background: #fff; color: #0284c7; }
 
-        .pattern-tabs { display: flex; gap: 6px; margin-bottom: 8px; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px; flex-wrap: wrap; }
-        .tab-btn { padding: 4px 10px; font-size: 0.75rem; font-weight: bold; border: 1px solid #cbd5e1; background: #f1f5f9; color: #475569; border-radius: 4px; cursor: pointer; }
+        .pattern-tabs { display: flex; gap: 6px; margin-bottom: 8px; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px; flex-wrap: wrap; min-height: 32px; align-items: center; }
+        .tab-btn { padding: 4px 10px; font-size: 0.75rem; font-weight: bold; border: 1px solid #cbd5e1; background: #f1f5f9; color: #475569; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
         .tab-btn.active { background: #0284c7 !important; color: #fff !important; border-color: #0284c7 !important; }
+        .tab-del-btn { color: #dc2626; font-weight: bold; margin-left: 4px; border-radius: 50%; padding: 0 4px; font-size: 0.7rem; }
+        .tab-del-btn:hover { background: #fef2f2; }
 
         .pattern-layout { display: flex; gap: 12px; height: 250px; }
         .pattern-table-wrapper { width: 200px; border: 1px solid #cbd5e1; border-radius: 4px; overflow-y: auto; background: #fafafa; }
@@ -84,7 +86,6 @@
         input[type="number"] { -moz-appearance: textfield; }
 
         .seg-input-card input { width: 65px; padding: 2px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 0.71rem; text-align: center; outline: none; background: #fff; height: 22px; }
-        /* ĐẨY QUA BÊN TRÁI VÀ MỞ RỘNG HIỂN THỊ HẾT CHỮ TRONG SELECT */
         .seg-input-card select { width: 140px; padding: 1px 2px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 0.70rem; text-align: left; outline: none; background: #fff; height: 22px; }
 
         .sub-info { font-size: 0.68rem; color: #166534; font-weight: 600; text-align: right; margin-bottom: 2px; }
@@ -127,17 +128,16 @@
             <button class="btn-sim btn-sim-alt" onclick="togglePatternPanel()">⚙️ Pattern</button>
         </div>
 
-        <!-- CẤU HÌNH PATTERN CÓ PHÂN LOẠI -->
+        <!-- CẤU HÌNH PATTERN CÓ PHÂN LOẠI MỚI -->
         <div class="pattern-panel" id="patternPanel">
             <div class="pattern-category-bar">
                 <span class="pattern-category-title">Loại Pattern:</span>
                 <select class="pattern-cat-select" id="patCategoryFilter" onchange="filterPatternCategory(this.value)">
-                    <option value="all" selected>Tất cả Pattern</option>
-                    <option value="demand">Theo Nhu cầu (Dùng nước)</option>
-                    <option value="pressure">Theo Áp lực (Mạng / Bơm)</option>
+                    <option value="demand" selected>Nhu cầu dùng nước</option>
+                    <option value="pressure">Áp lực mạng</option>
                 </select>
-                <button onclick="createNewPattern()" style="font-size:0.72rem; padding:3px 8px; background:#0284c7; color:#fff; border:none; border-radius:3px; cursor:pointer; font-weight:bold;">➕ Thêm Pattern mới</button>
-                <button onclick="resetDefaultPatterns()" style="font-size:0.72rem; padding:3px 8px; background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; cursor:pointer; margin-left:auto;">Khôi phục mặc định</button>
+                <button onclick="createNewPattern()" style="font-size:0.72rem; padding:4px 10px; background:#0284c7; color:#fff; border:none; border-radius:3px; cursor:pointer; font-weight:bold;">➕ Thêm Pattern mới</button>
+                <button onclick="resetDefaultPatterns()" style="font-size:0.72rem; padding:4px 8px; background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; cursor:pointer; margin-left:auto;">Khôi phục mặc định</button>
             </div>
 
             <div class="pattern-tabs" id="patternTabsContainer"></div>
@@ -145,11 +145,7 @@
             <div style="margin-bottom:6px; display:flex; align-items:center; gap:8px;">
                 <span style="font-size:0.75rem; font-weight:bold; color:#334155;">Tên gọi:</span>
                 <input type="text" id="pattern_name_input" style="padding:3px 6px; font-size:0.78rem; font-weight:bold; border:1px solid #cbd5e1; border-radius:4px; width:260px;" oninput="updatePatternName(this.value)">
-                <span style="font-size:0.75rem; font-weight:bold; color:#334155;">Phân loại:</span>
-                <select id="pattern_type_select" style="padding:3px 6px; font-size:0.75rem; font-weight:bold; border:1px solid #cbd5e1; border-radius:4px;" onchange="updatePatternType(this.value)">
-                    <option value="demand">Theo Nhu cầu</option>
-                    <option value="pressure">Theo Áp lực</option>
-                </select>
+                <span style="font-size:0.72rem; color:#64748b; font-style:italic;" id="pattern_count_info">Cấu hình: 0/10 Pattern</span>
             </div>
 
             <div class="pattern-layout">
@@ -229,7 +225,6 @@
                     <div class="node-input-header">DỮ LIỆU NÚT 1 (NGUỒN CẤP)</div>
                     <div class="input-row"><label>Z<sub>1</sub> điểm đầu (m):</label><input type="number" id="z1" value="5.0" onchange="calculateProfile()"></div>
                     
-                    <!-- CHỌN LOẠI NGUỒN NÚT 1: MẠNG HOẶC TRẠM BƠM -->
                     <div class="input-row">
                         <label>Chế độ Nút 1:</label>
                         <select id="p1_source_type" onchange="onP1SourceTypeChange()">
@@ -238,14 +233,12 @@
                         </select>
                     </div>
 
-                    <!-- KHU VỰC ÁP LỰC MẠNG -->
                     <div class="input-row"><label>P<sub>mạng BQ</sub> (m):</label><input type="number" id="p1_mang_bq" value="25.0" onchange="calculateProfile()"></div>
                     <div class="input-row">
                         <label>Pattern Mạng:</label>
                         <select id="pat_node1_mang" onchange="calculateProfile()"></select>
                     </div>
 
-                    <!-- KHU VỰC TRẠM BƠM TĂNG ÁP (ẨN KHI CHỌN ÁP LỰC MẠNG) -->
                     <div id="pump_group_container" style="display:none; border-top:1px dashed #cbd5e1; margin-top:4px; padding-top:4px;">
                         <div class="input-row"><label>P<sub>bơm TK</sub> (m):</label><input type="number" id="p1_bom_tk" value="42.0" onchange="calculateProfile()"></div>
                         <div class="input-row">
@@ -347,35 +340,37 @@
 </div>
 
 <script>
-    // PATTERN MẶC ĐỊNH CÓ PHÂN LOẠI
+    // PATTERN MẶC ĐỊNH CHUẨN
     const DEFAULT_PATTERNS = [
         {
+            id: "p_sinhhoat",
             name: "Sinh hoạt",
             type: "demand",
+            isDefault: true,
             color: "#0284c7",
             values: [0.40, 0.35, 0.30, 0.30, 0.45, 0.85, 1.40, 1.30, 1.15, 1.05, 1.10, 1.10, 1.00, 0.95, 0.90, 1.05, 1.35, 1.50, 1.40, 1.20, 0.95, 0.75, 0.60, 0.45]
         },
         {
+            id: "p_congnghiep",
             name: "Công nghiệp",
             type: "demand",
+            isDefault: true,
             color: "#d83b01",
             values: [1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00]
         },
         {
-            name: "Khác",
-            type: "demand",
-            color: "#15803d",
-            values: [0.30, 0.25, 0.25, 0.25, 0.40, 0.90, 1.50, 1.40, 1.10, 0.90, 0.90, 0.90, 0.85, 0.85, 0.85, 0.95, 1.20, 1.40, 1.30, 1.00, 0.80, 0.60, 0.45, 0.35]
-        },
-        {
+            id: "p_mang_tn",
             name: "Áp lực Mạng tự nhiên",
             type: "pressure",
-            color: "#0284c7",
+            isDefault: false,
+            color: "#15803d",
             values: [1.10, 1.15, 1.20, 1.20, 1.10, 0.95, 0.80, 0.85, 0.90, 0.95, 0.95, 0.95, 1.00, 1.05, 1.05, 0.95, 0.80, 0.75, 0.80, 0.90, 1.00, 1.05, 1.10, 1.10]
         },
         {
+            id: "p_bom_5_20",
             name: "Bơm (Chạy 5h - 20h)",
             type: "pressure",
+            isDefault: false,
             color: "#7c3aed",
             values: [0.00, 0.00, 0.00, 0.00, 0.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 0.00, 0.00, 0.00]
         }
@@ -383,7 +378,7 @@
 
     let patternsData = [];
     let activePatternIdx = 0;
-    let currentCategoryFilter = "all";
+    let currentCategoryFilter = "demand"; // Mặc định hiển thị Nhu cầu dùng nước
     let currentHour = 8;
     let isPlaying = false;
     let timerId = null;
@@ -391,22 +386,30 @@
     let pulseDirection = -0.05;
 
     function loadPatterns() {
-        let saved = localStorage.getItem('hw_hydraulic_patterns_v5');
+        let saved = localStorage.getItem('hw_hydraulic_patterns_v6');
+        let savedCat = localStorage.getItem('hw_hydraulic_cat_filter');
+        if (savedCat) currentCategoryFilter = savedCat;
+
         if (saved) {
             try { patternsData = JSON.parse(saved); } 
             catch(e) { patternsData = JSON.parse(JSON.stringify(DEFAULT_PATTERNS)); }
         } else {
             patternsData = JSON.parse(JSON.stringify(DEFAULT_PATTERNS));
         }
+
+        document.getElementById('patCategoryFilter').value = currentCategoryFilter;
     }
 
     function savePatterns() {
-        localStorage.setItem('hw_hydraulic_patterns_v5', JSON.stringify(patternsData));
+        localStorage.setItem('hw_hydraulic_patterns_v6', JSON.stringify(patternsData));
+        localStorage.setItem('hw_hydraulic_cat_filter', currentCategoryFilter);
     }
 
     function resetDefaultPatterns() {
-        if (confirm("Bạn có chắc chắn muốn khôi phục về bảng Pattern mặc định ban đầu?")) {
+        if (confirm("Khôi phục về bảng Pattern mặc định ban đầu? Các Pattern bạn tạo thêm sẽ bị xóa.")) {
             patternsData = JSON.parse(JSON.stringify(DEFAULT_PATTERNS));
+            currentCategoryFilter = "demand";
+            document.getElementById('patCategoryFilter').value = currentCategoryFilter;
             savePatterns();
             renderPatternTabs();
             initPatternTable();
@@ -467,10 +470,22 @@
 
     const MATERIAL_C = { hdpe: 140, ductile: 130, inox: 140 };
 
-    // BẢNG PATTERN VÀ TABS
+    // LỌC CÁC TABS THEO LOẠI PATTERN DÙNG NƯỚC HOẶC ÁP LỰC
     function filterPatternCategory(cat) {
         currentCategoryFilter = cat;
+        savePatterns();
+        
+        let validIndices = [];
+        patternsData.forEach((p, idx) => {
+            if (p.type === currentCategoryFilter) validIndices.push(idx);
+        });
+
+        if (validIndices.length > 0 && !validIndices.includes(activePatternIdx)) {
+            activePatternIdx = validIndices[0];
+        }
+
         renderPatternTabs();
+        initPatternTable();
         drawPatternChart();
     }
 
@@ -478,20 +493,37 @@
         const container = document.getElementById('patternTabsContainer');
         container.innerHTML = '';
 
+        let countInCurrentCat = 0;
+
         patternsData.forEach((pat, idx) => {
-            if (currentCategoryFilter !== "all" && pat.type !== currentCategoryFilter) return;
+            if (pat.type !== currentCategoryFilter) return;
+            countInCurrentCat++;
 
             const btn = document.createElement('button');
             btn.className = idx === activePatternIdx ? 'tab-btn active' : 'tab-btn';
             btn.style.borderLeft = `4px solid ${pat.color}`;
-            btn.innerText = `${pat.name} (${pat.type === 'demand' ? 'Nhu cầu' : 'Áp lực'})`;
+            btn.innerHTML = `<span>${pat.name}</span>`;
+
+            if (!pat.isDefault) {
+                const delBtn = document.createElement('span');
+                delBtn.className = 'tab-del-btn';
+                delBtn.innerText = '✕';
+                delBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    deletePattern(idx);
+                };
+                btn.appendChild(delBtn);
+            }
+
             btn.onclick = () => switchPatternTab(idx);
             container.appendChild(btn);
         });
 
-        if (patternsData[activePatternIdx]) {
-            document.getElementById('pattern_type_select').value = patternsData[activePatternIdx].type;
+        if (countInCurrentCat === 0) {
+            container.innerHTML = `<span style="font-size:0.75rem; color:#94a3b8; font-style:italic;">Chưa có Pattern loại này. Hãy bấm "+ Thêm Pattern mới" phía trên.</span>`;
         }
+
+        document.getElementById('pattern_count_info').innerText = `Tổng số: ${patternsData.length}/10 Pattern (Tối đa)`;
     }
 
     function switchPatternTab(idx) {
@@ -503,22 +535,31 @@
     }
 
     function createNewPattern() {
-        const name = prompt("Nhập tên Pattern mới:", "Pattern mới " + (patternsData.length + 1));
-        if (!name) return;
-        
-        const type = confirm("Bấm OK nếu tạo Pattern MẠNG/ÁP LỰC.\nBấm Cancel nếu tạo Pattern NHU CẦU DÙNG NƯỚC.") ? "pressure" : "demand";
-        const colors = ["#0284c7", "#d83b01", "#15803d", "#7c3aed", "#db2777", "#ea580c"];
+        if (patternsData.length >= 10) {
+            alert("Đã đạt giới hạn tối đa 10 Pattern! Vui lòng xóa bớt các Pattern không sử dụng trước khi tạo mới.");
+            return;
+        }
+
+        const namePrompt = currentCategoryFilter === 'demand' ? 'Tên Pattern Nhu cầu mới:' : 'Tên Pattern Áp lực mới:';
+        const name = prompt(namePrompt, "Pattern " + (patternsData.length + 1));
+        if (!name || name.trim() === "") return;
+
+        const colors = ["#0284c7", "#d83b01", "#15803d", "#7c3aed", "#db2777", "#ea580c", "#059669", "#d97706"];
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
-        patternsData.push({
-            name: name,
-            type: type,
+        const newPat = {
+            id: "p_custom_" + Date.now(),
+            name: name.trim(),
+            type: currentCategoryFilter,
+            isDefault: false,
             color: randomColor,
             values: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        });
+        };
+
+        patternsData.push(newPat);
+        activePatternIdx = patternsData.length - 1;
 
         savePatterns();
-        activePatternIdx = patternsData.length - 1;
         renderPatternTabs();
         initPatternTable();
         updatePatternSelectBoxes();
@@ -526,11 +567,31 @@
         calculateProfile();
     }
 
+    function deletePattern(idx) {
+        if (confirm(`Bạn có chắc chắn muốn xóa Pattern "${patternsData[idx].name}"?`)) {
+            patternsData.splice(idx, 1);
+            if (activePatternIdx >= patternsData.length) activePatternIdx = Math.max(0, patternsData.length - 1);
+            savePatterns();
+            renderPatternTabs();
+            initPatternTable();
+            updatePatternSelectBoxes();
+            drawPatternChart();
+            calculateProfile();
+        }
+    }
+
     function initPatternTable() {
         const tbody = document.getElementById('patternTbody');
         tbody.innerHTML = '';
         let pat = patternsData[activePatternIdx];
-        if(!pat) return;
+        
+        if (!pat || pat.type !== currentCategoryFilter) {
+            document.getElementById('pattern_name_input').value = "";
+            document.getElementById('pattern_name_input').disabled = true;
+            return;
+        }
+
+        document.getElementById('pattern_name_input').disabled = false;
         document.getElementById('pattern_name_input').value = pat.name;
 
         for (let h = 0; h < 24; h++) {
@@ -545,32 +606,28 @@
     }
 
     function updatePatternName(newName) {
-        patternsData[activePatternIdx].name = newName;
-        savePatterns();
-        renderPatternTabs();
-        updatePatternSelectBoxes();
-        drawPatternChart();
-    }
-
-    function updatePatternType(newType) {
-        patternsData[activePatternIdx].type = newType;
-        savePatterns();
-        renderPatternTabs();
-        updatePatternSelectBoxes();
-        drawPatternChart();
+        if (patternsData[activePatternIdx]) {
+            patternsData[activePatternIdx].name = newName;
+            savePatterns();
+            renderPatternTabs();
+            updatePatternSelectBoxes();
+            drawPatternChart();
+        }
     }
 
     function updatePatternVal(h, val) {
-        patternsData[activePatternIdx].values[h] = parseFloat(val) || 0;
-        savePatterns();
-        drawPatternChart();
-        calculateProfile();
+        if (patternsData[activePatternIdx]) {
+            patternsData[activePatternIdx].values[h] = parseFloat(val) || 0;
+            savePatterns();
+            drawPatternChart();
+            calculateProfile();
+        }
     }
 
     function updatePatternSelectBoxes() {
         const selects = [
-            { id: 'pat_node1_mang', type: 'pressure', defaultIdx: 3 },
-            { id: 'pat_node1_bom', type: 'pressure', defaultIdx: 4 },
+            { id: 'pat_node1_mang', type: 'pressure', defaultIdx: 2 },
+            { id: 'pat_node1_bom', type: 'pressure', defaultIdx: 3 },
             { id: 'pat_node2', type: 'demand', defaultIdx: 0 },
             { id: 'pat_node3', type: 'demand', defaultIdx: 0 },
             { id: 'pat_node4', type: 'demand', defaultIdx: 0 }
@@ -579,11 +636,11 @@
         selects.forEach(item => {
             const sel = document.getElementById(item.id);
             if(!sel) return;
-            const prevVal = sel.value !== "" ? sel.value : item.defaultIdx;
+            const prevVal = sel.value;
             sel.innerHTML = '';
             
             patternsData.forEach((p, pIdx) => {
-                if (p.type === item.type || item.id.includes('node1')) {
+                if (p.type === item.type) {
                     const opt = document.createElement('option');
                     opt.value = pIdx;
                     opt.textContent = p.name;
@@ -592,6 +649,7 @@
                     sel.appendChild(opt);
                 }
             });
+
             if(sel.querySelector(`option[value="${prevVal}"]`)) {
                 sel.value = prevVal;
             } else if (sel.options.length > 0) {
@@ -682,7 +740,7 @@
         }
 
         patternsData.forEach((patObj, pIdx) => {
-            if (currentCategoryFilter !== "all" && patObj.type !== currentCategoryFilter) return;
+            if (patObj.type !== currentCategoryFilter) return;
 
             ctx.beginPath();
             ctx.moveTo(getX(0), getY(patObj.values[0]));
@@ -798,7 +856,7 @@
         const qOut3 = (qOut3Ngd / 24) * ct3;
         const qOut4 = (qOut4Ngd / 24) * ct4;
 
-        // THUẬT TOÁN LOGIC TẠI NÚT 1: CHỌN MẠNG HOẶC TRẠM BƠM TĂNG ÁP
+        // CẤP ÁP LỰC TẠI NÚT 1: BƠM VS MẠNG
         const p1SourceType = document.getElementById('p1_source_type').value;
         const p1MangBq = parseFloat(document.getElementById('p1_mang_bq').value) || 0;
         const pIdx1Mang = parseInt(document.getElementById('pat_node1_mang').value) || 0;
@@ -981,11 +1039,10 @@
             let pumpY = z1Y - 14;
 
             ctx.save();
-            // Vòng tròn Bơm
             ctx.beginPath();
             ctx.arc(pumpX, pumpY, 11, 0, Math.PI * 2);
             if (data.isPumpActive) {
-                ctx.fillStyle = `rgba(22, 163, 74, ${pulseOpacity})`; // Màu xanh nhấp nháy
+                ctx.fillStyle = `rgba(22, 163, 74, ${pulseOpacity})`; // Màu xanh nhấp nháy khi chạy
                 ctx.strokeStyle = "#15803d";
             } else {
                 ctx.fillStyle = "#dc2626"; // Màu đỏ nghỉ
