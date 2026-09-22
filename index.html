@@ -55,7 +55,6 @@
         .pattern-table th { position: sticky; top: 0; background: #e2e8f0; color: #334155; font-weight: bold; padding: 5px 2px; }
         .pattern-table td { padding: 3px 2px; border-bottom: 1px solid #f1f5f9; }
         
-        /* CẢI TIẾN MÀU HỆ SỐ PATTERN: 0 THÌ XÁM NHẠT, >0 THÌ NỔI BẬT */
         .pattern-table input { width: 60px; text-align: center; border: 1px solid #cbd5e1; border-radius: 3px; padding: 2px; font-size: 0.75rem; font-weight: bold; outline: none; }
         .pat-val-zero { color: #94a3b8 !important; background-color: #f8fafc !important; }
         .pat-val-active { color: #0284c7 !important; background-color: #ffffff !important; }
@@ -76,10 +75,20 @@
         .diagram-wrapper { position: relative; width: 100%; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 6px; margin-top: 6px; }
         canvas { width: 100%; height: 380px; background: #ffffff; display: block; }
 
-        .inputs-overlay { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; padding-top: 6px; border-top: 1px dashed #cbd5e1; }
-        .seg-input-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px; }
-        .seg-input-header { font-size: 0.78rem; font-weight: bold; color: #005a36; margin-bottom: 4px; text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 2px; }
-        .node-input-header { font-size: 0.75rem; font-weight: bold; color: #b91c1c; margin: 6px 0 4px 0; text-align: center; border-top: 1px dashed #cbd5e1; border-bottom: 1px solid #e2e8f0; padding: 2px 0; }
+        /* BỐ CỤC NHẬP LIỆU TÁCH THÀNH 2 DÃY NGHỆ THUẬT & TRỰC QUAN */
+        .inputs-container { margin-top: 10px; display: flex; flex-direction: column; gap: 12px; }
+        
+        .pipe-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .node-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+
+        .input-card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px; }
+        .pipe-card { border-top: 3px solid #005a36; }
+        .node-card { border-top: 3px solid #0284c7; }
+        .node-card-end { border-top: 3px solid #15803d; background: #f0fdf4; border-color: #bbf7d0; }
+
+        .card-header { font-size: 0.78rem; font-weight: bold; color: #005a36; margin-bottom: 6px; text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 3px; }
+        .node-card .card-header { color: #0284c7; }
+        .node-card-end .card-header { color: #15803d; border-bottom-color: #bbf7d0; }
 
         .input-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; font-size: 0.71rem; }
         .input-row label { color: #334155; font-weight: 600; white-space: nowrap; flex: 1; }
@@ -88,10 +97,10 @@
         input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; }
 
-        .seg-input-card input { width: 65px; padding: 2px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 0.71rem; text-align: center; outline: none; background: #fff; height: 22px; }
-        .seg-input-card select { width: 140px; padding: 1px 2px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 0.70rem; text-align: left; outline: none; background: #fff; height: 22px; }
+        .input-card input { width: 70px; padding: 2px 4px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 0.71rem; text-align: center; outline: none; background: #fff; height: 22px; }
+        .input-card select { width: 135px; padding: 1px 2px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 0.70rem; text-align: left; outline: none; background: #fff; height: 22px; }
 
-        .sub-info { font-size: 0.68rem; color: #166534; font-weight: 600; text-align: right; margin-bottom: 2px; }
+        .sub-info { font-size: 0.68rem; color: #166534; font-weight: 600; text-align: right; margin-top: 2px; }
 
         .footer { padding: 8px 12px; font-size: 0.72rem; color: #64748b; background: #fff; border-top: 1px solid var(--border-color); margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
 
@@ -100,16 +109,8 @@
             .container { max-width: 100vw; border-radius: 0; border: none; }
             .content { padding: 4px 6px; }
             canvas { height: 320px; }
-            .inputs-overlay { gap: 4px; }
-            .seg-input-card select { width: 115px; }
-            .seg-input-card input { width: 55px; }
-        }
-
-        @media screen and (max-width: 768px) and (orientation: portrait) {
-            body::before {
-                content: "📱 Vui lòng xoay ngang điện thoại để phủ kín khung nhìn mô phỏng tốt nhất!";
-                display: block; background: #fef3c7; color: #92400e; text-align: center; padding: 6px; font-size: 0.75rem; font-weight: bold; border-bottom: 1px solid #fcd34d; margin-bottom: 6px;
-            }
+            .input-card select { width: 110px; }
+            .input-card input { width: 55px; }
         }
     </style>
 </head>
@@ -195,142 +196,148 @@
 
         <div id="warn_box" class="warning-box"></div>
 
-        <!-- SƠ ĐỒ TRẮC DỌC & NHẬP LIỆU -->
-        <div class="section-title">II. Sơ đồ Trắc dọc & Nhập dữ liệu phân đoạn (4 Cột)</div>
+        <!-- SƠ ĐỒ TRẮC DỌC & BỐ CỤC NHẬP LIỆU TÁCH 2 DÃY -->
+        <div class="section-title">II. Sơ đồ Trắc dọc & Nhập dữ liệu phân đoạn</div>
         
         <div class="diagram-wrapper">
             <canvas id="profileCanvas"></canvas>
 
-            <div class="inputs-overlay">
-                <!-- CỘT 1: NÚT NGUỒN CẤP / BƠM -->
-                <div class="seg-input-card">
-                    <div class="seg-input-header">ĐOẠN 1 - 2</div>
-                    <div class="input-row"><label>Chiều dài L (m):</label><input type="number" id="l12" value="10000" onchange="calculateProfile()"></div>
-                    <div class="input-row">
-                        <label>Vật liệu:</label>
-                        <select id="mat12" onchange="updatePipeList(1)">
-                            <option value="ductile" selected>Gang Dẻo (ISO 2531)</option>
-                            <option value="hdpe">HDPE</option>
-                            <option value="inox">Inox</option>
-                        </select>
-                    </div>
-                    <div class="input-row">
-                        <label>Áp lực PN:</label>
-                        <select id="pn12" onchange="updatePipeList(1)">
-                            <option value="PN10" selected>PN10 (Class C40/K9)</option>
-                            <option value="PN16">PN16 (Class C40/K9)</option>
-                            <option value="PN25">PN25 (Class C50/K10)</option>
-                        </select>
-                    </div>
-                    <div class="input-row"><label>Cỡ ống (DN):</label><select id="dn12" onchange="calculateProfile()"></select></div>
-                    <div class="sub-info" id="sub12">D<sub>in</sub>: - mm</div>
-
-                    <div class="node-input-header">DỮ LIỆU NÚT 1 (NGUỒN CẤP)</div>
-                    <div class="input-row"><label>Z<sub>1</sub> điểm đầu (m):</label><input type="number" id="z1" value="5.0" onchange="calculateProfile()"></div>
-                    
-                    <div class="input-row">
-                        <label>Chế độ Nút 1:</label>
-                        <select id="p1_source_type" onchange="onP1SourceTypeChange()">
-                            <option value="network" selected>Áp lực mạng</option>
-                            <option value="pump_station">Trạm bơm tăng áp</option>
-                        </select>
-                    </div>
-
-                    <div class="input-row"><label>P<sub>mạng BQ</sub> (m):</label><input type="number" id="p1_mang_bq" value="25.0" onchange="calculateProfile()"></div>
-                    <div class="input-row">
-                        <label>Pattern Mạng:</label>
-                        <select id="pat_node1_mang" onchange="calculateProfile()"></select>
-                    </div>
-
-                    <div id="pump_group_container" style="display:none; border-top:1px dashed #cbd5e1; margin-top:4px; padding-top:4px;">
-                        <div class="input-row"><label>P<sub>bơm TK</sub> (m):</label><input type="number" id="p1_bom_tk" value="42.0" onchange="calculateProfile()"></div>
+            <div class="inputs-container">
+                <!-- DÃY 1: CÁC ĐOẠN TUYẾN ỐNG (3 ĐOẠN) -->
+                <div class="pipe-row">
+                    <div class="input-card pipe-card">
+                        <div class="card-header">ĐOẠN 1 - 2</div>
+                        <div class="input-row"><label>Chiều dài L (m):</label><input type="number" id="l12" value="10000" onchange="calculateProfile()"></div>
                         <div class="input-row">
-                            <label>Pattern Bơm:</label>
-                            <select id="pat_node1_bom" onchange="calculateProfile()"></select>
+                            <label>Vật liệu:</label>
+                            <select id="mat12" onchange="updatePipeList(1)">
+                                <option value="ductile" selected>Gang Dẻo (ISO 2531)</option>
+                                <option value="hdpe">HDPE</option>
+                                <option value="inox">Inox</option>
+                            </select>
+                        </div>
+                        <div class="input-row">
+                            <label>Áp lực PN:</label>
+                            <select id="pn12" onchange="updatePipeList(1)">
+                                <option value="PN10" selected>PN10 (Class C40/K9)</option>
+                                <option value="PN16">PN16 (Class C40/K9)</option>
+                                <option value="PN25">PN25 (Class C50/K10)</option>
+                            </select>
+                        </div>
+                        <div class="input-row"><label>Cỡ ống (DN):</label><select id="dn12" onchange="calculateProfile()"></select></div>
+                        <div class="sub-info" id="sub12">D<sub>in</sub>: - mm</div>
+                    </div>
+
+                    <div class="input-card pipe-card">
+                        <div class="card-header">ĐOẠN 2 - 3</div>
+                        <div class="input-row"><label>Chiều dài L (m):</label><input type="number" id="l23" value="5000" onchange="calculateProfile()"></div>
+                        <div class="input-row">
+                            <label>Vật liệu:</label>
+                            <select id="mat23" onchange="updatePipeList(2)">
+                                <option value="ductile" selected>Gang Dẻo (ISO 2531)</option>
+                                <option value="hdpe">HDPE</option>
+                                <option value="inox">Inox</option>
+                            </select>
+                        </div>
+                        <div class="input-row">
+                            <label>Áp lực PN:</label>
+                            <select id="pn23" onchange="updatePipeList(2)">
+                                <option value="PN10" selected>PN10 (Class C40/K9)</option>
+                                <option value="PN16">PN16 (Class C40/K9)</option>
+                                <option value="PN25">PN25 (Class C50/K10)</option>
+                            </select>
+                        </div>
+                        <div class="input-row"><label>Cỡ ống (DN):</label><select id="dn23" onchange="calculateProfile()"></select></div>
+                        <div class="sub-info" id="sub23">D<sub>in</sub>: - mm</div>
+                    </div>
+
+                    <div class="input-card pipe-card">
+                        <div class="card-header">ĐOẠN 3 - 4</div>
+                        <div class="input-row"><label>Chiều dài L (m):</label><input type="number" id="l34" value="10000" onchange="calculateProfile()"></div>
+                        <div class="input-row">
+                            <label>Vật liệu:</label>
+                            <select id="mat34" onchange="updatePipeList(3)">
+                                <option value="ductile" selected>Gang Dẻo (ISO 2531)</option>
+                                <option value="hdpe">HDPE</option>
+                                <option value="inox">Inox</option>
+                            </select>
+                        </div>
+                        <div class="input-row">
+                            <label>Áp lực PN:</label>
+                            <select id="pn34" onchange="updatePipeList(3)">
+                                <option value="PN10" selected>PN10 (Class C40/K9)</option>
+                                <option value="PN16">PN16 (Class C40/K9)</option>
+                                <option value="PN25">PN25 (Class C50/K10)</option>
+                            </select>
+                        </div>
+                        <div class="input-row"><label>Cỡ ống (DN):</label><select id="dn34" onchange="calculateProfile()"></select></div>
+                        <div class="sub-info" id="sub34">D<sub>in</sub>: - mm</div>
+                    </div>
+                </div>
+
+                <!-- DÃY 2: CÁC NÚT MẠNG LƯỚI (NÚT 1 -> NÚT 4) -->
+                <div class="node-row">
+                    <!-- NÚT 1 -->
+                    <div class="input-card node-card">
+                        <div class="card-header">DỮ LIỆU NÚT 1 (NGUỒN CẤP)</div>
+                        <div class="input-row"><label>Z<sub>1</sub> điểm đầu (m):</label><input type="number" id="z1" value="5.0" onchange="calculateProfile()"></div>
+                        <div class="input-row">
+                            <label>Chế độ Nút 1:</label>
+                            <select id="p1_source_type" onchange="onP1SourceTypeChange()">
+                                <option value="network" selected>Áp lực mạng</option>
+                                <option value="pump_station">Trạm bơm tăng áp</option>
+                            </select>
+                        </div>
+                        <div class="input-row"><label>P<sub>mạng BQ</sub> (m):</label><input type="number" id="p1_mang_bq" value="25.0" onchange="calculateProfile()"></div>
+                        <div class="input-row">
+                            <label>Pattern Mạng:</label>
+                            <select id="pat_node1_mang" onchange="calculateProfile()"></select>
+                        </div>
+
+                        <div id="pump_group_container" style="display:none; border-top:1px dashed #cbd5e1; margin-top:4px; padding-top:4px;">
+                            <div class="input-row"><label>P<sub>bơm TK</sub> (m):</label><input type="number" id="p1_bom_tk" value="42.0" onchange="calculateProfile()"></div>
+                            <div class="input-row">
+                                <label>Pattern Bơm:</label>
+                                <select id="pat_node1_bom" onchange="calculateProfile()"></select>
+                            </div>
+                        </div>
+                        
+                        <div id="p1_status_lbl" style="font-size:0.70rem; font-weight:bold; text-align:center; margin-top:5px; padding:4px; border-radius:4px;">
+                            CẤP ÁP LỰC MẠNG: P1 = 25.0m
                         </div>
                     </div>
-                    
-                    <!-- CẢI TIẾN MÀU NỀN HIỂN THỊ TRẠNG THÁI NÚT 1 ĐẸP NỔI BẬT HƠN -->
-                    <div id="p1_status_lbl" style="font-size:0.70rem; font-weight:bold; text-align:center; margin-top:5px; padding:5px 8px; border-radius:5px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.3s ease;">
-                        Đang lấy Áp lực Mạng = 25.0m
-                    </div>
-                </div>
 
-                <!-- CỘT 2 -->
-                <div class="seg-input-card">
-                    <div class="seg-input-header">ĐOẠN 2 - 3</div>
-                    <div class="input-row"><label>Chiều dài L (m):</label><input type="number" id="l23" value="5000" onchange="calculateProfile()"></div>
-                    <div class="input-row">
-                        <label>Vật liệu:</label>
-                        <select id="mat23" onchange="updatePipeList(2)">
-                            <option value="ductile" selected>Gang Dẻo (ISO 2531)</option>
-                            <option value="hdpe">HDPE</option>
-                            <option value="inox">Inox</option>
-                        </select>
+                    <!-- NÚT 2 -->
+                    <div class="input-card node-card">
+                        <div class="card-header">DỮ LIỆU NÚT 2</div>
+                        <div class="input-row"><label>Z<sub>2</sub> (m):</label><input type="number" id="z2" value="22.0" onchange="calculateProfile()"></div>
+                        <div class="input-row"><label>Q<sub>n-2</sub> (m³/ngđ):</label><input type="number" id="q_out2" value="0" onchange="onQInputChange(2)"></div>
+                        <div class="input-row" id="row_pat_2" style="display:none;">
+                            <label>Pattern Q<sub>2</sub>:</label>
+                            <select id="pat_node2" onchange="onNodePatternChange(2)"></select>
+                        </div>
                     </div>
-                    <div class="input-row">
-                        <label>Áp lực PN:</label>
-                        <select id="pn23" onchange="updatePipeList(2)">
-                            <option value="PN10" selected>PN10 (Class C40/K9)</option>
-                            <option value="PN16">PN16 (Class C40/K9)</option>
-                            <option value="PN25">PN25 (Class C50/K10)</option>
-                        </select>
-                    </div>
-                    <div class="input-row"><label>Cỡ ống (DN):</label><select id="dn23" onchange="calculateProfile()"></select></div>
-                    <div class="sub-info" id="sub23">D<sub>in</sub>: - mm</div>
 
-                    <div class="node-input-header">DỮ LIỆU NÚT 2</div>
-                    <div class="input-row"><label>Z<sub>2</sub> (m):</label><input type="number" id="z2" value="22.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>n-2</sub> (m³/ngđ):</label><input type="number" id="q_out2" value="0" onchange="onQInputChange(2)"></div>
-                    <div class="input-row" id="row_pat_2" style="display:none;">
-                        <label>Pattern Q<sub>2</sub>:</label>
-                        <select id="pat_node2" onchange="onNodePatternChange(2)"></select>
+                    <!-- NÚT 3 -->
+                    <div class="input-card node-card">
+                        <div class="card-header">DỮ LIỆU NÚT 3</div>
+                        <div class="input-row"><label>Z<sub>3</sub> (m):</label><input type="number" id="z3" value="3.0" onchange="calculateProfile()"></div>
+                        <div class="input-row"><label>Q<sub>n-3</sub> (m³/ngđ):</label><input type="number" id="q_out3" value="0" onchange="onQInputChange(3)"></div>
+                        <div class="input-row" id="row_pat_3" style="display:none;">
+                            <label>Pattern Q<sub>3</sub>:</label>
+                            <select id="pat_node3" onchange="onNodePatternChange(3)"></select>
+                        </div>
                     </div>
-                </div>
 
-                <!-- CỘT 3 -->
-                <div class="seg-input-card">
-                    <div class="seg-input-header">ĐOẠN 3 - 4</div>
-                    <div class="input-row"><label>Chiều dài L (m):</label><input type="number" id="l34" value="10000" onchange="calculateProfile()"></div>
-                    <div class="input-row">
-                        <label>Vật liệu:</label>
-                        <select id="mat34" onchange="updatePipeList(3)">
-                            <option value="ductile" selected>Gang Dẻo (ISO 2531)</option>
-                            <option value="hdpe">HDPE</option>
-                            <option value="inox">Inox</option>
-                        </select>
-                    </div>
-                    <div class="input-row">
-                        <label>Áp lực PN:</label>
-                        <select id="pn34" onchange="updatePipeList(3)">
-                            <option value="PN10" selected>PN10 (Class C40/K9)</option>
-                            <option value="PN16">PN16 (Class C40/K9)</option>
-                            <option value="PN25">PN25 (Class C50/K10)</option>
-                        </select>
-                    </div>
-                    <div class="input-row"><label>Cỡ ống (DN):</label><select id="dn34" onchange="calculateProfile()"></select></div>
-                    <div class="sub-info" id="sub34">D<sub>in</sub>: - mm</div>
-
-                    <div class="node-input-header">DỮ LIỆU NÚT 3</div>
-                    <div class="input-row"><label>Z<sub>3</sub> (m):</label><input type="number" id="z3" value="3.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>n-3</sub> (m³/ngđ):</label><input type="number" id="q_out3" value="0" onchange="onQInputChange(3)"></div>
-                    <div class="input-row" id="row_pat_3" style="display:none;">
-                        <label>Pattern Q<sub>3</sub>:</label>
-                        <select id="pat_node3" onchange="onNodePatternChange(3)"></select>
-                    </div>
-                </div>
-
-                <!-- CỘT 4 -->
-                <div class="seg-input-card" style="background: #f0fdf4; border-color: #bbf7d0;">
-                    <div class="seg-input-header" style="color: #15803d; border-bottom-color: #bbf7d0;">ĐIỂM CUỐI TUYẾN</div>
-                    <p style="font-size: 0.62rem; color: #475569; text-align: center; margin-bottom: 4px;">Dữ liệu nút xả cuối toàn tuyến</p>
-
-                    <div class="node-input-header" style="margin-top: 2px;">DỮ LIỆU NÚT 4</div>
-                    <div class="input-row"><label>Z<sub>4</sub> điểm cuối (m):</label><input type="number" id="z4" value="3.0" onchange="calculateProfile()"></div>
-                    <div class="input-row"><label>Q<sub>n-4</sub> (m³/ngđ):</label><input type="number" id="q_out4" value="10000" onchange="onQInputChange(4)"></div>
-                    <div class="input-row" id="row_pat_4">
-                        <label>Pattern Q<sub>4</sub>:</label>
-                        <select id="pat_node4" onchange="onNodePatternChange(4)"></select>
+                    <!-- NÚT 4 -->
+                    <div class="input-card node-card-end">
+                        <div class="card-header">DỮ LIỆU NÚT 4 (ĐIỂM CUỐI)</div>
+                        <div class="input-row"><label>Z<sub>4</sub> điểm cuối (m):</label><input type="number" id="z4" value="3.0" onchange="calculateProfile()"></div>
+                        <div class="input-row"><label>Q<sub>n-4</sub> (m³/ngđ):</label><input type="number" id="q_out4" value="10000" onchange="onQInputChange(4)"></div>
+                        <div class="input-row" id="row_pat_4">
+                            <label>Pattern Q<sub>4</sub>:</label>
+                            <select id="pat_node4" onchange="onNodePatternChange(4)"></select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -423,7 +430,6 @@
         }
     }
 
-    // THÔNG SỐ ỐNG GANG DẺO THỰC TẾ THEO ISO 2531 / EN 545
     const DI_PIPE_SPECS = {
         80:   { DE: 98,   e_gang: 6.0, t_mortar: 3.0 },
         100:  { DE: 118,  e_gang: 6.0, t_mortar: 3.0 },
@@ -539,7 +545,7 @@
 
     function createNewPattern() {
         if (patternsData.length >= 10) {
-            alert("Đã đạt giới hạn tối đa 10 Pattern! Vui lòng xóa bớt các Pattern không sử dụng trước khi tạo mới.");
+            alert("Đã đạt giới hạn tối đa 10 Pattern!");
             return;
         }
 
@@ -583,7 +589,6 @@
         }
     }
 
-    // TẠO BẢNG TỰ ĐỘNG CHUYỂN MÀU THEO GIÁ TRỊ GIỜ (0 -> XÁM, >0 -> XANH/ĐỎ)
     function initPatternTable() {
         const tbody = document.getElementById('patternTbody');
         tbody.innerHTML = '';
@@ -626,14 +631,7 @@
         let val = parseFloat(inputElem.value) || 0;
         if (patternsData[activePatternIdx]) {
             patternsData[activePatternIdx].values[h] = val;
-            
-            // Đổi class trực tiếp real-time
-            if (val === 0) {
-                inputElem.className = "pat-val-zero";
-            } else {
-                inputElem.className = "pat-val-active";
-            }
-
+            inputElem.className = val === 0 ? "pat-val-zero" : "pat-val-active";
             savePatterns();
             drawPatternChart();
             calculateProfile();
@@ -642,11 +640,11 @@
 
     function updatePatternSelectBoxes() {
         const selects = [
-            { id: 'pat_node1_mang', type: 'pressure', defaultIdx: 2 },
-            { id: 'pat_node1_bom', type: 'pressure', defaultIdx: 3 },
-            { id: 'pat_node2', type: 'demand', defaultIdx: 0 },
-            { id: 'pat_node3', type: 'demand', defaultIdx: 0 },
-            { id: 'pat_node4', type: 'demand', defaultIdx: 0 }
+            { id: 'pat_node1_mang', type: 'pressure' },
+            { id: 'pat_node1_bom', type: 'pressure' },
+            { id: 'pat_node2', type: 'demand' },
+            { id: 'pat_node3', type: 'demand' },
+            { id: 'pat_node4', type: 'demand' }
         ];
 
         selects.forEach(item => {
@@ -678,22 +676,14 @@
     function onP1SourceTypeChange() {
         const type = document.getElementById('p1_source_type').value;
         const pumpGroup = document.getElementById('pump_group_container');
-        if (type === 'pump_station') {
-            pumpGroup.style.display = 'block';
-        } else {
-            pumpGroup.style.display = 'none';
-        }
+        pumpGroup.style.display = (type === 'pump_station') ? 'block' : 'none';
         calculateProfile();
     }
 
     function onQInputChange(nodeIdx) {
         const qVal = parseFloat(document.getElementById(`q_out${nodeIdx}`).value) || 0;
         const rowPat = document.getElementById(`row_pat_${nodeIdx}`);
-        if (qVal > 0) {
-            rowPat.style.display = "flex";
-        } else {
-            rowPat.style.display = "none";
-        }
+        rowPat.style.display = (qVal > 0) ? "flex" : "none";
         calculateProfile();
     }
 
@@ -841,7 +831,6 @@
         return Q_m3s / ((Math.PI * Math.pow(D_m, 2)) / 4);
     }
 
-    // TÍNH TOÁN THỦY LỰC MÔ HÌNH & HIỂN THỊ MÀU NỀN ĐẸP NỔI BẬT NÚT 1
     function calculateProfile() {
         ['12', '23', '34'].forEach(s => {
             const dinVal = parseFloat(document.getElementById(`dn${s}`).value) || 0;
@@ -872,7 +861,6 @@
         const qOut3 = (qOut3Ngd / 24) * ct3;
         const qOut4 = (qOut4Ngd / 24) * ct4;
 
-        // CẤP ÁP LỰC TẠI NÚT 1: BƠM VS MẠNG
         const p1SourceType = document.getElementById('p1_source_type').value;
         const p1MangBq = parseFloat(document.getElementById('p1_mang_bq').value) || 0;
         const pIdx1Mang = parseInt(document.getElementById('pat_node1_mang').value) || 0;
@@ -898,7 +886,6 @@
             }
         }
 
-        // TỐI ƯU MÀU NỀN TRẠNG THÁI P1 NỔI BẬT ĐẸP MẮT (HÌNH 3)
         const statusLbl = document.getElementById('p1_status_lbl');
         if (isPumpStationMode) {
             if (isPumpActive) {
@@ -997,7 +984,6 @@
         });
     }
 
-    // VẼ SƠ ĐỒ CANVAS - ĐỔI MÀU ĐƯỜNG ĐỊA HÌNH SANG XANH NƯỚC BIỂN & BỎ CHỮ BƠM ON/OFF
     function drawProfileCanvas(data) {
         const canvas = document.getElementById('profileCanvas');
         const ctx = canvas.getContext('2d');
@@ -1033,19 +1019,19 @@
         }
         ctx.setLineDash([]);
 
-        // MÀU ĐƯỜNG ĐỊA HÌNH & MIỀN Z SANG XANH NƯỚC BIỂN (HÌNH 2)
+        // Đường địa hình Z (Xanh nước biển)
         ctx.beginPath();
         ctx.moveTo(getX(nodes[0].dist), getY(nodes[0].z));
         for (let i = 1; i < nodes.length; i++) ctx.lineTo(getX(nodes[i].dist), getY(nodes[i].z));
         ctx.lineTo(getX(nodes[3].dist), H - padB);
         ctx.lineTo(getX(nodes[0].dist), H - padB);
         ctx.closePath();
-        ctx.fillStyle = "rgba(2, 132, 199, 0.12)"; ctx.fill(); // Phủ màu xanh nước biển nhạt
+        ctx.fillStyle = "rgba(2, 132, 199, 0.12)"; ctx.fill();
 
         ctx.beginPath();
         ctx.moveTo(getX(nodes[0].dist), getY(nodes[0].z));
         for (let i = 1; i < nodes.length; i++) ctx.lineTo(getX(nodes[i].dist), getY(nodes[i].z));
-        ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 3; ctx.stroke(); // Đường địa hình Z màu xanh nước biển đậm
+        ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 3; ctx.stroke();
 
         // Đường áp lực H (Nét đứt)
         ctx.beginPath();
@@ -1054,7 +1040,7 @@
         ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 2.5; ctx.setLineDash([6, 4]); ctx.stroke();
         ctx.setLineDash([]);
 
-        // VẼ ICON TRẠM BƠM TẠI NÚT 1 (ĐÃ BỎ CHỮ BƠM ON / OFF THEO YÊU CẦU - HÌNH 2)
+        // Icon Bơm
         if (data.isPumpStationMode) {
             let x1 = getX(nodes[0].dist);
             let z1Y = getY(nodes[0].z);
@@ -1065,17 +1051,16 @@
             ctx.beginPath();
             ctx.arc(pumpX, pumpY, 11, 0, Math.PI * 2);
             if (data.isPumpActive) {
-                ctx.fillStyle = `rgba(22, 163, 74, ${pulseOpacity})`; // Màu xanh nhấp nháy khi chạy
+                ctx.fillStyle = `rgba(22, 163, 74, ${pulseOpacity})`;
                 ctx.strokeStyle = "#15803d";
             } else {
-                ctx.fillStyle = "#dc2626"; // Màu đỏ nghỉ
+                ctx.fillStyle = "#dc2626";
                 ctx.strokeStyle = "#991b1b";
             }
             ctx.lineWidth = 2;
             ctx.fill();
             ctx.stroke();
 
-            // Biểu tượng Cánh Bơm trắng bên trong
             ctx.beginPath();
             ctx.moveTo(pumpX - 7, pumpY + 7);
             ctx.lineTo(pumpX + 8, pumpY);
@@ -1086,7 +1071,6 @@
             ctx.restore();
         }
 
-        // HÀM VẼ HF SUBSCRIPT CHUẨN
         function drawHfSubscript(x, y, hfVal, color) {
             ctx.save();
             ctx.fillStyle = color;
@@ -1112,7 +1096,6 @@
             ctx.restore();
         }
 
-        // THÔNG SỐ CÁC ĐOẠN ỐNG
         for (let i = 0; i < 3; i++) {
             let xMid = (getX(nodes[i].dist) + getX(nodes[i+1].dist)) / 2;
             let yHMid = (getY(nodes[i].H) + getY(nodes[i+1].H)) / 2;
@@ -1127,7 +1110,6 @@
             drawHfSubscript(xMid, yHMid + 52, segInfo.hf, "#b91c1c");
         }
 
-        // ĐƯỜNG TỔNG TOÀN TUYẾN TRÊN CÙNG
         let topY = 22;
         let x0 = getX(0);
         let x3 = getX(nodes[3].dist);
@@ -1163,7 +1145,6 @@
         ctx.font = "bold 11.5px sans-serif";
         ctx.fillText(` = ${data.totalHf.toFixed(2)} m`, startX + w1 + wF_top, topY + 4);
 
-        // HIỂN THỊ CÁC NÚT DƯỚI
         nodes.forEach((n) => {
             let x = getX(n.dist);
             let yZ = getY(n.z);
@@ -1215,7 +1196,6 @@
             ctx.fillText(`P=${n.p.toFixed(1)}m`, x, yH - 8);
         });
 
-        // Chú thích Chú giải màu sắc
         ctx.fillStyle = "#0284c7"; ctx.fillRect(padL + 10, 48, 14, 8);
         ctx.fillStyle = "#334155"; ctx.font = "11px sans-serif"; ctx.textAlign = "left";
         ctx.fillText("Cao độ Z (m)", padL + 30, 55);
@@ -1225,7 +1205,6 @@
         ctx.fillStyle = "#334155"; ctx.fillText("Đường áp lực H (m)", padL + 158, 55);
     }
 
-    // HIỆU ỨNG NHẤP NHÁY BƠM KHI HOẠT ĐỘNG
     setInterval(() => {
         pulseOpacity += pulseDirection;
         if (pulseOpacity <= 0.3 || pulseOpacity >= 1) {
