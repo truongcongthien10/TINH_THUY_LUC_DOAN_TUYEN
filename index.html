@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Mô hình thủy lực mạng đường ống cấp nước - HueWACO</title>
+    <title>Sơ Đồ Thủy Lực Đa Pattern 24h - HueWACO</title>
     <style>
         :root {
             --excel-green: #005a36;
@@ -116,7 +116,7 @@
 <body>
 
 <div class="container">
-    <div class="header-bar">MÔ HÌNH THỦY LỰC MẠNG CẤP NƯỚC - HUEWACO</div>
+    <div class="header-bar">TÍNH TOÁN THỦY LỰC & MÔ PHỎNG ĐA PATTERN 24H - HUEWACO</div>
     
     <div class="content">
         <!-- ĐIỀU KHIỂN THỜI GIAN -->
@@ -127,7 +127,7 @@
                 <input type="range" min="0" max="23" value="8" class="sim-slider" id="timeSlider" oninput="onSliderChange(this.value)">
                 <span style="font-size:0.72rem; font-weight:bold; color:#475569;">23h</span>
             </div>
-            <button class="btn-sim" id="btnPlay" onclick="togglePlay()"><span id="playIcon">▶</span> Mô phỏng 24h</button>
+            <button class="btn-sim" id="btnPlay" onclick="togglePlay()"><span id="playIcon">▶</span> Mô Phỏng 24h</button>
             <button class="btn-sim btn-sim-alt" onclick="togglePatternPanel()">⚙️ Pattern</button>
         </div>
 
@@ -146,7 +146,7 @@
             <div class="pattern-tabs" id="patternTabsContainer"></div>
             
             <div style="margin-bottom:6px; display:flex; align-items:center; gap:8px;">
-                <span style="font-size:0.75rem; font-weight:bold; color:#334155;">Tên Pattern:</span>
+                <span style="font-size:0.75rem; font-weight:bold; color:#334155;">Tên gọi:</span>
                 <input type="text" id="pattern_name_input" style="padding:3px 6px; font-size:0.78rem; font-weight:bold; border:1px solid #cbd5e1; border-radius:4px; width:260px;" oninput="updatePatternName(this.value)">
                 <span style="font-size:0.72rem; color:#64748b; font-style:italic;" id="pattern_count_info">Cấu hình: 0/10 Pattern</span>
             </div>
@@ -164,7 +164,7 @@
                     </table>
                 </div>
                 <div class="pattern-chart-wrapper">
-                    <div class="pattern-chart-title">Biểu đồ dùng nước </div>
+                    <div class="pattern-chart-title">So sánh Đồ thị Biến thiên các Pattern</div>
                     <canvas id="patternCanvas" class="pattern-chart-canvas"></canvas>
                 </div>
             </div>
@@ -174,7 +174,7 @@
         <div class="section-title">
             <span>I. Kết quả Thủy lực lúc <span id="lblCurrentHour" style="color:#0284c7;">08:00</span></span>
             <span style="font-weight: normal; font-size: 0.75rem; color: #334155; text-transform: none;">
-                Mô phỏng thủy lực áp lực & nhu cầu dùng nước 24h
+                Mô phỏng thủy lực biến thiên áp lực & nhu cầu dùng nước 24h
             </span>
         </div>
 
@@ -215,7 +215,7 @@
                         </select>
                     </div>
                     <div class="input-row">
-                        <label>Cấp áp lực PN:</label>
+                        <label>Áp lực PN:</label>
                         <select id="pn12" onchange="updatePipeList(1)">
                             <option value="PN10" selected>PN10 (Class C40/K9)</option>
                             <option value="PN16">PN16 (Class C40/K9)</option>
@@ -229,7 +229,7 @@
                     <div class="input-row"><label>Z<sub>1</sub> điểm đầu (m):</label><input type="number" id="z1" value="5.0" onchange="calculateProfile()"></div>
                     
                     <div class="input-row">
-                        <label>Chế độ vận hành:</label>
+                        <label>Chế độ Nút 1:</label>
                         <select id="p1_source_type" onchange="onP1SourceTypeChange()">
                             <option value="network" selected>Áp lực mạng</option>
                             <option value="pump_station">Trạm bơm tăng áp</option>
